@@ -1,0 +1,371 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+    },
+    "fecha_corte": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "publicado_en": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "gestores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "fuente_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+            },
+            "minItems": 1
+          },
+          "nombre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tipo": {
+            "enum": [
+              "publico",
+              "privado",
+              "mixto",
+              "otro"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "fuente_ids",
+          "nombre",
+          "tipo"
+        ]
+      }
+    },
+    "convenios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "fuente_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+            },
+            "minItems": 1
+          },
+          "gestor_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "codigo": {
+            "type": "string",
+            "minLength": 1
+          },
+          "inicio": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "fin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "estado": {
+            "enum": [
+              "vigente",
+              "finalizado",
+              "suspendido",
+              "sin_verificar"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "fuente_ids",
+          "gestor_id",
+          "codigo",
+          "inicio",
+          "fin",
+          "estado"
+        ]
+      }
+    },
+    "territorios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "fuente_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+            },
+            "minItems": 1
+          },
+          "codigo": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nombre": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nivel": {
+            "enum": [
+              "pais",
+              "departamento",
+              "municipio",
+              "region_sanitaria",
+              "otro"
+            ]
+          },
+          "padre_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "fuente_ids",
+          "codigo",
+          "nombre",
+          "nivel",
+          "padre_id"
+        ]
+      }
+    },
+    "cobertura": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "fuente_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+            },
+            "minItems": 1
+          },
+          "convenio_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "territorio_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "indicador": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unidad": {
+            "type": "string",
+            "minLength": 1
+          },
+          "valor": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "estado": {
+            "enum": [
+              "reportado",
+              "sin_dato",
+              "no_aplica"
+            ]
+          },
+          "periodo_inicio": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "periodo_fin": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        },
+        "required": [
+          "id",
+          "fuente_ids",
+          "convenio_id",
+          "territorio_id",
+          "indicador",
+          "unidad",
+          "valor",
+          "estado",
+          "periodo_inicio",
+          "periodo_fin"
+        ]
+      }
+    },
+    "fuentes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "titulo": {
+            "type": "string",
+            "minLength": 1
+          },
+          "institucion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "referencia": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fecha_consulta": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "licencia": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "titulo",
+          "institucion",
+          "referencia",
+          "fecha_consulta",
+          "licencia"
+        ]
+      }
+    },
+    "calidad": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "entidad": {
+            "enum": [
+              "gestores",
+              "convenios",
+              "territorios",
+              "cobertura",
+              "fuentes"
+            ]
+          },
+          "registro_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+          },
+          "regla": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severidad": {
+            "enum": [
+              "info",
+              "advertencia",
+              "error"
+            ]
+          },
+          "estado": {
+            "enum": [
+              "pendiente",
+              "resuelto"
+            ]
+          },
+          "descripcion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fuente_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "entidad",
+          "registro_id",
+          "regla",
+          "severidad",
+          "estado",
+          "descripcion",
+          "fuente_ids"
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "snapshot_id",
+    "fecha_corte",
+    "publicado_en",
+    "gestores",
+    "convenios",
+    "territorios",
+    "cobertura",
+    "fuentes",
+    "calidad"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

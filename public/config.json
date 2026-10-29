@@ -1,0 +1,5 @@
+{
+  "dataRoot": "./data/",
+  "geographyRoot": "./geography/",
+  "catalog": "catalog.json"
+}
