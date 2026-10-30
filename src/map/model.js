@@ -1,4 +1,4 @@
-export const labels={covered:'Con cobertura reportada',not_covered:'Sin cobertura explícita',unknown:'Sin dato',pending:'Pendiente de verificación'};
+export const labels={covered:'Con cobertura reportada',not_covered:'Sin cobertura reportada',unknown:'Sin dato',pending:'Con registro reportado'};
 export const normalize=s=>String(s??'').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase().trim();
 export function readState(search){
  const p=new URLSearchParams(search);
@@ -39,8 +39,7 @@ export function territoryModel(data,state,territory){
  const aggregate=dept&&!state.care&&!state.manager&&!state.agreement?data.departments.find(r=>r.snapshot_id===state.snapshot&&r.territory_id===territory.official_code):null;
  let status='unknown';
  if(aggregate||known.length){
-  const pending=aggregate?aggregate.verification_status!=='official_verified':known.some(r=>r.verification_status!=='official_verified');
-  status=pending?'pending':aggregate?(aggregate.municipalities_reported>0?'covered':'not_covered'):known.some(r=>r.coverage_status==='reported')?'covered':'not_covered';
+  status=aggregate?(aggregate.municipalities_reported>0?'covered':'not_covered'):known.some(r=>r.coverage_status==='reported')?'covered':'not_covered';
  }
  const covered=aggregate?.municipalities_reported??new Set(rows.filter(r=>r.coverage_status==='reported').map(r=>r.territory_id)).size;
  const total=aggregate?.municipalities_total??codes.size;
