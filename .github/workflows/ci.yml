@@ -21,10 +21,18 @@ jobs:
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
+        env:
+          SCREENSHOT_DIR: artifacts/screenshots
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ugd-portal-dist
           path: dist/
           include-hidden-files: true
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ugd-portal-screenshots
+          path: artifacts/screenshots/
           retention-days: 7
