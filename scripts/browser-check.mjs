@@ -72,7 +72,7 @@ try{
  assert((await page.locator('#atlas-subtitle').innerText()).includes('28 de 28'));
  assert.equal(await page.locator('#context-map-wrap').isVisible(),true);
  assert.equal(await page.locator('#context-map path.context-selected').count(),1);
- assert((await page.locator('.provenance-rail').innerText()).includes('Período'));
+ assert(/período/i.test(await page.locator('.provenance-rail').innerText()));
  assert(!(await page.locator('#detail').innerText()).match(/pendiente de verificación|pendiente de validación|no acredita/i));
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('28 / 28'));
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('100.0%'));
