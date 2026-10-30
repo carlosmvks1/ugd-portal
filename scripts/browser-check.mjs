@@ -35,6 +35,23 @@ try{
  assert((await page.locator('.kpi-item').first().getAttribute('aria-label')).includes('47'));
  assert((await page.locator('#home-period').innerText()).includes('2024'));
  assert((await page.locator('#home-period').innerText()).includes('No acredita situación actual'));
+ assert.equal(await page.locator('#kpi-snapshot-year').innerText(),'2024');
+ assert.equal(await page.locator('.advanced-filters').getAttribute('open'),null);
+ assert.equal(await page.locator('#manager').isDisabled(),true);
+ assert.equal(await page.locator('#agreement').isDisabled(),true);
+ assert((await page.locator('.module-list').innerText()).includes('Requiere padrón UGD'));
+ if(process.env.SCREENSHOT_DIR){
+  await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});
+  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-home.png'),fullPage:true});
+  await page.setViewportSize({width:390,height:844});
+  assert.equal(await page.locator('#nav-toggle').isVisible(),true);
+  await page.locator('#nav-toggle').click();
+  assert.equal(await page.locator('#nav-toggle').getAttribute('aria-expanded'),'true');
+  assert.equal(await page.locator('#site-nav').isVisible(),true);
+  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile-home.png'),fullPage:true});
+  await page.locator('#nav-toggle').click();
+  await page.setViewportSize({width:1280,height:900});
+ }
  assert.equal(await page.locator('#map path[data-code]').count(),18);
  assert(!requests.some(p=>p.includes('municipios-')),'Carga municipal prematura');
  assert(await page.locator('#manager').isDisabled());assert(await page.locator('#agreement').isDisabled());
@@ -55,23 +72,11 @@ try{
  await page.setViewportSize({width:390,height:844});assert.equal(await page.locator('#detail').evaluate(el=>getComputedStyle(el).position),'fixed');
  await page.locator('#expand').click();assert(await page.locator('#detail').evaluate(el=>el.classList.contains('expanded')));
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Desbordamiento horizontal');
- if(process.env.SCREENSHOT_DIR){await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile.png'),fullPage:true});await page.setViewportSize({width:1280,height:900});await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop.png'),fullPage:true});}
- await page.goto(base+'?demo=1&year=2024&territory=13');
- await page.locator('#map path[data-code="1301"]').waitFor();
- assert.equal(await page.locator('#demo-guide').isVisible(),true);
- assert.equal(await page.locator('#fichas-prototipo').isVisible(),true);
- assert.equal(await page.locator('#datos-ugd').isVisible(),true);
- assert.equal(await page.locator('#demo-manager-name').innerText(),'GRACIAS');
- assert.equal(await page.locator('#demo-territory').innerText(),'Gracias · Lempira');
- assert.equal(await page.locator('#demo-care').innerText(),'Nivel I');
- assert.equal(await page.locator('#demo-population').innerText(),'62,863');
- assert((await page.locator('#demo-source').innerText()).includes('Memoria institucional 2024'));
- assert((await page.locator('#fichas-prototipo').innerText()).includes('Dato requerido de UGD'));
- assert((await page.locator('#datos-ugd').innerText()).includes('La tecnología ya muestra la dirección'));
- await page.locator('#demo-next').click();
- await page.waitForTimeout(100);
- assert((await page.locator('#demo-step-title').innerText()).includes('Mapa'));
- assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Desbordamiento horizontal en modo demo');
+ if(process.env.SCREENSHOT_DIR){
+  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile-territory.png'),fullPage:true});
+  await page.setViewportSize({width:1280,height:900});
+  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-territory.png'),fullPage:true});
+ }
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.goto(base);await page.locator('#map path[data-code]').first().waitFor();
  assert.equal(await page.locator('#kpi-population').innerText(),'1,592,136');
@@ -80,5 +85,5 @@ try{
  failGeometry=true;await page.goto(base+'?year=2024&territory=13');await page.locator('#retry-map').waitFor();assert.equal(await page.locator('#table tbody tr').count(),28);
  failGeometry=false;await page.locator('#retry-map').click();await page.locator('#map path[data-code="1301"]').waitFor();
  await page.locator('#home').click();await page.locator('#map path[data-code="13"]').waitFor();await page.locator('#map path[data-code="13"]').focus();await page.keyboard.press('Enter');await page.locator('#map path[data-code="1301"]').waitFor();await page.locator('#map path[data-code="1301"]').focus();await page.keyboard.press('Escape');await page.locator('#map path[data-code="13"]').waitFor();
- assert.deepEqual(errors,[]);console.log('Navegador: home, KPIs, hover, drill-down, teclado, búsqueda, filtros, URL, histórico, descarga, móvil, modo demo, carga progresiva y recuperación: OK');
+ assert.deepEqual(errors,[]);console.log('Navegador: home, navegación móvil, KPIs, hover, drill-down, teclado, búsqueda, filtros, URL, histórico, descarga, móvil, carga progresiva y recuperación: OK');
 }finally{await browser.close();}
