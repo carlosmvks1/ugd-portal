@@ -6,4 +6,4 @@ El build usa una lista explícita de archivos. No copia esquemas, scripts, tests
 Distinción esencial: repositorio privado no implica sitio privado. Todo recurso servido por el frontend es descargable.
 No incluir pacientes, identificadores personales, teléfonos, credenciales, contactos individuales ni convenios íntegros.
 Los esquemas rechazan campos no previstos, pero no sustituyen revisión humana del contenido.
-No hay autenticación, backend, teselas externas, cifras, métricas ni publicación automática.
+No hay autenticación, backend, teselas externas ni publicación automática. El explorador incorpora el archivo histórico provisional registrado mediante catalog.explorer. Su validación territorial es independiente del contrato contractual 1.0.0: no inventa contratos o fechas ausentes. Ver territorial-explorer.md.

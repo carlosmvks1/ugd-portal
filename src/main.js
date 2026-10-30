@@ -1,9 +1,15 @@
-import {loadConfig, localUrl} from './config.js';
-const status = document.querySelector('#status');
-try {
-  const config = await loadConfig();
-  const response = await fetch(localUrl(config.catalog, config.dataRoot));
-  if (!response.ok) throw new Error('Catálogo no disponible');
-  const catalog = await response.json();
-  status.textContent = catalog.snapshots.length ? 'Catálogo disponible; visualización pendiente de implementación.' : 'Sin datos publicados. No hay cifras institucionales cargadas.';
-} catch { status.textContent = 'No fue posible consultar los datos. Intente nuevamente más tarde.'; }
+import {loadConfig,localUrl} from './config.js';
+import {startExplorer} from './map/explorer.js';
+const status=document.querySelector('#status');
+async function init(){
+ document.querySelector('#retry').hidden=true;
+ try{
+  const config=await loadConfig();
+  const load=async url=>{const r=await fetch(url);if(!r.ok)throw Error('Recurso no disponible');return r.json();};
+  const catalog=await load(localUrl(config.catalog,config.dataRoot));
+  if(!catalog.explorer){status.textContent='Sin archivo territorial publicado.';return;}
+  await startExplorer(await load(localUrl(catalog.explorer,config.dataRoot)),config,load);
+ }catch(error){status.textContent='No se pudo cargar la consulta territorial. Puede reintentar.';document.querySelector('#retry').hidden=false;console.error(error);}
+}
+document.querySelector('#retry').onclick=init;
+await init();

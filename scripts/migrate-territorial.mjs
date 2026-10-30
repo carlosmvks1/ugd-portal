@@ -1,0 +1,20 @@
+// Importación explícita y reproducible del artefacto territorial anterior.
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {resolve} from 'node:path';
+const origin=process.argv[2];
+if(!origin) throw Error('Uso: node scripts/migrate-territorial.mjs /ruta/ugd/dist');
+const read=async p=>JSON.parse(await readFile(resolve(origin,p),'utf8'));
+const write=async(p,v)=>writeFile(new URL('../'+p,import.meta.url),JSON.stringify(v,null,p.startsWith('geography/')?0:2)+'\n');
+await mkdir(new URL('../data/explorer/',import.meta.url),{recursive:true});
+await mkdir(new URL('../geography/',import.meta.url),{recursive:true});
+const names={territories:'territorios',snapshots:'snapshots',coverage:'cobertura',departments:'cobertura_departamental',sources:'fuentes',data_quality_issues:'calidad_datos',managers:'gestores',agreements:'convenios',equivalences:'equivalencias'};
+const archive={schema_version:'territorial-1',provenance:'Migrado del artefacto ugd/dist previo; fuentes y valores conservados.'};
+for(const [key,name] of Object.entries(names)) archive[key]=await read('data/'+name+'.json');
+await write('data/explorer/archive.json',archive);
+await write('data/explorer/data_quality_issues.json',archive.data_quality_issues);
+const departments=await read('geography/departamentos.geojson');
+const municipalities=await read('geography/municipios.geojson');
+for(const f of [...departments.features,...municipalities.features]) f.properties.territorio_id=f.properties.official_code;
+await write('geography/departamentos.geojson',departments);
+for(const f of departments.features) await write('geography/municipios-'+f.properties.official_code+'.geojson',{type:'FeatureCollection',features:municipalities.features.filter(m=>m.properties.parent_id===f.properties.official_code)});
+console.log('Archivo histórico conservado; geometrías municipales separadas por departamento.');
