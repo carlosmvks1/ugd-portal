@@ -1,5 +1,16 @@
 const fmt=new Intl.NumberFormat('es-HN');
 const safeUrl=value=>{try{const u=new URL(value);return ['http:','https:'].includes(u.protocol)?u.href:'';}catch{return '';}};
+const verificationLabel=value=>({
+  official_verified:'Verificado con fuente oficial',
+  official_unverified:'Fuente oficial pendiente de validación',
+  secondary_source:'Fuente secundaria',
+  pending_UGD:'Pendiente de validación por UGD'
+}[value]||value||'Sin estado de verificación');
+const snapshotLabel=value=>({
+  provisional:'Provisional',
+  published:'Publicado',
+  archived:'Histórico'
+}[value]||value||'Sin estado');
 
 export function renderHome(data){
   const snapshot=[...data.snapshots].sort((a,b)=>(b.year-a.year)||String(b.snapshot_id).localeCompare(String(a.snapshot_id)))[0];
@@ -22,6 +33,6 @@ export function renderHome(data){
   }else municipalityNote.textContent='Municipios reportados en el consolidado';
 
   const source=data.sources.find(s=>s.source_id===snapshot.source_id);
-  const link=source&&safeUrl(source.url)?' · Fuente: '+source.title:'';
-  period.textContent='Último consolidado público cargado: '+snapshot.year+' · '+snapshot.status+' · '+snapshot.verification_status+link+'. No acredita situación actual.';
+  const sourceText=source&&safeUrl(source.url)?' · Fuente: '+source.title:'';
+  period.textContent='Último consolidado público cargado: '+snapshot.year+' · '+snapshotLabel(snapshot.status)+' · '+verificationLabel(snapshot.verification_status)+sourceText+'. No acredita situación actual.';
 }
