@@ -34,12 +34,13 @@ try{
  assert.equal(await page.locator('#kpi-agreements').getAttribute('aria-hidden'),'true');
  assert((await page.locator('.kpi-item').first().getAttribute('aria-label')).includes('47'));
  assert((await page.locator('#home-period').innerText()).includes('2024'));
- assert((await page.locator('#home-period').innerText()).includes('No acredita situación actual'));
  assert.equal(await page.locator('#kpi-snapshot-year').innerText(),'2024');
  assert.equal(await page.locator('.advanced-filters').getAttribute('open'),null);
  assert.equal(await page.locator('#manager').isDisabled(),true);
  assert.equal(await page.locator('#agreement').isDisabled(),true);
- assert((await page.locator('.module-list').innerText()).includes('Requiere padrón UGD'));
+ assert(!(await page.locator('body').innerText()).match(/prototipo|en desarrollo|pendiente de verificación|pendiente de validación|requiere padrón|no acredita situación actual/i));
+ assert((await page.locator('.module-list').innerText()).includes('Gestores'));
+ assert((await page.locator('.module-list').innerText()).includes('Monitoreo'));
  if(process.env.SCREENSHOT_DIR){
   await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});
   await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-home.png'),fullPage:true});
@@ -55,10 +56,13 @@ try{
  assert.equal(await page.locator('#map path[data-code]').count(),18);
  assert(!requests.some(p=>p.includes('municipios-')),'Carga municipal prematura');
  assert(await page.locator('#manager').isDisabled());assert(await page.locator('#agreement').isDisabled());
- await page.locator('#map path[data-code="13"]').hover();assert((await page.locator('#tooltip').innerText()).includes('28 / 28'));
+ await page.locator('#map path[data-code="13"]').hover();
+ assert((await page.locator('#tooltip').innerText()).includes('28 / 28'));
+ assert((await page.locator('#tooltip').innerText()).includes('Con cobertura reportada'));
  const before=await page.locator('#tooltip').boundingBox();await page.mouse.move(before.x+5,before.y+5);const after=await page.locator('#tooltip').boundingBox();assert.equal(before.x,after.x);
  await page.locator('#map path[data-code="13"]').click();await page.locator('#map path[data-code="1301"]').waitFor();assert.equal(await page.locator('#map path[data-code]').count(),28);
  assert.equal(await page.locator('#detail h2').innerText(),'Lempira');
+ assert(!(await page.locator('#detail').innerText()).match(/pendiente de verificación|pendiente de validación|no acredita/i));
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('28 / 28'));
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('100.0%'));
  await page.locator('#map path[data-code="1301"]').focus();await page.keyboard.press('Enter');assert.equal(await page.locator('#detail h2').innerText(),'Gracias');

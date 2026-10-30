@@ -5,8 +5,6 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>n==null?'Sin dato':new Intl.NumberFormat('es-HN').format(n);
 const safeLink=url=>{try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?esc(u.href):'';}catch{return '';}};
-const verificationLabel=value=>({official_verified:'Verificado con fuente oficial',official_unverified:'Fuente oficial pendiente de validación',secondary_source:'Fuente secundaria',pending_UGD:'Pendiente de validación por UGD'}[value]||value||'Sin estado de verificación');
-const snapshotLabel=value=>({provisional:'Provisional',published:'Publicado',archived:'Histórico'}[value]||value||'Sin estado');
 export async function startExplorer(data,config,load){
  let state=sanitizeState(data,readState(location.search)),generation=0,expanded=false;
  const cache=new Map();
@@ -20,7 +18,7 @@ export async function startExplorer(data,config,load){
   const years=[...new Set(data.snapshots.map(s=>String(s.year)))];if(state.year&&!years.includes(state.year))years.push(state.year);
   $('#year').innerHTML=years.map(y=>`<option value="${esc(y)}">${esc(y)}${data.snapshots.some(s=>String(s.year)===y)?'':' · sin datos'}</option>`).join('');$('#year').value=state.year;
   const snapshots=data.snapshots.filter(s=>String(s.year)===state.year);
-  $('#snapshot').innerHTML=snapshots.length?snapshots.map(s=>`<option value="${esc(s.snapshot_id)}">${esc(s.snapshot_id)} · ${esc(snapshotLabel(s.status))}</option>`).join(''):'<option value="">Sin datos</option>';
+  $('#snapshot').innerHTML=snapshots.length?snapshots.map(s=>`<option value="${esc(s.snapshot_id)}">${esc(s.snapshot_id)}</option>`).join(''):'<option value="">Sin datos</option>';
   $('#snapshot').value=state.snapshot;$('#snapshot').disabled=snapshots.length<2;
   const available=options(data,state.snapshot);
   for(const key of ['care','manager','agreement']){const el=$('#'+key);el.innerHTML=`<option value="">${available[key].length?'Todos':'Sin datos disponibles'}</option>`+available[key].map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');el.value=state[key];el.disabled=!available[key].length;}
@@ -34,7 +32,7 @@ export async function startExplorer(data,config,load){
    const max=Math.max(1,...visibleTerritories(data,state).map(t=>territoryModel(data,state,t).population??0));
    return m.population/max<.33?'#a4d4d8':m.population/max<.66?'#419ea8':'#006571';
   }
-  return {covered:'#006571',not_covered:'#dce6eb',pending:'url(#pending)'}[m.status];
+  return {covered:'#006571',not_covered:'#dce6eb'}[m.status];
  }
  function showPreview(code,el){
   const tip=$('#tooltip');tip.innerHTML=summary(model(code));tip.hidden=false;
@@ -55,7 +53,9 @@ export async function startExplorer(data,config,load){
   const coverageText=m.aggregate?fmt(m.covered)+' / '+fmt(m.total):'—';
   const coveragePercent=m.aggregate&&m.proportion!=null?(m.proportion*100).toFixed(1)+'%':'—';
   const populationText=fmt(m.population);
-  const recordDetail=explicit.length?(t.type==='department'?fmt(explicit.length)+' registros municipales explícitos. ':'')+(t.type==='department'?explicit.filter(r=>r.scope_note):explicit).map(r=>`${esc(find(r.territory_id)?.name)} · ${esc(r.care_level)} · ${esc(r.scope_note||'Reportado; no acredita cobertura poblacional completa')} · página ${esc(r.source_page)} · ${esc(verificationLabel(r.verification_status))}`).join('<br>'):'Sin registro municipal explícito';
+  const recordDetail=t.type==='department'
+    ?(explicit.length?fmt(explicit.length)+' registros municipales en la fuente.':'Sin registros municipales para este período.')
+    :(explicit.length?explicit.map(r=>`${esc(r.care_level)} · ${esc(r.scope_note||'Reportado en fuente')} · página ${esc(r.source_page)}`).join('<br>'):'Sin registro municipal para este período.');
   $('#detail').innerHTML=`<div class="panel-heading"><div><p class="detail-kicker">${esc(t.type==='department'?'Departamento':'Municipio')} · código ${esc(t.official_code)}</p><h2>${esc(t.name)}</h2></div><button id="close-detail" aria-label="Cerrar selección">Cerrar</button></div>
   <p class="detail-status"><span class="detail-status-dot status-${esc(m.status)}" aria-hidden="true"></span>${esc(labels[m.status])} · ${esc(period())}</p>
   <div class="detail-metrics">
@@ -66,9 +66,8 @@ export async function startExplorer(data,config,load){
   <button id="expand" aria-expanded="${expanded}">${expanded?'Reducir ficha':'Ver ficha completa'}</button>
   <div class="panel-content">
     <div class="detail-section"><h3>Alcance documentado</h3><p>${recordDetail}</p></div>
-    <div class="detail-section"><h3>Gestor / convenio</h3><p>${agreements.length?'Relaciones confirmadas disponibles abajo.':'Sin padrón contractual confirmado para este corte.'}</p></div>
-    <div class="detail-section"><h3>Corte y fuente</h3><p>${esc(snapshot()?.cutoff_date||snapshot()?.cutoff_note||'Sin dato')}</p><p>${sources.map(s=>`<a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join('<br>')||'Sin registro disponible'}</p></div>
-    <p class="detail-quality">${issues.length} observaciones de calidad aplicables.</p>
+    ${agreements.length?'<div class="detail-section"><h3>Gestor / convenio</h3><p>Convenios asociados a este territorio.</p></div>':''}
+    <div class="detail-section"><h3>Período y fuente</h3><p>${esc(snapshot()?.cutoff_date||snapshot()?.cutoff_note||'Sin dato')}</p><p>${sources.map(s=>`<a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join('<br>')||'Sin registro disponible'}</p></div>
     ${t.type==='department'?'<div class="detail-section"><h3>Municipios</h3><div class="municipality-links">'+data.territories.filter(x=>x.parent_id===t.official_code).map(x=>`<button data-territory="${esc(x.official_code)}">${esc(x.name)}</button>`).join('')+'</div></div>':''}
     ${agreements.map(a=>`<div class="detail-section"><h3>${esc(a.agreement_id)}</h3>`+m.rows.filter(r=>r.agreement_ids.includes(a.agreement_id)).map(r=>`<button data-territory="${esc(r.territory_id)}">${esc(find(r.territory_id)?.name)}</button>`).join('')+'</div>').join('')}
   </div>`;
@@ -89,7 +88,7 @@ export async function startExplorer(data,config,load){
   $('#breadcrumbs').innerHTML=`<button data-territory="">Honduras</button>${d?` › <button data-territory="${esc(d.official_code)}" ${t===d?'aria-current="location"':''}>${esc(d.name)}</button>`:''}${t?.type==='municipality'?` › <span aria-current="location">${esc(t.name)}</span>`:''}`;bindSelection($('#breadcrumbs'));
  }
  function legend(){
-  $('#legend').textContent=state.layer==='status'?Object.values(labels).join(' · ')+' · Turquesa: cobertura; gris: ausencia explícita; rayado gris: sin dato; rayado turquesa: pendiente de verificación.':state.layer==='proportion'?'Proporción de municipios reportados en tabla departamental: 0%, 1–24%, 25–59%, 60–100%. No representa población. Rayado: sin agregado aplicable.':'Población municipal publicada: intensidad relativa al máximo visible (tercios). Rayado: sin dato municipal comparable. No se suman niveles o convenios.';
+  $('#legend').textContent=state.layer==='status'?'Turquesa: cobertura reportada · Gris: sin cobertura reportada · Rayado gris: sin dato.':state.layer==='proportion'?'Proporción de municipios reportados en tabla departamental: 0%, 1–24%, 25–59%, 60–100%. No representa población. Rayado: sin agregado aplicable.':'Población municipal publicada: intensidad relativa al máximo visible (tercios). Rayado: sin dato municipal comparable. No se suman niveles o convenios.';
  }
  async function map(token){
   const t=find(state.territory),parent=t?.type==='municipality'?t.parent_id:t?.official_code;
@@ -97,7 +96,7 @@ export async function startExplorer(data,config,load){
   try{
    const geo=await getGeometry(parent?'municipios-'+parent+'.geojson':'departamentos.geojson');if(token!==generation)return;
    const features=geo.features.filter(f=>find(f.properties.territorio_id));$('#map').setAttribute('viewBox',geometryBounds(features));
-   $('#map').innerHTML='<defs><pattern id="unknown" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(.005)"><rect width="8" height="8" fill="#edf0f2"/><path d="M0 8L8 0" stroke="#9aabb4"/></pattern><pattern id="pending" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(.005)"><rect width="8" height="8" fill="#e6f3f3"/><path d="M0 8L8 0" stroke="#5b9fa4"/></pattern></defs>'+features.map(f=>{const code=f.properties.territorio_id,m=model(code);return `<path tabindex="0" role="button" aria-pressed="${code===state.territory}" aria-label="${esc(m.territory.name+' · '+labels[m.status])}" data-code="${esc(code)}" fill="${color(m)}" fill-rule="evenodd" d="${geometryPath(f.geometry)}"><title>${esc(m.territory.name)}</title></path>`;}).join('');
+   $('#map').innerHTML='<defs><pattern id="unknown" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(.005)"><rect width="8" height="8" fill="#edf0f2"/><path d="M0 8L8 0" stroke="#9aabb4"/></pattern></defs>'+features.map(f=>{const code=f.properties.territorio_id,m=model(code);return `<path tabindex="0" role="button" aria-pressed="${code===state.territory}" aria-label="${esc(m.territory.name+' · '+labels[m.status])}" data-code="${esc(code)}" fill="${color(m)}" fill-rule="evenodd" d="${geometryPath(f.geometry)}"><title>${esc(m.territory.name)}</title></path>`;}).join('');
    const paths=[...$('#map').querySelectorAll('[data-code]')];paths.forEach((el,i)=>{
     el.onpointerenter=e=>{if(e.pointerType==='mouse')showPreview(el.dataset.code,el);};el.onpointerleave=hidePreview;el.onfocus=()=>showPreview(el.dataset.code,el);el.onblur=hidePreview;el.onclick=()=>select(el.dataset.code);
     el.onkeydown=e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();select(el.dataset.code);$('#detail h2').setAttribute('tabindex','-1');$('#detail h2').focus();}else if(e.key==='Escape'){e.preventDefault();select(t?.type==='municipality'?parent:'');$('#home').focus();}else if(['ArrowRight','ArrowDown','ArrowLeft','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();const index=e.key==='Home'?0:e.key==='End'?paths.length-1:(i+(['ArrowRight','ArrowDown'].includes(e.key)?1:-1)+paths.length)%paths.length;paths[index].focus();}};
@@ -107,7 +106,8 @@ export async function startExplorer(data,config,load){
  }
  function update(push=false){
   state=sanitizeState(data,state);history[push?'pushState':'replaceState']({},'',stateUrl(state,location.href));fill();breadcrumbs();detail();table();legend();
-  const s=snapshot();$('#status').textContent=s?`${s.year} · archivo histórico ${snapshotLabel(s.status)} · ${period()} · ${verificationLabel(s.verification_status)}. No acredita situación actual. ${s.cutoff_note||''}`:`${state.year} · Sin datos publicados para el año solicitado.`;
+  const s=snapshot(),source=s?data.sources.find(x=>x.source_id===s.source_id):null;
+  $('#status').textContent=s?`Datos ${s.year} · ${period()}${source?' · '+source.title:''}`:`${state.year} · Sin datos publicados para el año seleccionado.`;
   const rows=exportRows(data,state);$('#csv').disabled=$('#json').disabled=!rows.length;map(++generation);
  }
  for(const key of ['year','snapshot','care','manager','agreement','layer'])$('#'+key).onchange=e=>{state[key]=e.target.value;if(key==='year'){state.snapshot='';for(const k of ['care','manager','agreement'])state[k]='';}update(true);};
