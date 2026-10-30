@@ -1,16 +1,5 @@
 const fmt=new Intl.NumberFormat('es-HN');
 const safeUrl=value=>{try{const u=new URL(value);return ['http:','https:'].includes(u.protocol)?u.href:'';}catch{return '';}};
-const verificationLabel=value=>({
-  official_verified:'Verificado con fuente oficial',
-  official_unverified:'Fuente oficial pendiente de validación',
-  secondary_source:'Fuente secundaria',
-  pending_UGD:'Pendiente de validación por UGD'
-}[value]||value||'Sin estado de verificación');
-const snapshotLabel=value=>({
-  provisional:'Provisional',
-  published:'Publicado',
-  archived:'Histórico'
-}[value]||value||'Sin estado');
 
 const reducedMotion=()=>window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -97,11 +86,10 @@ export function renderHome(data){
 
   const municipalityNote=document.querySelector('#kpi-municipalities-note');
   if(i.municipalities_narrative!=null&&i.municipalities_table!=null&&i.municipalities_narrative!==i.municipalities_table){
-    municipalityNote.textContent='Cifra narrativa oficial; la tabla departamental suma '+fmt.format(i.municipalities_table)+'.';
-    municipalityNote.classList.add('quality-warning');
+    municipalityNote.textContent='Cifra reportada en la memoria institucional.';
   }else municipalityNote.textContent='Municipios reportados en el consolidado';
 
   const source=data.sources.find(s=>s.source_id===snapshot.source_id);
   const sourceText=source&&safeUrl(source.url)?' · Fuente: '+source.title:'';
-  period.textContent='Último consolidado público cargado: '+snapshot.year+' · '+snapshotLabel(snapshot.status)+' · '+verificationLabel(snapshot.verification_status)+sourceText+'. No acredita situación actual.';
+  period.textContent='Datos '+snapshot.year+sourceText+'.';
 }
