@@ -20,7 +20,7 @@ try{
  await page.waitForTimeout(100);
  assert.deepEqual(errors,[],'Errores JavaScript durante la carga inicial');
  await page.locator('#map path[data-code]').first().waitFor();
- assert((await page.locator('#hero-title').innerText()).includes('Información pública'));
+ assert((await page.locator('#hero-title').innerText()).includes('Gestión descentralizada'));
  assert.equal(await page.locator('#kpi-agreements').innerText(),'47');
  assert.equal(await page.locator('#kpi-levels').innerText(),'40 / 7');
  assert.equal(await page.locator('#kpi-municipalities').innerText(),'89');
