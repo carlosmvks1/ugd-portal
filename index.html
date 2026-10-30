@@ -6,6 +6,9 @@
   <meta name="robots" content="noindex,nofollow">
   <meta name="description" content="Prototipo institucional de la Unidad de Gestión Descentralizada de la Secretaría de Salud de Honduras.">
   <title>UGD · Unidad de Gestión Descentralizada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;650;700;750&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./src/styles.css">
 </head>
 <body>
@@ -29,7 +32,12 @@
       </span>
     </a>
 
-    <nav class="site-nav" aria-label="Navegación de UGD">
+    <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+      <span class="sr-only">Abrir navegación</span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Navegación de UGD">
       <a href="#cobertura">Cobertura</a>
       <a href="#modelo">Modelo de gestión</a>
       <a href="#modulos">Información</a>
@@ -39,18 +47,6 @@
     <span class="prototype-badge">Prototipo institucional</span>
   </div>
 </header>
-
-<div id="demo-guide" class="demo-guide" hidden aria-label="Recorrido de demostración">
-  <div>
-    <span class="demo-guide-kicker">Modo demostración</span>
-    <strong id="demo-step-title">Visión del portal UGD</strong>
-  </div>
-  <div class="demo-guide-actions">
-    <button id="demo-prev" type="button">Anterior</button>
-    <span id="demo-step-count" aria-live="polite">1 / 4</span>
-    <button id="demo-next" type="button">Siguiente</button>
-  </div>
-</div>
 
 <main>
   <section id="inicio" class="hero" aria-labelledby="hero-title">
@@ -107,21 +103,28 @@
           <p class="eyebrow">Explorador territorial</p>
           <h2 id="coverage-title">Honduras, departamento por departamento.</h2>
         </div>
-        <p>Consulte cobertura reportada, período, fuente y estado de verificación. El mapa nunca interpreta una ausencia documental como cero.</p>
+        <p>Consulte cobertura reportada, período, fuente y estado de verificación. Una ausencia documental nunca se interpreta automáticamente como cero.</p>
       </div>
 
       <p id="status" class="status-banner" role="status">Consultando fuentes…</p>
 
       <section id="explorer" hidden aria-label="Consulta territorial">
         <div class="explorer-controls">
-          <div class="filters">
+          <div class="primary-filters">
             <label>Año<select id="year"></select></label>
-            <label>Versión<select id="snapshot"></select></label>
             <label>Nivel de atención<select id="care"></select></label>
-            <label>Tipo de gestor<select id="manager"></select></label>
-            <label>Estado del convenio<select id="agreement"></select></label>
             <label>Visualización<select id="layer"><option value="status">Estado del dato</option><option value="proportion">Proporción municipal reportada</option><option value="population">Población municipal publicada</option></select></label>
           </div>
+
+          <details class="advanced-filters">
+            <summary>Más filtros y versión del dato</summary>
+            <div class="advanced-filter-grid">
+              <label>Versión<select id="snapshot"></select></label>
+              <label>Tipo de gestor<select id="manager"></select></label>
+              <label>Estado del convenio<select id="agreement"></select></label>
+            </div>
+            <p id="filter-note">Los filtros sin respaldo documental permanecen deshabilitados.</p>
+          </details>
 
           <div class="search-row">
             <div class="search-block">
@@ -129,7 +132,7 @@
               <input id="search" type="search" placeholder="Departamento, municipio o código" autocomplete="off" aria-controls="results">
               <ul id="results" aria-label="Resultados de búsqueda"></ul>
             </div>
-            <p id="filter-note">Los filtros sin respaldo documental permanecen deshabilitados.</p>
+            <p class="search-helper">Seleccione un departamento para profundizar a sus municipios.</p>
           </div>
         </div>
 
@@ -139,7 +142,7 @@
           <section class="map-area" aria-label="Mapa territorial">
             <div class="map-toolbar">
               <p id="map-status" role="status"></p>
-              <p class="map-hint">Hover en escritorio · toque en móvil</p>
+              <p class="map-hint">Cursor en escritorio · toque en móvil</p>
             </div>
             <div class="map-wrap">
               <svg id="map" role="group" aria-label="Territorios; use Tab o flechas, Enter para seleccionar y Escape para volver"></svg>
@@ -152,7 +155,11 @@
           </section>
 
           <aside id="detail" aria-label="Detalle del territorio">
-            <p>Seleccione un territorio para consultar su ficha.</p>
+            <div class="detail-empty">
+              <span aria-hidden="true">HN</span>
+              <h2>Explore el territorio</h2>
+              <p>Seleccione un departamento para consultar su cobertura documentada, población publicada y fuentes.</p>
+            </div>
           </aside>
         </div>
 
@@ -166,7 +173,7 @@
         <details class="data-drawer">
           <summary>
             <span>Tabla territorial accesible</span>
-            <small>Ver los mismos datos del mapa en formato tabular</small>
+            <small>Los mismos datos del mapa en formato tabular</small>
           </summary>
           <section class="data-table-section" aria-labelledby="table-title">
             <h3 id="table-title">Tabla territorial accesible</h3>
@@ -198,92 +205,6 @@
     </div>
   </section>
 
-  <section id="fichas-prototipo" class="vision-section demo-only" hidden aria-labelledby="vision-title">
-    <div class="shell">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Visión del producto</p>
-          <h2 id="vision-title">De un mapa a una ficha institucional trazable.</h2>
-        </div>
-        <p>Esta sección demuestra cómo se conectarán territorio, gestor, convenio y documentos cuando UGD entregue y valide su padrón oficial.</p>
-      </div>
-
-      <div class="vision-grid">
-        <article class="entity-card entity-card-primary">
-          <div class="entity-card-head">
-            <span class="entity-type">Ficha modelo · Gestor</span>
-            <span class="verification-pill">Pendiente UGD</span>
-          </div>
-          <h3 id="demo-manager-name">—</h3>
-          <p class="entity-subtitle">Etiqueta encontrada en la fuente pública; no se presenta como identidad jurídica confirmada.</p>
-          <div class="entity-metrics">
-            <div><span>Territorio</span><strong id="demo-territory">—</strong></div>
-            <div><span>Nivel</span><strong id="demo-care">—</strong></div>
-            <div><span>Población publicada</span><strong id="demo-population">—</strong></div>
-          </div>
-          <dl class="entity-fields">
-            <div><dt>Razón social</dt><dd class="field-needed">Dato requerido de UGD</dd></div>
-            <div><dt>Tipo de gestor</dt><dd class="field-needed">Dato requerido de UGD</dd></div>
-            <div><dt>Convenios asociados</dt><dd class="field-needed">Dato requerido de UGD</dd></div>
-            <div><dt>Fuente pública actual</dt><dd id="demo-source">—</dd></div>
-          </dl>
-        </article>
-
-        <article class="entity-card">
-          <div class="entity-card-head">
-            <span class="entity-type">Ficha modelo · Convenio</span>
-            <span class="verification-pill">Estructura conceptual</span>
-          </div>
-          <h3>Convenio de gestión descentralizada</h3>
-          <p class="entity-subtitle">El diseño ya está preparado; los campos contractuales no se completan hasta recibir el padrón oficial.</p>
-          <dl class="entity-fields entity-fields-large">
-            <div><dt>Código de convenio</dt><dd class="field-needed">Pendiente UGD</dd></div>
-            <div><dt>Gestor</dt><dd id="demo-agreement-manager">—</dd></div>
-            <div><dt>Territorio</dt><dd id="demo-agreement-territory">—</dd></div>
-            <div><dt>Vigencia</dt><dd class="field-needed">Pendiente UGD</dd></div>
-            <div><dt>Estado</dt><dd class="field-needed">Pendiente UGD</dd></div>
-            <div><dt>Documento firmado</dt><dd class="field-needed">Pendiente UGD</dd></div>
-          </dl>
-          <div class="entity-source-note">Nada de esta ficha contractual se inventa: los vacíos permanecen explícitos hasta validación institucional.</div>
-        </article>
-      </div>
-
-      <div class="document-concept">
-        <div>
-          <p class="eyebrow">Repositorio conectado</p>
-          <h3>El documento deja de ser un PDF perdido.</h3>
-          <p>Convenio, normativa, informe y territorio podrán relacionarse entre sí y conservar procedencia, período y estado de publicación.</p>
-        </div>
-        <div class="document-stack" aria-label="Ejemplo de repositorio documental">
-          <div class="document-row document-available"><span>Memoria institucional 2024</span><small>Fuente pública disponible</small></div>
-          <div class="document-row"><span>Convenio firmado</span><small>Requiere UGD</small></div>
-          <div class="document-row"><span>Informe de monitoreo</span><small>Requiere UGD</small></div>
-          <div class="document-row"><span>Normativa aplicable</span><small>Requiere validación</small></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="datos-ugd" class="needs-section demo-only" hidden aria-labelledby="needs-title">
-    <div class="shell">
-      <div class="needs-intro">
-        <p class="eyebrow eyebrow-light">Para pasar de prototipo a portal institucional</p>
-        <h2 id="needs-title">La tecnología ya muestra la dirección. Lo que falta es información oficial de UGD.</h2>
-        <p>Este paquete mínimo permitiría sustituir el archivo histórico y convertir las fichas conceptuales en información institucional actualizada.</p>
-      </div>
-      <div class="needs-grid">
-        <article><span>01</span><h3>Convenios</h3><p>Código, gestor, vigencia, estado, nivel, territorios, población y documentos publicables.</p></article>
-        <article><span>02</span><h3>Gestores</h3><p>Nombre legal, tipo, convenios asociados, territorios, establecimientos y contacto público.</p></article>
-        <article><span>03</span><h3>Cobertura</h3><p>Municipios exactos, población, nivel de atención y establecimientos por convenio/gestor.</p></article>
-        <article><span>04</span><h3>Identidad y documentos</h3><p>Logos, funciones oficiales, autoridad, normativa, informes, fotografías autorizadas y reglas de publicación.</p></article>
-      </div>
-      <div class="needs-footer">
-        <strong>Regla del proyecto</strong>
-        <p>Si UGD no confirma un dato, el portal no lo presenta como hecho. La trazabilidad es parte del diseño, no un detalle posterior.</p>
-      </div>
-    </div>
-  </section>
-
   <section id="modelo" class="model-section section-dark" aria-labelledby="model-title">
     <div class="shell">
       <div class="section-heading">
@@ -291,7 +212,7 @@
           <p class="eyebrow eyebrow-light">Modelo de gestión</p>
           <h2 id="model-title">Del convenio al territorio.</h2>
         </div>
-        <p>El portal debe hacer visible la cadena completa de la gestión descentralizada sin convertirla en burocracia difícil de leer.</p>
+        <p>El portal busca hacer visible la cadena completa de la gestión descentralizada sin convertirla en burocracia difícil de leer.</p>
       </div>
 
       <ol class="process-list" aria-label="Flujo general de gestión descentralizada">
@@ -307,18 +228,18 @@
     <div class="shell">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Información institucional</p>
-          <h2 id="modules-title">Una estructura pensada para consultar, no para perderse.</h2>
+          <p class="eyebrow">Siguiente etapa</p>
+          <h2 id="modules-title">El portal puede crecer sin perder trazabilidad.</h2>
         </div>
-        <p>Los próximos módulos reutilizarán el mismo modelo de datos para mantener coherencia entre cifras, documentos y territorios.</p>
+        <p>Estos módulos muestran la arquitectura prevista. No se presentan como funcionalidades terminadas hasta contar con información validada por UGD.</p>
       </div>
 
-      <div class="module-list">
-        <article><span class="module-index">01</span><div><h3>Gestores</h3><p>Organizaciones, territorios, nivel de atención y relaciones confirmadas.</p></div><span aria-hidden="true">→</span></article>
-        <article><span class="module-index">02</span><div><h3>Convenios</h3><p>Vigencia, alcance, territorio, documentos y trazabilidad.</p></div><span aria-hidden="true">→</span></article>
-        <article><span class="module-index">03</span><div><h3>Documentos</h3><p>Repositorio por tipo, período, tema y fuente oficial.</p></div><span aria-hidden="true">→</span></article>
-        <article><span class="module-index">04</span><div><h3>Normativa</h3><p>Marco jurídico, vigencia, relaciones y documentos oficiales.</p></div><span aria-hidden="true">→</span></article>
-        <article><span class="module-index">05</span><div><h3>Monitoreo</h3><p>Indicadores públicos, instrumentos e informes autorizados.</p></div><span aria-hidden="true">→</span></article>
+      <div class="module-list" aria-label="Hoja de ruta de módulos">
+        <article><span class="module-index">01</span><div><h3>Gestores</h3><p>Organizaciones, territorios, nivel de atención y relaciones confirmadas.</p></div><span class="module-status">Requiere padrón UGD</span></article>
+        <article><span class="module-index">02</span><div><h3>Convenios</h3><p>Vigencia, alcance, territorio, documentos y trazabilidad.</p></div><span class="module-status">Requiere padrón UGD</span></article>
+        <article><span class="module-index">03</span><div><h3>Documentos</h3><p>Repositorio por tipo, período, tema y fuente oficial.</p></div><span class="module-status module-status-ready">Estructura preparada</span></article>
+        <article><span class="module-index">04</span><div><h3>Normativa</h3><p>Marco jurídico, vigencia, relaciones y documentos oficiales.</p></div><span class="module-status module-status-ready">Estructura preparada</span></article>
+        <article><span class="module-index">05</span><div><h3>Monitoreo</h3><p>Indicadores públicos, instrumentos e informes autorizados.</p></div><span class="module-status">Definir con UGD</span></article>
       </div>
     </div>
   </section>
