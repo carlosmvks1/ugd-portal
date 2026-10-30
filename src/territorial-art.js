@@ -11,7 +11,18 @@ function featureCenter(feature){
   return [(left+right)/2,(top+bottom)/2];
 }
 
+function initDiagramReveal(){
+  const stage=document.querySelector('.ecosystem-stage');
+  if(!stage)return;
+  if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){stage.classList.add('is-visible');return;}
+  const observer=new IntersectionObserver(entries=>{
+    for(const entry of entries)if(entry.isIntersecting){stage.classList.add('is-visible');observer.disconnect();}
+  },{threshold:.22});
+  observer.observe(stage);
+}
+
 export async function initTerritorialArt(data,config,load){
+  initDiagramReveal();
   const svg=document.querySelector('#hero-map-signature');
   if(!svg)return;
   try{
