@@ -35,6 +35,7 @@ try{
  assert((await page.locator('.kpi-item').first().getAttribute('aria-label')).includes('47'));
  assert((await page.locator('#home-period').innerText()).includes('2024'));
  assert((await page.locator('#home-period').innerText()).includes('No acredita situación actual'));
+ assert.equal(await page.locator('#kpi-snapshot-year').innerText(),'2024');
  assert.equal(await page.locator('.advanced-filters').getAttribute('open'),null);
  assert.equal(await page.locator('#manager').isDisabled(),true);
  assert.equal(await page.locator('#agreement').isDisabled(),true);
