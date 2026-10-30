@@ -8,9 +8,13 @@
   },
   "scripts": {
     "test": "node --test",
+    "test:browser": "node scripts/browser-check.mjs",
     "validate": "node scripts/validate.mjs",
     "build": "node scripts/build.mjs",
     "dev": "node scripts/serve.mjs",
     "preview": "node scripts/serve.mjs dist"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
   }
 }
