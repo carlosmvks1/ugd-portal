@@ -291,12 +291,12 @@ table button{font-size:.76rem;border-radius:6px;padding:.3rem .42rem}
 .territory-sheet-head h2{margin:.08rem 0 0;font-size:clamp(1.85rem,2.5vw,2.65rem);font-weight:600}.territory-sheet-head #close-detail{border:0;background:#f2f6f7;border-radius:999px;padding:.38rem .55rem;font-size:.7rem}
 .territory-code{min-width:58px;padding:.45rem .5rem;border:1px solid var(--line);border-radius:8px;text-align:center;background:#f8fbfb}.territory-code span{display:block;font-size:.55rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}.territory-code strong{display:block;font-size:.98rem;color:var(--deep);font-variant-numeric:tabular-nums}
 .territory-sheet .detail-status{margin:.15rem 1.1rem .9rem}
-.territory-sheet .detail-metrics{margin:0 1.1rem .7rem}.territory-sheet .detail-metrics strong{font-variant-numeric:tabular-nums}
+.territory-sheet .detail-metrics{margin:0 1.1rem .7rem;grid-template-columns:1fr 1fr}.territory-sheet .detail-metrics>div:nth-child(2){border-right:0}.territory-sheet .detail-metrics>div:last-child{grid-column:1/-1;border-top:1px solid var(--line);border-right:0}.territory-sheet .detail-metrics strong{font-variant-numeric:tabular-nums;white-space:nowrap;overflow-wrap:normal}
 .coverage-progress{height:5px;margin:0 1.1rem 1rem;background:#e8f0f1;border-radius:999px;overflow:hidden}.coverage-progress span{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2));border-radius:inherit}
 .territory-sheet #expand{margin:0 1.1rem 1rem}
 .territory-sheet .panel-content{padding:0 1.1rem 1rem}
 .provenance-rail{position:relative;margin:.2rem 0 1rem;padding-left:1rem;border-left:1px solid #b9d7da;display:grid;gap:.85rem}.provenance-rail::before{content:"";position:absolute;left:-3px;top:0;width:5px;height:5px;border-radius:50%;background:var(--brand)}
-.provenance-rail>div{display:grid;gap:.14rem}.provenance-rail span{font-size:.57rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:700}.provenance-rail strong{font-size:.75rem;color:var(--ink-2);font-weight:600;line-height:1.35}.provenance-rail a{text-decoration:none}
+.provenance-rail>div{display:grid;gap:.14rem}.provenance-rail span{font-size:.57rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-3);font-weight:700}.provenance-rail strong{font-size:.75rem;color:var(--ink-2);font-weight:600;line-height:1.35;overflow-wrap:anywhere}.provenance-rail a{text-decoration:none}
 .atlas-actions{margin-top:.85rem}
 
 .ecosystem-section{position:relative;overflow:hidden;padding-block:clamp(5rem,8vw,8rem);background:radial-gradient(circle at 50% 32%,#0b5060 0,#083946 48%,#052b36 100%)}
