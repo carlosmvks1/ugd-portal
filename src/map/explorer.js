@@ -4,7 +4,9 @@ import {geometryPath,geometryBounds} from './geometry.js';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>n==null?'Sin dato':new Intl.NumberFormat('es-HN').format(n);
-const safeLink=url=>{try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?esc(u.href):'';}catch{return '';}};\nconst verificationLabel=value=>({official_verified:'Verificado con fuente oficial',official_unverified:'Fuente oficial pendiente de validación',secondary_source:'Fuente secundaria',pending_UGD:'Pendiente de validación por UGD'}[value]||value||'Sin estado de verificación');\nconst snapshotLabel=value=>({provisional:'Provisional',published:'Publicado',archived:'Histórico'}[value]||value||'Sin estado');
+const safeLink=url=>{try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?esc(u.href):'';}catch{return '';}};
+const verificationLabel=value=>({official_verified:'Verificado con fuente oficial',official_unverified:'Fuente oficial pendiente de validación',secondary_source:'Fuente secundaria',pending_UGD:'Pendiente de validación por UGD'}[value]||value||'Sin estado de verificación');
+const snapshotLabel=value=>({provisional:'Provisional',published:'Publicado',archived:'Histórico'}[value]||value||'Sin estado');
 export async function startExplorer(data,config,load){
  let state=sanitizeState(data,readState(location.search)),generation=0,expanded=false;
  const cache=new Map();
@@ -18,7 +20,7 @@ export async function startExplorer(data,config,load){
   const years=[...new Set(data.snapshots.map(s=>String(s.year)))];if(state.year&&!years.includes(state.year))years.push(state.year);
   $('#year').innerHTML=years.map(y=>`<option value="${esc(y)}">${esc(y)}${data.snapshots.some(s=>String(s.year)===y)?'':' · sin datos'}</option>`).join('');$('#year').value=state.year;
   const snapshots=data.snapshots.filter(s=>String(s.year)===state.year);
-  $('#snapshot').innerHTML=snapshots.length?snapshots.map(s=>`<option value="${esc(s.snapshot_id)}">${esc(s.snapshot_id)} · ${esc(s.status)}</option>`).join(''):'<option value="">Sin datos</option>';
+  $('#snapshot').innerHTML=snapshots.length?snapshots.map(s=>`<option value="${esc(s.snapshot_id)}">${esc(s.snapshot_id)} · ${esc(snapshotLabel(s.status))}</option>`).join(''):'<option value="">Sin datos</option>';
   $('#snapshot').value=state.snapshot;$('#snapshot').disabled=snapshots.length<2;
   const available=options(data,state.snapshot);
   for(const key of ['care','manager','agreement']){const el=$('#'+key);el.innerHTML=`<option value="">${available[key].length?'Todos':'Sin datos disponibles'}</option>`+available[key].map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');el.value=state[key];el.disabled=!available[key].length;}
