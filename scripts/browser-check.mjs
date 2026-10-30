@@ -21,9 +21,13 @@ try{
  assert.deepEqual(errors,[],'Errores JavaScript durante la carga inicial');
  await page.locator('#map path[data-code]').first().waitFor();
  assert((await page.locator('#hero-title').innerText()).includes('Gestión descentralizada'));
+ await page.waitForFunction(()=>document.querySelector('#kpi-agreements')?.textContent==='47');
  assert.equal(await page.locator('#kpi-agreements').innerText(),'47');
  assert.equal(await page.locator('#kpi-levels').innerText(),'40 / 7');
  assert.equal(await page.locator('#kpi-municipalities').innerText(),'89');
+ assert.equal(await page.locator('#kpi-population').innerText(),'1,592,136');
+ assert.equal(await page.locator('#kpi-agreements').getAttribute('aria-hidden'),'true');
+ assert((await page.locator('.kpi-item').first().getAttribute('aria-label')).includes('47'));
  assert((await page.locator('#home-period').innerText()).includes('2024'));
  assert((await page.locator('#home-period').innerText()).includes('No acredita situación actual'));
  assert.equal(await page.locator('#map path[data-code]').count(),18);
@@ -32,6 +36,9 @@ try{
  await page.locator('#map path[data-code="13"]').hover();assert((await page.locator('#tooltip').innerText()).includes('28 / 28'));
  const before=await page.locator('#tooltip').boundingBox();await page.mouse.move(before.x+5,before.y+5);const after=await page.locator('#tooltip').boundingBox();assert.equal(before.x,after.x);
  await page.locator('#map path[data-code="13"]').click();await page.locator('#map path[data-code="1301"]').waitFor();assert.equal(await page.locator('#map path[data-code]').count(),28);
+ assert.equal(await page.locator('#detail h2').innerText(),'Lempira');
+ assert((await page.locator('#detail .detail-metrics').innerText()).includes('28 / 28'));
+ assert((await page.locator('#detail .detail-metrics').innerText()).includes('100.0%'));
  await page.locator('#map path[data-code="1301"]').focus();await page.keyboard.press('Enter');assert.equal(await page.locator('#detail h2').innerText(),'Gracias');
  await page.reload();await page.locator('#map path[data-code="1301"]').waitFor();assert.equal(await page.locator('#detail h2').innerText(),'Gracias');
  const download=page.waitForEvent('download');await page.locator('#json').click();assert((await download).suggestedFilename().includes('2024-v1-1301'));
@@ -44,6 +51,10 @@ try{
  await page.locator('#expand').click();assert(await page.locator('#detail').evaluate(el=>el.classList.contains('expanded')));
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Desbordamiento horizontal');
  if(process.env.SCREENSHOT_DIR){await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile.png'),fullPage:true});await page.setViewportSize({width:1280,height:900});await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop.png'),fullPage:true});}
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.goto(base);await page.locator('#map path[data-code]').first().waitFor();
+ assert.equal(await page.locator('#kpi-population').innerText(),'1,592,136');
+ await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto(base+'?year=2026&territory=1301');await page.locator('#map path[data-code="1301"]').waitFor();assert((await page.locator('#status').innerText()).includes('Sin datos publicados'));assert(await page.locator('#csv').isDisabled());assert(!(await page.locator('#detail').innerText()).includes('62,863'));
  failGeometry=true;await page.goto(base+'?year=2024&territory=13');await page.locator('#retry-map').waitFor();assert.equal(await page.locator('#table tbody tr').count(),28);
  failGeometry=false;await page.locator('#retry-map').click();await page.locator('#map path[data-code="1301"]').waitFor();
