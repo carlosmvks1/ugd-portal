@@ -47,7 +47,7 @@ export async function startExplorer(data,config,load){
  function select(code){expanded=false;state.territory=code;update(true);}
  function detail(){
   const t=find(state.territory);$('#detail').classList.toggle('selected',!!t);$('#detail').classList.toggle('expanded',expanded);
-  if(!t){$('#detail').innerHTML='<h2>Honduras</h2><p>Seleccione un departamento en el mapa o en la tabla para explorar sus municipios.</p>';return;}
+  if(!t){$('#detail').innerHTML='<div class="detail-empty"><span aria-hidden="true">HN</span><h2>Explore el territorio</h2><p>Seleccione un departamento para consultar su cobertura documentada, población publicada y fuentes.</p></div>';return;}
   const m=model(t.official_code),issues=data.data_quality_issues.filter(i=>!i.territory_id||i.territory_id===t.official_code||find(i.territory_id)?.parent_id===t.official_code);
   const sources=m.source_ids.map(id=>data.sources.find(s=>s.source_id===id)).filter(Boolean);
   const agreements=data.agreements.filter(a=>a.snapshot_id===state.snapshot&&m.rows.some(r=>r.agreement_ids.includes(a.agreement_id)));
