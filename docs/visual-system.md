@@ -2,61 +2,113 @@
 
 ## Dirección
 
-El portal adopta una estética de **inteligencia sanitaria pública**: sobria, clara, territorial y orientada a datos. No intenta parecer un sitio corporativo ni un dashboard administrativo genérico.
+El portal adopta una estética de **atlas institucional de gestión sanitaria**: sobria, territorial, orientada a datos y reconocible por su relación con la geografía hondureña.
+
+La complejidad visual debe surgir de relaciones reales —territorio, cobertura, convenios, gestores, fuentes y seguimiento— y no de decoración.
 
 Principios:
-- confianza institucional antes que decoración;
+- confianza institucional antes que espectáculo;
+- Honduras como firma gráfica recurrente;
+- mapa y territorio como protagonistas;
 - jerarquía tipográfica clara, no estridente;
-- mapa y datos como protagonistas;
 - controles progresivos: primero lo esencial, después lo avanzado;
+- procedencia del dato integrada en las fichas;
 - color como apoyo, nunca como única señal;
+- movimiento corto y funcional para comunicar profundidad territorial;
 - componentes reutilizables y accesibles;
-- diseño móvil con navegación completa;
-- ningún módulo se presenta como funcional si todavía depende de datos o validación de UGD.
+- diseño móvil con navegación completa.
+
+## Firma cartográfica
+
+La geometría oficial cargada por el portal se reutiliza en tres niveles:
+1. **Hero territorial**: mapa de Honduras como firma visual de baja opacidad.
+2. **Atlas principal**: exploración nacional, departamental y municipal.
+3. **Mapa de contexto**: miniatura nacional al profundizar en un departamento.
+
+No mantener SVG decorativos independientes cuando la cartografía del propio sistema puede generar la identidad.
 
 ## Tipografía
 
-El prototipo utiliza **Source Sans 3** como familia principal, con una pila de sistema como respaldo. La elección prioriza lectura prolongada, formularios, tablas, cifras e interfaces institucionales.
+El portal utiliza **Source Sans 3** como familia principal, con pila de sistema como respaldo.
 
 Reglas:
 - texto base cercano a 16–17 px;
-- títulos de sección contenidos, evitando escalas publicitarias;
-- pesos 600–700 para jerarquía; evitar 800–900 salvo casos excepcionales;
-- mayúsculas sostenidas solo en etiquetas cortas;
-- cifras KPI con peso fuerte, pero sin competir con el contenido territorial;
-- producción final: evaluar autoalojamiento de la fuente para evitar dependencia externa.
+- títulos de sección contenidos;
+- pesos 600–700 para jerarquía;
+- mayúsculas solo en metadatos breves;
+- cifras y códigos con numerales tabulares;
+- producción final: evaluar autoalojamiento o tipografía oficial SESAL.
 
-## Referentes
+## Atlas territorial
 
-La dirección toma patrones, no estilos literales, de:
-- NHS Digital Service Manual: claridad, confianza, inclusión y componentes accesibles;
-- UKHSA Data Dashboard: datos públicos, filtros, mapas, tooltips y descargas;
-- Health New Zealand: identidad unificada, lenguaje simple y consistencia transversal;
-- WHO Global Health Observatory: portales de datos con navegación por territorio/indicador;
-- U.S. Web Design System: design tokens, tipografía legible y color funcional.
+El mapa principal se presenta como una pieza editorial completa:
+- título territorial dinámico;
+- subtítulo estadístico;
+- período y fuente;
+- leyenda compacta;
+- cartografía central;
+- mapa nacional de contexto al entrar a nivel municipal;
+- ficha territorial integrada;
+- tabla equivalente para accesibilidad;
+- exportaciones contextuales.
+
+La transición nacional → departamento comunica profundidad de navegación; no debe sentirse como una animación ornamental.
+
+## Ficha territorial
+
+La ficha funciona como expediente institucional:
+- identidad territorial y código;
+- cobertura y población;
+- barra de proporción cuando aplica;
+- procedencia del dato: período, fuente y página;
+- alcance;
+- municipios y relaciones asociadas cuando existan.
+
+## Ecosistema UGD
+
+El modelo de gestión se representa como una red:
+**SESAL → convenios / gestores / financiamiento → redes / territorio / población → monitoreo → retroalimentación**.
+
+El diagrama debe conservar una lectura textual completa y usar SVG solo como capa de conexión decorativa.
+
+## Movimiento
+
+Permitido:
+- entrada de mapa 300–450 ms;
+- detalle 180–250 ms;
+- nodos del ecosistema al entrar en viewport;
+- hover de territorio 120–160 ms.
+
+No usar:
+- parallax pronunciado;
+- partículas;
+- glow persistente;
+- animación continua;
+- desplazamientos que no representen una relación de información.
+
+Todo movimiento respeta `prefers-reduced-motion`.
 
 ## Tokens principales
 
 - `--deep`: identidad institucional oscura.
-- `--brand`: acento turquesa para navegación, estados activos y acciones.
+- `--brand`: navegación, territorio activo y acciones.
 - `--brand-soft`: fondos de apoyo.
 - `--surface`: fondo general.
 - `--paper`: paneles y contenido.
-- `--warning`: avisos de calidad y provisionalidad.
-
-Los textos largos mantienen una medida limitada y los estados nunca dependen únicamente del color.
+- `--warning`: avisos de calidad cuando realmente correspondan.
 
 ## Estructura
 
 1. Franja institucional.
-2. Navegación principal, incluida navegación móvil accesible.
-3. Hero de alto contraste con indicadores integrados.
-4. Explorador territorial como pieza central.
-5. Filtros esenciales visibles y filtros avanzados progresivos.
-6. Modelo de gestión.
-7. Hoja de ruta de módulos institucionales.
-8. Footer con atribución institucional, sin crédito de autoría técnica.
+2. Navegación principal.
+3. Hero cartográfico con indicadores.
+4. Divisor territorial.
+5. Atlas UGD.
+6. Tabla y fuentes.
+7. Ecosistema de gestión.
+8. Arquitectura de información institucional.
+9. Footer.
 
-## Evolución
+## Criterio de evolución
 
-Gestores, Convenios, Documentos, Normativa y Monitoreo deben heredar este sistema visual. Hasta que cuenten con datos y validación institucional, se presentan como **hoja de ruta**, no como enlaces o funcionalidades terminadas.
+Cada nueva visualización debe responder al menos una pregunta institucional concreta. Si un efecto no mejora comprensión, jerarquía, navegación o identidad territorial, no pertenece al sistema.
