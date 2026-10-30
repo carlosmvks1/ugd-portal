@@ -6,12 +6,25 @@ El portal adopta una estética de **inteligencia sanitaria pública**: sobria, c
 
 Principios:
 - confianza institucional antes que decoración;
-- jerarquía tipográfica fuerte;
+- jerarquía tipográfica clara, no estridente;
 - mapa y datos como protagonistas;
-- controles compactos y comprensibles;
+- controles progresivos: primero lo esencial, después lo avanzado;
 - color como apoyo, nunca como única señal;
 - componentes reutilizables y accesibles;
-- diseño móvil desde el inicio.
+- diseño móvil con navegación completa;
+- ningún módulo se presenta como funcional si todavía depende de datos o validación de UGD.
+
+## Tipografía
+
+El prototipo utiliza **Source Sans 3** como familia principal, con una pila de sistema como respaldo. La elección prioriza lectura prolongada, formularios, tablas, cifras e interfaces institucionales.
+
+Reglas:
+- texto base cercano a 16–17 px;
+- títulos de sección contenidos, evitando escalas publicitarias;
+- pesos 600–700 para jerarquía; evitar 800–900 salvo casos excepcionales;
+- mayúsculas sostenidas solo en etiquetas cortas;
+- cifras KPI con peso fuerte, pero sin competir con el contenido territorial;
+- producción final: evaluar autoalojamiento de la fuente para evitar dependencia externa.
 
 ## Referentes
 
@@ -31,18 +44,19 @@ La dirección toma patrones, no estilos literales, de:
 - `--paper`: paneles y contenido.
 - `--warning`: avisos de calidad y provisionalidad.
 
-El contenido normal usa un mínimo efectivo cercano a 16–17 px. Los textos largos mantienen una medida limitada y los estados nunca dependen únicamente del color.
+Los textos largos mantienen una medida limitada y los estados nunca dependen únicamente del color.
 
 ## Estructura
 
 1. Franja institucional.
-2. Navegación principal.
+2. Navegación principal, incluida navegación móvil accesible.
 3. Hero de alto contraste con indicadores integrados.
 4. Explorador territorial como pieza central.
-5. Modelo de gestión.
-6. Módulos institucionales.
-7. Footer con atribución institucional, sin crédito de autoría técnica.
+5. Filtros esenciales visibles y filtros avanzados progresivos.
+6. Modelo de gestión.
+7. Hoja de ruta de módulos institucionales.
+8. Footer con atribución institucional, sin crédito de autoría técnica.
 
 ## Evolución
 
-Los módulos de Gestores, Convenios, Documentos, Normativa y Monitoreo deben heredar este sistema visual. Evitar crear estilos aislados por página.
+Gestores, Convenios, Documentos, Normativa y Monitoreo deben heredar este sistema visual. Hasta que cuenten con datos y validación institucional, se presentan como **hoja de ruta**, no como enlaces o funcionalidades terminadas.
