@@ -21,7 +21,12 @@ try{
  assert.deepEqual(errors,[],'Errores JavaScript durante la carga inicial');
  await page.locator('#map path[data-code]').first().waitFor();
  assert((await page.locator('#hero-title').innerText()).includes('Gestión descentralizada'));
- await page.waitForFunction(()=>document.querySelector('#kpi-agreements')?.textContent==='47');
+ await page.waitForFunction(()=>[
+   ['#kpi-agreements','47'],
+   ['#kpi-levels','40 / 7'],
+   ['#kpi-municipalities','89'],
+   ['#kpi-population','1,592,136']
+  ].every(([selector,value])=>document.querySelector(selector)?.textContent===value));
  assert.equal(await page.locator('#kpi-agreements').innerText(),'47');
  assert.equal(await page.locator('#kpi-levels').innerText(),'40 / 7');
  assert.equal(await page.locator('#kpi-municipalities').innerText(),'89');
