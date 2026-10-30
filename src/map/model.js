@@ -1,4 +1,4 @@
-export const labels={covered:'Con cobertura reportada',not_covered:'Sin cobertura reportada',unknown:'Sin dato',pending:'Con registro reportado'};
+export const labels={covered:'Con cobertura reportada',not_covered:'Sin cobertura reportada',unknown:'Sin dato'};
 export const normalize=s=>String(s??'').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase().trim();
 export function readState(search){
  const p=new URLSearchParams(search);
