@@ -1,6 +1,7 @@
 import {loadConfig,localUrl} from './config.js';
 import {renderHome} from './home.js';
 import {startExplorer} from './map/explorer.js';
+import {initPresentationPrototype} from './presentation.js';
 
 const status=document.querySelector('#status');
 
@@ -18,6 +19,7 @@ async function init(){
     const data=await load(localUrl(catalog.explorer,config.dataRoot));
     renderHome(data);
     await startExplorer(data,config,load);
+    initPresentationPrototype(data);
   }catch(error){
     status.textContent='No se pudo cargar la consulta territorial. Puede reintentar.';
     document.querySelector('#home-period').textContent='No se pudo cargar el consolidado.';
