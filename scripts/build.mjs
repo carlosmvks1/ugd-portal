@@ -9,6 +9,10 @@ await copyFile(new URL('index.html',root),new URL('dist/index.html',root));
 await cp(new URL('src/',root),new URL('dist/src/',root),{recursive:true,filter:path=>!path.endsWith('.md')});
 await cp(new URL('public/',root),new URL('dist/',root),{recursive:true});
 await copyFile(new URL('data/catalog.json',root),new URL('dist/data/catalog.json',root));
+if(catalog.explorer){
+ await mkdir(new URL('dist/data/explorer/',root),{recursive:true});
+ for(const file of ['archive.json','data_quality_issues.json']) await copyFile(new URL('data/explorer/'+file,root),new URL('dist/data/explorer/'+file,root));
+}
 for(const entry of catalog.snapshots) {
   const target=new URL('dist/data/'+entry.path,root);
   await mkdir(new URL('./',target),{recursive:true});

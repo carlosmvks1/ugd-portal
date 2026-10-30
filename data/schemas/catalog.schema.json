@@ -3,6 +3,7 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "explorer": {"const":"explorer/archive.json"},
     "schema_version": {
       "const": "1.0.0"
     },

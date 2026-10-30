@@ -1,6 +1,6 @@
 # UGD · Portal institucional
-Base inicial privada para desarrollar el portal UGD. Prototipo pendiente de aprobación institucional.
-Sin datos sensibles, cifras precargadas, cartografía ni despliegue público.
+Explorador territorial privado UGD. Prototipo pendiente de aprobación institucional.
+Integra el archivo histórico provisional SESAL 2024 y cartografía histórica SINIT/HDX recuperados del mapa previo. No acredita situación actual ni realiza despliegue público.
 
 ## Inicio
 Requiere Node.js 22+. No requiere instalar dependencias.
@@ -11,12 +11,12 @@ npm run build
 npm run preview
 ```
 Abrir http://127.0.0.1:4173. Para desarrollo: npm run dev.
-Frontend HTML/CSS/módulos ES preparado para incorporar componentes y un motor de mapa.
+Frontend HTML/CSS/módulos ES y mapa SVG sin dependencias externas. Hover, selección móvil, drill-down, búsqueda, filtros respaldados por datos, tabla accesible, enlaces compartibles y exportación municipal contextual.
 
 ## Estructura
 - src/: frontend, configuración de rutas y contrato del mapa.
-- data/: catálogo, JSON Schemas y futuros snapshots aprobados.
-- geography/: cartografía GeoJSON aprobada.
+- data/: catálogo, JSON Schemas, archivo histórico territorial y observaciones data_quality_issues.
+- geography/: cartografía GeoJSON histórica; carga municipal por departamento.
 - scripts/: validación, build y servidor local.
 - tests/: contratos, relaciones y portabilidad.
 - public/: configuración de ejecución y recursos publicables.
@@ -28,6 +28,7 @@ Frontend HTML/CSS/módulos ES preparado para incorporar componentes y un motor d
 - [Modelo de datos y publicación de cortes](docs/data-model.md)
 - [Preview y migración a SESAL](docs/deployment.md)
 - [Contrato del mapa](src/map/README.md)
+- [Explorador: evidencia, actualización, migración y pruebas](docs/territorial-explorer.md)
 
 ## Portabilidad y privacidad
 dist/ usa rutas relativas y config.json en ejecución, sin dominio ni prefijo GitHub codificado.

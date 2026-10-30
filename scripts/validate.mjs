@@ -2,6 +2,7 @@ import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import assert from 'node:assert/strict';
 import {validate} from './schema.mjs';
+import {validateExplorer} from './validate-explorer.mjs';
 export const root = new URL('../',import.meta.url);
 export const readJson = async path => JSON.parse(await readFile(new URL(path,root),'utf8'));
 export function validateRelations(s) {
@@ -28,6 +29,11 @@ export function validateRelations(s) {
 export async function validateData() {
   const catalog=await readJson('data/catalog.json');
   validate(catalog,await readJson('data/schemas/catalog.schema.json'));
+  if(catalog.explorer){
+    assert.equal(catalog.explorer,'explorer/archive.json');
+    const archive=validateExplorer(await readJson('data/'+catalog.explorer));
+    assert.deepEqual(archive.data_quality_issues,await readJson('data/explorer/data_quality_issues.json'));
+  }
   const ids=new Set();
   const schema=await readJson('data/schemas/snapshot.schema.json');
   for(const entry of catalog.snapshots) {

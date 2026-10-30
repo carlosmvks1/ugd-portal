@@ -1,0 +1,170 @@
+[
+  {
+    "issue_id": "Q001",
+    "status": "open",
+    "severity": "warning",
+    "detail": "La tabla departamental reporta 93 municipios; el texto reporta 89. No se reemplaza ninguno.",
+    "source_id": "sesal-2024",
+    "pages": [
+      90,
+      91
+    ]
+  },
+  {
+    "issue_id": "Q002",
+    "status": "open",
+    "severity": "warning",
+    "detail": "El total publicado 1,592,136 difiere de hombres + mujeres (1,592,135).",
+    "source_id": "sesal-2024",
+    "pages": [
+      90,
+      91
+    ]
+  },
+  {
+    "issue_id": "Q003",
+    "status": "open",
+    "severity": "warning",
+    "detail": "No hay padrón contractual con identificadores, vigencias y documentos de los 47 convenios. La tabla agregada no crea contratos individuales.",
+    "source_id": "sesal-2024",
+    "pages": [
+      90
+    ]
+  },
+  {
+    "issue_id": "Q004",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Geometría histórica SINIT distribuida por HDX (valid_on 2016-10-05), no certifica límites vigentes en 2024/2026. Simplificación visual de 0.00035 grados sin garantía topológica.",
+    "source_id": "sesal-2024",
+    "source_geometry": "hdx-sinit"
+  },
+  {
+    "issue_id": "POP-1307",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "1307",
+    "page": 92
+  },
+  {
+    "issue_id": "POP-1315",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "1315",
+    "page": 92
+  },
+  {
+    "issue_id": "POP-1613",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "1613",
+    "page": 92
+  },
+  {
+    "issue_id": "POP-1005",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "1005",
+    "page": 93
+  },
+  {
+    "issue_id": "POP-1210",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "1210",
+    "page": 93
+  },
+  {
+    "issue_id": "POP-1215",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "1215",
+    "page": 93
+  },
+  {
+    "issue_id": "POP-1219",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "1219",
+    "page": 93
+  },
+  {
+    "issue_id": "POP-1214",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "1214",
+    "page": 93
+  },
+  {
+    "issue_id": "POP-1207",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "1207",
+    "page": 93
+  },
+  {
+    "issue_id": "POP-0404",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "0404",
+    "page": 93
+  },
+  {
+    "issue_id": "POP-0321",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Población publicada difiere de suma por sexo; se conservan cifras originales.",
+    "source_id": "sesal-2024",
+    "territory_id": "0321",
+    "page": 93
+  },
+  {
+    "issue_id": "Q005",
+    "status": "open",
+    "severity": "warning",
+    "detail": "Gestores transcritos como etiquetas originales; celdas combinadas no se propagan automáticamente. Identidad jurídica y relaciones pendientes de UGD.",
+    "source_id": "sesal-2024",
+    "pages": [
+      92,
+      93
+    ]
+  },
+  {
+    "issue_id": "Q006",
+    "status": "open",
+    "severity": "warning",
+    "source_id": "sesal-2024",
+    "detail": "Las filas municipales suman 798,169 hombres y 793,976 mujeres; los totales publicados son 798,164 y 793,971. La población municipal sí suma 1,592,136.",
+    "pages": [
+      92,
+      93
+    ]
+  },
+  {
+    "issue_id": "Q007",
+    "status": "open",
+    "severity": "warning",
+    "source_id": "hdx-sinit",
+    "detail": "Equivalencias provisionales de nomenclatura: Cabana (0402) / Cabañas; Gualcince (1306) / Gualcinse; San Marcos de Sierra (1013) / San Marcos de la Sierra; San Manuel Colohete (1319) / San Manuel. Revisar con padrón INE/UGD antes de certificación."
+  }
+]
