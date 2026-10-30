@@ -16,7 +16,14 @@ await page.route(base+'**',async route=>{
  try{await route.fulfill({status:200,contentType:({'.html':'text/html','.js':'text/javascript','.json':'application/json','.geojson':'application/json','.css':'text/css'})[extname(file)],body:await readFile(file)});}catch{await route.fulfill({status:404,body:'Not found'});}
 });
 try{
- await page.goto(base);await page.locator('#map path[data-code]').first().waitFor();
+ await page.goto(base);
+ await page.locator('#map path[data-code]').first().waitFor();
+ assert((await page.locator('#hero-title').innerText()).includes('Información pública'));
+ assert.equal(await page.locator('#kpi-agreements').innerText(),'47');
+ assert.equal(await page.locator('#kpi-levels').innerText(),'40 / 7');
+ assert.equal(await page.locator('#kpi-municipalities').innerText(),'89');
+ assert((await page.locator('#home-period').innerText()).includes('2024'));
+ assert((await page.locator('#home-period').innerText()).includes('No acredita situación actual'));
  assert.equal(await page.locator('#map path[data-code]').count(),18);
  assert(!requests.some(p=>p.includes('municipios-')),'Carga municipal prematura');
  assert(await page.locator('#manager').isDisabled());assert(await page.locator('#agreement').isDisabled());
@@ -34,10 +41,10 @@ try{
  await page.setViewportSize({width:390,height:844});assert.equal(await page.locator('#detail').evaluate(el=>getComputedStyle(el).position),'fixed');
  await page.locator('#expand').click();assert(await page.locator('#detail').evaluate(el=>el.classList.contains('expanded')));
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Desbordamiento horizontal');
- if(process.env.SCREENSHOT_DIR){await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'explorador-mobile.png')});await page.setViewportSize({width:1280,height:900});await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'explorador-desktop.png')});}
+ if(process.env.SCREENSHOT_DIR){await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile.png'),fullPage:true});await page.setViewportSize({width:1280,height:900});await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop.png'),fullPage:true});}
  await page.goto(base+'?year=2026&territory=1301');await page.locator('#map path[data-code="1301"]').waitFor();assert((await page.locator('#status').innerText()).includes('Sin datos publicados'));assert(await page.locator('#csv').isDisabled());assert(!(await page.locator('#detail').innerText()).includes('62,863'));
  failGeometry=true;await page.goto(base+'?year=2024&territory=13');await page.locator('#retry-map').waitFor();assert.equal(await page.locator('#table tbody tr').count(),28);
  failGeometry=false;await page.locator('#retry-map').click();await page.locator('#map path[data-code="1301"]').waitFor();
  await page.locator('#home').click();await page.locator('#map path[data-code="13"]').waitFor();await page.locator('#map path[data-code="13"]').focus();await page.keyboard.press('Enter');await page.locator('#map path[data-code="1301"]').waitFor();await page.locator('#map path[data-code="1301"]').focus();await page.keyboard.press('Escape');await page.locator('#map path[data-code="13"]').waitFor();
- assert.deepEqual(errors,[]);console.log('Navegador: hover, drill-down, teclado, búsqueda, filtros, URL, histórico, descarga, móvil, carga progresiva y recuperación: OK');
+ assert.deepEqual(errors,[]);console.log('Navegador: home, KPIs, hover, drill-down, teclado, búsqueda, filtros, URL, histórico, descarga, móvil, carga progresiva y recuperación: OK');
 }finally{await browser.close();}
