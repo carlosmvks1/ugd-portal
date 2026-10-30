@@ -78,6 +78,8 @@ export function renderHome(data){
   }
 
   const i=snapshot.indicators||{};
+  const snapshotBadge=document.querySelector('#kpi-snapshot-year');
+  if(snapshotBadge)snapshotBadge.textContent=String(snapshot.year);
   const agreements=document.querySelector('#kpi-agreements');
   const levels=document.querySelector('#kpi-levels');
   const municipalities=document.querySelector('#kpi-municipalities');
