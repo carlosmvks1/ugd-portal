@@ -32,7 +32,7 @@ export async function startExplorer(data,config,load){
    const max=Math.max(1,...visibleTerritories(data,state).map(t=>territoryModel(data,state,t).population??0));
    return m.population/max<.33?'#a4d4d8':m.population/max<.66?'#419ea8':'#006571';
   }
-  return {covered:'#006571',not_covered:'#dce6eb',pending:'url(#pending)'}[m.status];
+  return {covered:'#006571',not_covered:'#dce6eb'}[m.status];
  }
  function showPreview(code,el){
   const tip=$('#tooltip');tip.innerHTML=summary(model(code));tip.hidden=false;
