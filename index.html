@@ -12,169 +12,231 @@
 <a href="#cobertura" class="skip">Ir al explorador territorial</a>
 <a href="#table" class="skip skip-secondary">Ir a la tabla territorial</a>
 
-<header class="site-header">
-  <div class="brand">
-    <span class="brand-kicker">Secretaría de Salud de Honduras</span>
-    <strong>Unidad de Gestión Descentralizada</strong>
+<div class="gov-strip">
+  <div class="shell gov-strip-inner">
+    <span>Secretaría de Salud de Honduras</span>
+    <span>Información pública institucional</span>
   </div>
-  <nav class="site-nav" aria-label="Navegación de UGD">
-    <a href="#inicio">Inicio</a>
-    <a href="#cobertura">Cobertura</a>
-    <a href="#modelo">Modelo</a>
-    <a href="#calidad">Fuentes</a>
-  </nav>
-  <span class="prototype-badge">Prototipo · revisión pendiente</span>
+</div>
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href="#inicio" aria-label="Unidad de Gestión Descentralizada, inicio">
+      <span class="brand-mark" aria-hidden="true">UGD</span>
+      <span class="brand-copy">
+        <strong>Unidad de Gestión Descentralizada</strong>
+        <small>Gestión territorial de servicios de salud</small>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="Navegación de UGD">
+      <a href="#cobertura">Cobertura</a>
+      <a href="#modelo">Modelo de gestión</a>
+      <a href="#modulos">Información</a>
+      <a href="#calidad">Fuentes</a>
+    </nav>
+
+    <span class="prototype-badge">Prototipo institucional</span>
+  </div>
 </header>
 
 <main>
   <section id="inicio" class="hero" aria-labelledby="hero-title">
-    <div class="hero-copy">
-      <p class="eyebrow">Gestión descentralizada de servicios de salud</p>
-      <h1 id="hero-title">Información pública, territorio y resultados en un solo lugar.</h1>
-      <p class="hero-lead">Explore el alcance territorial de la gestión descentralizada y consulte sus datos con período, fuente y estado de verificación visibles.</p>
-      <div class="hero-actions">
-        <a class="button-link primary" href="#cobertura">Explorar cobertura</a>
-        <a class="button-link" href="#modelo">Cómo funciona</a>
-      </div>
-      <p id="home-period" class="data-period" role="status">Cargando último consolidado disponible…</p>
-    </div>
+    <div class="shell hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow eyebrow-light">Gestión descentralizada de servicios de salud</p>
+        <h1 id="hero-title">Gestión descentralizada, visible en el territorio.</h1>
+        <p class="hero-lead">Un punto de acceso para comprender dónde opera el modelo, consultar sus datos públicos y seguir su evolución con fuentes y períodos claramente identificados.</p>
 
-    <div class="kpi-grid" aria-label="Indicadores del último consolidado cargado">
-      <article class="kpi-card">
-        <span class="kpi-label">Convenios</span>
-        <strong id="kpi-agreements" class="kpi-value">—</strong>
-        <small>Total reportado en el período</small>
-      </article>
-      <article class="kpi-card">
-        <span class="kpi-label">Nivel I / II</span>
-        <strong id="kpi-levels" class="kpi-value">—</strong>
-        <small>Convenios por nivel de atención</small>
-      </article>
-      <article class="kpi-card">
-        <span class="kpi-label">Municipios</span>
-        <strong id="kpi-municipalities" class="kpi-value">—</strong>
-        <small id="kpi-municipalities-note">Cifra narrativa del informe</small>
-      </article>
-      <article class="kpi-card">
-        <span class="kpi-label">Población</span>
-        <strong id="kpi-population" class="kpi-value">—</strong>
-        <small>Población reportada en primer nivel</small>
-      </article>
-    </div>
-  </section>
-
-  <section id="cobertura" class="section-block" aria-labelledby="coverage-title">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">Cobertura territorial</p>
-        <h2 id="coverage-title">Explore Honduras por departamento y municipio</h2>
-      </div>
-      <p>El mapa y la tabla usan exactamente el mismo período, filtros y fuentes. Una ausencia documental se muestra como <strong>sin dato</strong>, no como cero.</p>
-    </div>
-
-    <p id="status" class="status-banner" role="status">Consultando fuentes…</p>
-
-    <section id="explorer" hidden aria-label="Consulta territorial">
-      <div class="filters">
-        <label>Año<select id="year"></select></label>
-        <label>Versión<select id="snapshot"></select></label>
-        <label>Nivel de atención<select id="care"></select></label>
-        <label>Tipo de gestor<select id="manager"></select></label>
-        <label>Estado del convenio<select id="agreement"></select></label>
-        <label>Mostrar<select id="layer"><option value="status">Estado del dato</option><option value="proportion">Proporción municipal reportada</option><option value="population">Población municipal publicada</option></select></label>
-      </div>
-      <p id="filter-note">Los filtros sin respaldo documental permanecen deshabilitados.</p>
-
-      <div class="search-block">
-        <label for="search">Buscar departamento o municipio</label>
-        <input id="search" type="search" placeholder="Nombre o código territorial" autocomplete="off" aria-controls="results">
-        <ul id="results" aria-label="Resultados de búsqueda"></ul>
-      </div>
-
-      <nav id="breadcrumbs" aria-label="Ubicación territorial"></nav>
-
-      <div class="workspace">
-        <section class="map-area" aria-label="Mapa territorial">
-          <p id="map-status" role="status"></p>
-          <div class="map-wrap">
-            <svg id="map" role="group" aria-label="Territorios; use Tab o flechas, Enter para seleccionar y Escape para volver"></svg>
-            <div id="tooltip" role="tooltip" hidden></div>
-          </div>
-          <p id="legend"></p>
-          <p class="muted">La presencia en una tabla no acredita cobertura de toda la población. Las ausencias significan sin dato.</p>
-        </section>
-        <aside id="detail" aria-label="Detalle del territorio"><p>Seleccione un territorio para consultar su ficha.</p></aside>
-      </div>
-
-      <div class="actions">
-        <button id="home">Volver a Honduras</button>
-        <button id="share">Copiar enlace</button>
-        <button id="csv">Descargar CSV</button>
-        <button id="json">Descargar JSON</button>
-      </div>
-
-      <section class="data-table-section" aria-labelledby="table-title">
-        <h3 id="table-title">Tabla territorial accesible</h3>
-        <p>Alternativa equivalente al mapa para consulta, teclado y tecnologías de asistencia.</p>
-        <div class="table-wrap">
-          <table id="table">
-            <caption id="caption"></caption>
-            <thead><tr><th scope="col">Territorio</th><th scope="col">Estado</th><th scope="col">Municipios reportados / total</th><th scope="col">Población publicada</th><th scope="col">Fuente y período</th></tr></thead>
-            <tbody></tbody>
-          </table>
+        <div class="hero-actions">
+          <a class="button-link button-primary" href="#cobertura">Explorar el territorio</a>
+          <a class="button-link button-ghost" href="#modelo">Conocer el modelo</a>
         </div>
-      </section>
 
-      <section id="calidad" class="quality-section" aria-labelledby="quality-title">
-        <h3 id="quality-title">Fuentes y calidad del dato</h3>
-        <div id="sources"></div>
-        <details><summary id="issuecount">Observaciones</summary><ul id="issues"></ul></details>
-      </section>
-    </section>
-    <button id="retry" hidden>Reintentar carga</button>
+        <p id="home-period" class="data-period" role="status">Cargando último consolidado disponible…</p>
+      </div>
+
+      <aside class="kpi-panel" aria-label="Indicadores del último consolidado cargado">
+        <div class="kpi-panel-head">
+          <span>Último consolidado disponible</span>
+          <span class="live-dot" aria-hidden="true"></span>
+        </div>
+
+        <div class="kpi-grid">
+          <article class="kpi-item">
+            <span class="kpi-label">Convenios</span>
+            <strong id="kpi-agreements" class="kpi-value">—</strong>
+            <small>Total reportado</small>
+          </article>
+          <article class="kpi-item">
+            <span class="kpi-label">Nivel I / II</span>
+            <strong id="kpi-levels" class="kpi-value">—</strong>
+            <small>Distribución por nivel</small>
+          </article>
+          <article class="kpi-item">
+            <span class="kpi-label">Municipios</span>
+            <strong id="kpi-municipalities" class="kpi-value">—</strong>
+            <small id="kpi-municipalities-note">Cifra narrativa del informe</small>
+          </article>
+          <article class="kpi-item">
+            <span class="kpi-label">Población</span>
+            <strong id="kpi-population" class="kpi-value">—</strong>
+            <small>Primer nivel reportado</small>
+          </article>
+        </div>
+      </aside>
+    </div>
   </section>
 
-  <section id="modelo" class="section-block model-section" aria-labelledby="model-title">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">Modelo de gestión</p>
-        <h2 id="model-title">Cómo se articula la gestión descentralizada</h2>
+  <section id="cobertura" class="coverage-section" aria-labelledby="coverage-title">
+    <div class="shell">
+      <div class="section-heading section-heading-large">
+        <div>
+          <p class="eyebrow">Explorador territorial</p>
+          <h2 id="coverage-title">Honduras, departamento por departamento.</h2>
+        </div>
+        <p>Consulte cobertura reportada, período, fuente y estado de verificación. El mapa nunca interpreta una ausencia documental como cero.</p>
       </div>
-      <p>Esta vista resume la relación funcional que el portal deberá documentar con convenios, gestores, cobertura, monitoreo y resultados.</p>
-    </div>
 
-    <div class="process-grid" aria-label="Flujo general de gestión descentralizada">
-      <article><span>1</span><h3>SESAL</h3><p>Define lineamientos, convenios, financiamiento, metas y mecanismos de seguimiento.</p></article>
-      <article><span>2</span><h3>Gestores</h3><p>Organizaciones responsables de ejecutar la prestación convenida según el alcance definido.</p></article>
-      <article><span>3</span><h3>Servicios</h3><p>Redes y establecimientos brindan atención a la población dentro del territorio correspondiente.</p></article>
-      <article><span>4</span><h3>Monitoreo</h3><p>Indicadores, evaluación y documentación permiten verificar resultados y cumplimiento.</p></article>
+      <p id="status" class="status-banner" role="status">Consultando fuentes…</p>
+
+      <section id="explorer" hidden aria-label="Consulta territorial">
+        <div class="explorer-controls">
+          <div class="filters">
+            <label>Año<select id="year"></select></label>
+            <label>Versión<select id="snapshot"></select></label>
+            <label>Nivel de atención<select id="care"></select></label>
+            <label>Tipo de gestor<select id="manager"></select></label>
+            <label>Estado del convenio<select id="agreement"></select></label>
+            <label>Visualización<select id="layer"><option value="status">Estado del dato</option><option value="proportion">Proporción municipal reportada</option><option value="population">Población municipal publicada</option></select></label>
+          </div>
+
+          <div class="search-row">
+            <div class="search-block">
+              <label for="search">Buscar territorio</label>
+              <input id="search" type="search" placeholder="Departamento, municipio o código" autocomplete="off" aria-controls="results">
+              <ul id="results" aria-label="Resultados de búsqueda"></ul>
+            </div>
+            <p id="filter-note">Los filtros sin respaldo documental permanecen deshabilitados.</p>
+          </div>
+        </div>
+
+        <nav id="breadcrumbs" aria-label="Ubicación territorial"></nav>
+
+        <div class="workspace">
+          <section class="map-area" aria-label="Mapa territorial">
+            <div class="map-toolbar">
+              <p id="map-status" role="status"></p>
+              <p class="map-hint">Hover en escritorio · toque en móvil</p>
+            </div>
+            <div class="map-wrap">
+              <svg id="map" role="group" aria-label="Territorios; use Tab o flechas, Enter para seleccionar y Escape para volver"></svg>
+              <div id="tooltip" role="tooltip" hidden></div>
+            </div>
+            <div class="map-footer">
+              <p id="legend"></p>
+              <p class="muted">La presencia en una tabla no acredita cobertura de toda la población.</p>
+            </div>
+          </section>
+
+          <aside id="detail" aria-label="Detalle del territorio">
+            <p>Seleccione un territorio para consultar su ficha.</p>
+          </aside>
+        </div>
+
+        <div class="actions">
+          <button id="home">Volver a Honduras</button>
+          <button id="share">Copiar enlace</button>
+          <button id="csv">Descargar CSV</button>
+          <button id="json">Descargar JSON</button>
+        </div>
+
+        <details class="data-drawer">
+          <summary>
+            <span>Tabla territorial accesible</span>
+            <small>Ver los mismos datos del mapa en formato tabular</small>
+          </summary>
+          <section class="data-table-section" aria-labelledby="table-title">
+            <h3 id="table-title">Tabla territorial accesible</h3>
+            <p>Alternativa equivalente al mapa para consulta, teclado y tecnologías de asistencia.</p>
+            <div class="table-wrap">
+              <table id="table">
+                <caption id="caption"></caption>
+                <thead><tr><th scope="col">Territorio</th><th scope="col">Estado</th><th scope="col">Municipios reportados / total</th><th scope="col">Población publicada</th><th scope="col">Fuente y período</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+        </details>
+
+        <details id="calidad" class="data-drawer quality-drawer">
+          <summary>
+            <span>Fuentes y calidad del dato</span>
+            <small>Metadatos, procedencia e inconsistencias registradas</small>
+          </summary>
+          <section class="quality-section" aria-labelledby="quality-title">
+            <h3 id="quality-title">Fuentes y calidad del dato</h3>
+            <div id="sources"></div>
+            <details><summary id="issuecount">Observaciones</summary><ul id="issues"></ul></details>
+          </section>
+        </details>
+      </section>
+
+      <button id="retry" hidden>Reintentar carga</button>
     </div>
   </section>
 
-  <section class="section-block roadmap-section" aria-labelledby="roadmap-title">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">Arquitectura del portal</p>
-        <h2 id="roadmap-title">Una sola fuente de datos para múltiples consultas</h2>
+  <section id="modelo" class="model-section section-dark" aria-labelledby="model-title">
+    <div class="shell">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow eyebrow-light">Modelo de gestión</p>
+          <h2 id="model-title">Del convenio al territorio.</h2>
+        </div>
+        <p>El portal debe hacer visible la cadena completa de la gestión descentralizada sin convertirla en burocracia difícil de leer.</p>
       </div>
-      <p>Los módulos futuros compartirán el mismo modelo de datos para evitar duplicaciones y cifras inconsistentes.</p>
+
+      <ol class="process-list" aria-label="Flujo general de gestión descentralizada">
+        <li><span>01</span><div><h3>Rectoría</h3><p>SESAL define lineamientos, convenios, financiamiento y metas.</p></div></li>
+        <li><span>02</span><div><h3>Gestión</h3><p>Los gestores ejecutan la prestación conforme al alcance convenido.</p></div></li>
+        <li><span>03</span><div><h3>Servicios</h3><p>Redes y establecimientos atienden a la población en el territorio.</p></div></li>
+        <li><span>04</span><div><h3>Seguimiento</h3><p>Indicadores y evaluación documentan cumplimiento y resultados.</p></div></li>
+      </ol>
     </div>
-    <div class="module-grid">
-      <article><h3>Gestores</h3><p>Ficha institucional, territorios y relaciones confirmadas.</p></article>
-      <article><h3>Convenios</h3><p>Vigencia, nivel, territorio, documentos y trazabilidad.</p></article>
-      <article><h3>Documentos</h3><p>Repositorio estructurado por tipo, período, tema y fuente.</p></article>
-      <article><h3>Normativa</h3><p>Marco jurídico con vigencia, relaciones y documentos oficiales.</p></article>
-      <article><h3>Monitoreo</h3><p>Instrumentos, indicadores públicos e informes autorizados.</p></article>
+  </section>
+
+  <section id="modulos" class="modules-section" aria-labelledby="modules-title">
+    <div class="shell">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Información institucional</p>
+          <h2 id="modules-title">Una estructura pensada para consultar, no para perderse.</h2>
+        </div>
+        <p>Los próximos módulos reutilizarán el mismo modelo de datos para mantener coherencia entre cifras, documentos y territorios.</p>
+      </div>
+
+      <div class="module-list">
+        <article><span class="module-index">01</span><div><h3>Gestores</h3><p>Organizaciones, territorios, nivel de atención y relaciones confirmadas.</p></div><span aria-hidden="true">→</span></article>
+        <article><span class="module-index">02</span><div><h3>Convenios</h3><p>Vigencia, alcance, territorio, documentos y trazabilidad.</p></div><span aria-hidden="true">→</span></article>
+        <article><span class="module-index">03</span><div><h3>Documentos</h3><p>Repositorio por tipo, período, tema y fuente oficial.</p></div><span aria-hidden="true">→</span></article>
+        <article><span class="module-index">04</span><div><h3>Normativa</h3><p>Marco jurídico, vigencia, relaciones y documentos oficiales.</p></div><span aria-hidden="true">→</span></article>
+        <article><span class="module-index">05</span><div><h3>Monitoreo</h3><p>Indicadores públicos, instrumentos e informes autorizados.</p></div><span aria-hidden="true">→</span></article>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="site-footer">
-  <div>
-    <strong>Unidad de Gestión Descentralizada</strong>
-    <p>Secretaría de Salud de Honduras · Prototipo técnico no publicado.</p>
+  <div class="shell footer-inner">
+    <div>
+      <strong>Unidad de Gestión Descentralizada</strong>
+      <p>Secretaría de Salud de Honduras</p>
+    </div>
+    <div class="footer-meta">
+      <span>Prototipo técnico no publicado</span>
+      <span>Datos con fuente, período y estado de verificación</span>
+    </div>
   </div>
-  <p>Los datos mostrados conservan su fuente, período y estado de verificación.</p>
 </footer>
 
 <script type="module" src="./src/main.js"></script>

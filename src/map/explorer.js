@@ -52,7 +52,26 @@ export async function startExplorer(data,config,load){
   const sources=m.source_ids.map(id=>data.sources.find(s=>s.source_id===id)).filter(Boolean);
   const agreements=data.agreements.filter(a=>a.snapshot_id===state.snapshot&&m.rows.some(r=>r.agreement_ids.includes(a.agreement_id)));
   const explicit=m.rows.filter(r=>r.coverage_status!=='unknown');
-  $('#detail').innerHTML=`<div class="panel-heading"><h2>${esc(t.name)}</h2><button id="close-detail" aria-label="Cerrar selección">Cerrar</button></div><p>${esc(labels[m.status])} · ${esc(period())}</p><button id="expand" aria-expanded="${expanded}">${expanded?'Reducir ficha':'Ampliar ficha'}</button><div class="panel-content"><dl><dt>Código</dt><dd>${esc(t.official_code)}</dd><dt>Municipios reportados</dt><dd>${m.aggregate?`${fmt(m.covered)} / ${fmt(m.total)} · ${(m.proportion*100).toFixed(1)}% de municipios`:'Sin agregado aplicable a estos filtros'}</dd><dt>Población publicada</dt><dd>${fmt(m.population)}</dd><dt>Alcance y fuente por registro</dt><dd>${explicit.length?(t.type==='department'?fmt(explicit.length)+' registros municipales explícitos. ':'')+(t.type==='department'?explicit.filter(r=>r.scope_note):explicit).map(r=>`${esc(find(r.territory_id)?.name)} · ${esc(r.care_level)} · ${esc(r.scope_note||'Reportado; no acredita cobertura poblacional completa')} · página ${esc(r.source_page)} · ${esc(verificationLabel(r.verification_status))}`).join('<br>'):'Sin registro municipal explícito'}</dd><dt>Gestor / convenio confirmado</dt><dd>${agreements.length?'Ver relaciones abajo':'Sin padrón contractual confirmado'}</dd><dt>Corte exacto</dt><dd>${esc(snapshot()?.cutoff_date||snapshot()?.cutoff_note||'Sin dato')}</dd><dt>Fuente</dt><dd>${sources.map(s=>`<a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join('<br>')||'Sin registro disponible'}</dd></dl><p>${issues.length} observaciones aplicables; consultar Fuentes y calidad.</p>${t.type==='department'?'<h3>Municipios</h3><div class="municipality-links">'+data.territories.filter(x=>x.parent_id===t.official_code).map(x=>`<button data-territory="${esc(x.official_code)}">${esc(x.name)}</button>`).join('')+'</div>':''}${agreements.map(a=>`<h3>${esc(a.agreement_id)}</h3>`+m.rows.filter(r=>r.agreement_ids.includes(a.agreement_id)).map(r=>`<button data-territory="${esc(r.territory_id)}">${esc(find(r.territory_id)?.name)}</button>`).join('')).join('')}</div>`;
+  const coverageText=m.aggregate?fmt(m.covered)+' / '+fmt(m.total):'—';
+  const coveragePercent=m.aggregate&&m.proportion!=null?(m.proportion*100).toFixed(1)+'%':'—';
+  const populationText=fmt(m.population);
+  const recordDetail=explicit.length?(t.type==='department'?fmt(explicit.length)+' registros municipales explícitos. ':'')+(t.type==='department'?explicit.filter(r=>r.scope_note):explicit).map(r=>`${esc(find(r.territory_id)?.name)} · ${esc(r.care_level)} · ${esc(r.scope_note||'Reportado; no acredita cobertura poblacional completa')} · página ${esc(r.source_page)} · ${esc(verificationLabel(r.verification_status))}`).join('<br>'):'Sin registro municipal explícito';
+  $('#detail').innerHTML=`<div class="panel-heading"><div><p class="detail-kicker">${esc(t.type==='department'?'Departamento':'Municipio')} · código ${esc(t.official_code)}</p><h2>${esc(t.name)}</h2></div><button id="close-detail" aria-label="Cerrar selección">Cerrar</button></div>
+  <p class="detail-status"><span class="detail-status-dot" aria-hidden="true"></span>${esc(labels[m.status])} · ${esc(period())}</p>
+  <div class="detail-metrics">
+    <div><span>Municipios</span><strong>${coverageText}</strong><small>${m.aggregate?'reportados / total':'No aplica'}</small></div>
+    <div><span>Proporción</span><strong>${coveragePercent}</strong><small>${m.aggregate?'del total municipal':'No aplica'}</small></div>
+    <div><span>Población</span><strong>${populationText}</strong><small>publicada</small></div>
+  </div>
+  <button id="expand" aria-expanded="${expanded}">${expanded?'Reducir ficha':'Ver ficha completa'}</button>
+  <div class="panel-content">
+    <div class="detail-section"><h3>Alcance documentado</h3><p>${recordDetail}</p></div>
+    <div class="detail-section"><h3>Gestor / convenio</h3><p>${agreements.length?'Relaciones confirmadas disponibles abajo.':'Sin padrón contractual confirmado para este corte.'}</p></div>
+    <div class="detail-section"><h3>Corte y fuente</h3><p>${esc(snapshot()?.cutoff_date||snapshot()?.cutoff_note||'Sin dato')}</p><p>${sources.map(s=>`<a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join('<br>')||'Sin registro disponible'}</p></div>
+    <p class="detail-quality">${issues.length} observaciones de calidad aplicables.</p>
+    ${t.type==='department'?'<div class="detail-section"><h3>Municipios</h3><div class="municipality-links">'+data.territories.filter(x=>x.parent_id===t.official_code).map(x=>`<button data-territory="${esc(x.official_code)}">${esc(x.name)}</button>`).join('')+'</div></div>':''}
+    ${agreements.map(a=>`<div class="detail-section"><h3>${esc(a.agreement_id)}</h3>`+m.rows.filter(r=>r.agreement_ids.includes(a.agreement_id)).map(r=>`<button data-territory="${esc(r.territory_id)}">${esc(find(r.territory_id)?.name)}</button>`).join('')+'</div>').join('')}
+  </div>`;
   $('#close-detail').onclick=()=>{select(t.type==='municipality'?t.parent_id:'');$('#home').focus();};
   $('#expand').onclick=()=>{expanded=!expanded;detail();$('#expand').focus();};bindSelection($('#detail'));
  }
