@@ -35,12 +35,18 @@ try{
  assert((await page.locator('.kpi-item').first().getAttribute('aria-label')).includes('47'));
  assert((await page.locator('#home-period').innerText()).includes('2024'));
  assert.equal(await page.locator('#kpi-snapshot-year').innerText(),'2024');
+ await page.waitForFunction(()=>document.querySelectorAll('#hero-map-signature path[data-signature-code]').length===18);
+ assert.equal(await page.locator('#hero-map-signature path[data-signature-code]').count(),18);
+ assert((await page.locator('#hero-territory-count').innerText()).includes('18 departamentos'));
+ assert((await page.locator('#atlas-title').innerText()).includes('Honduras'));
+ assert.equal(await page.locator('.ecosystem-node').count(),8);
+ assert.equal(await page.locator('.information-orbit article').count(),6);
  assert.equal(await page.locator('.advanced-filters').getAttribute('open'),null);
  assert.equal(await page.locator('#manager').isDisabled(),true);
  assert.equal(await page.locator('#agreement').isDisabled(),true);
  assert(!(await page.locator('body').innerText()).match(/prototipo|en desarrollo|pendiente de verificación|pendiente de validación|requiere padrón|no acredita situación actual/i));
- assert((await page.locator('.module-list').innerText()).includes('Gestores'));
- assert((await page.locator('.module-list').innerText()).includes('Monitoreo'));
+ assert((await page.locator('.information-orbit').innerText()).includes('Gestores'));
+ assert((await page.locator('.information-orbit').innerText()).includes('Monitoreo'));
  if(process.env.SCREENSHOT_DIR){
   await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});
   await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-home.png'),fullPage:true});
@@ -62,6 +68,11 @@ try{
  const before=await page.locator('#tooltip').boundingBox();await page.mouse.move(before.x+5,before.y+5);const after=await page.locator('#tooltip').boundingBox();assert.equal(before.x,after.x);
  await page.locator('#map path[data-code="13"]').click();await page.locator('#map path[data-code="1301"]').waitFor();assert.equal(await page.locator('#map path[data-code]').count(),28);
  assert.equal(await page.locator('#detail h2').innerText(),'Lempira');
+ assert.equal(await page.locator('#atlas-title').innerText(),'Lempira');
+ assert((await page.locator('#atlas-subtitle').innerText()).includes('28 de 28'));
+ assert.equal(await page.locator('#context-map-wrap').isVisible(),true);
+ assert.equal(await page.locator('#context-map path.context-selected').count(),1);
+ assert(/período/i.test(await page.locator('.provenance-rail').innerText()));
  assert(!(await page.locator('#detail').innerText()).match(/pendiente de verificación|pendiente de validación|no acredita/i));
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('28 / 28'));
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('100.0%'));
@@ -89,5 +100,5 @@ try{
  failGeometry=true;await page.goto(base+'?year=2024&territory=13');await page.locator('#retry-map').waitFor();assert.equal(await page.locator('#table tbody tr').count(),28);
  failGeometry=false;await page.locator('#retry-map').click();await page.locator('#map path[data-code="1301"]').waitFor();
  await page.locator('#home').click();await page.locator('#map path[data-code="13"]').waitFor();await page.locator('#map path[data-code="13"]').focus();await page.keyboard.press('Enter');await page.locator('#map path[data-code="1301"]').waitFor();await page.locator('#map path[data-code="1301"]').focus();await page.keyboard.press('Escape');await page.locator('#map path[data-code="13"]').waitFor();
- assert.deepEqual(errors,[]);console.log('Navegador: home, navegación móvil, KPIs, hover, drill-down, teclado, búsqueda, filtros, URL, histórico, descarga, móvil, carga progresiva y recuperación: OK');
+ assert.deepEqual(errors,[]);console.log('Navegador: firma territorial, Atlas UGD, contexto nacional, ficha de procedencia, ecosistema, móvil, KPIs, drill-down, teclado, filtros, URL, descarga y recuperación: OK');
 }finally{await browser.close();}
