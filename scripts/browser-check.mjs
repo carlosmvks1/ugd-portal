@@ -45,8 +45,8 @@ try{
  assert.equal(await page.locator('#manager').isDisabled(),true);
  assert.equal(await page.locator('#agreement').isDisabled(),true);
  assert(!(await page.locator('body').innerText()).match(/prototipo|en desarrollo|pendiente de verificación|pendiente de validación|requiere padrón|no acredita situación actual/i));
- assert((await page.locator('.module-list').innerText()).includes('Gestores'));
- assert((await page.locator('.module-list').innerText()).includes('Monitoreo'));
+ assert((await page.locator('.information-orbit').innerText()).includes('Gestores'));
+ assert((await page.locator('.information-orbit').innerText()).includes('Monitoreo'));
  if(process.env.SCREENSHOT_DIR){
   await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});
   await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-home.png'),fullPage:true});
