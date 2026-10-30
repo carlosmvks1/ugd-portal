@@ -43,31 +43,59 @@ export async function startExplorer(data,config,load){
  function hidePreview(){$('#tooltip').hidden=true;$('#map').querySelectorAll('[aria-describedby]').forEach(el=>el.removeAttribute('aria-describedby'));}
  function bindSelection(root){root.querySelectorAll('[data-territory]').forEach(el=>el.onclick=e=>{select(el.dataset.territory);if(e.detail===0){const heading=$('#detail h2');heading?.setAttribute('tabindex','-1');heading?.focus();}});}
  function select(code){expanded=false;state.territory=code;update(true);}
+ function atlasMeta(){
+  const selected=find(state.territory),department=selected?.type==='municipality'?find(selected.parent_id):selected;
+  const m=selected?model(selected.official_code):null,s=snapshot(),source=s?data.sources.find(x=>x.source_id===s.source_id):null;
+  $('#atlas-title').textContent=selected?(selected.type==='municipality'?selected.name+' · '+(department?.name||''):selected.name):'Honduras';
+  if(selected?.type==='department'&&m?.aggregate){
+    $('#atlas-subtitle').textContent=fmt(m.covered)+' de '+fmt(m.total)+' municipios reportados · '+(m.proportion*100).toFixed(1)+'%';
+  }else if(selected?.type==='municipality'){
+    $('#atlas-subtitle').textContent=labels[m.status]+(m.population!=null?' · '+fmt(m.population)+' habitantes publicados':'');
+  }else{
+    $('#atlas-subtitle').textContent=data.territories.filter(t=>t.type==='department').length+' departamentos · '+period();
+  }
+  $('#atlas-source').textContent=source?(source.title+' · '+s.year):period();
+ }
+
  function detail(){
   const t=find(state.territory);$('#detail').classList.toggle('selected',!!t);$('#detail').classList.toggle('expanded',expanded);
-  if(!t){$('#detail').innerHTML='<div class="detail-empty"><span aria-hidden="true">HN</span><h2>Explore el territorio</h2><p>Seleccione un departamento para consultar su cobertura documentada, población publicada y fuentes.</p></div>';return;}
-  const m=model(t.official_code),issues=data.data_quality_issues.filter(i=>!i.territory_id||i.territory_id===t.official_code||find(i.territory_id)?.parent_id===t.official_code);
+  if(!t){$('#detail').innerHTML='<div class="detail-empty"><span aria-hidden="true">HN</span><p class="detail-kicker">Atlas territorial</p><h2>Explore el territorio</h2><p>Seleccione un departamento para consultar cobertura, población y fuentes.</p></div>';return;}
+  const m=model(t.official_code);
   const sources=m.source_ids.map(id=>data.sources.find(s=>s.source_id===id)).filter(Boolean);
   const agreements=data.agreements.filter(a=>a.snapshot_id===state.snapshot&&m.rows.some(r=>r.agreement_ids.includes(a.agreement_id)));
   const explicit=m.rows.filter(r=>r.coverage_status!=='unknown');
   const coverageText=m.aggregate?fmt(m.covered)+' / '+fmt(m.total):'—';
   const coveragePercent=m.aggregate&&m.proportion!=null?(m.proportion*100).toFixed(1)+'%':'—';
   const populationText=fmt(m.population);
+  const pages=[...new Set(explicit.map(r=>r.source_page).filter(Boolean))];
   const recordDetail=t.type==='department'
     ?(explicit.length?fmt(explicit.length)+' registros municipales en la fuente.':'Sin registros municipales para este período.')
-    :(explicit.length?explicit.map(r=>`${esc(r.care_level)} · ${esc(r.scope_note||'Reportado en fuente')} · página ${esc(r.source_page)}`).join('<br>'):'Sin registro municipal para este período.');
-  $('#detail').innerHTML=`<div class="panel-heading"><div><p class="detail-kicker">${esc(t.type==='department'?'Departamento':'Municipio')} · código ${esc(t.official_code)}</p><h2>${esc(t.name)}</h2></div><button id="close-detail" aria-label="Cerrar selección">Cerrar</button></div>
-  <p class="detail-status"><span class="detail-status-dot status-${esc(m.status)}" aria-hidden="true"></span>${esc(labels[m.status])} · ${esc(period())}</p>
+    :(explicit.length?explicit.map(r=>esc(r.care_level)+' · '+esc(r.scope_note||'Reportado en fuente')).join('<br>'):'Sin registro municipal para este período.');
+  const progress=m.aggregate&&m.proportion!=null?Math.max(0,Math.min(100,m.proportion*100)):null;
+  $('#detail').innerHTML=`<div class="territory-sheet-head">
+    <div>
+      <p class="detail-kicker">${esc(t.type==='department'?'Departamento':'Municipio')}</p>
+      <h2>${esc(t.name)}</h2>
+    </div>
+    <div class="territory-code"><span>Código</span><strong>${esc(t.official_code)}</strong></div>
+    <button id="close-detail" aria-label="Cerrar selección">Cerrar</button>
+  </div>
+  <p class="detail-status"><span class="detail-status-dot status-${esc(m.status)}" aria-hidden="true"></span>${esc(labels[m.status])}</p>
   <div class="detail-metrics">
     <div><span>Municipios</span><strong>${coverageText}</strong><small>${m.aggregate?'reportados / total':'No aplica'}</small></div>
-    <div><span>Proporción</span><strong>${coveragePercent}</strong><small>${m.aggregate?'del total municipal':'No aplica'}</small></div>
+    <div><span>Proporción</span><strong>${coveragePercent}</strong><small>${m.aggregate?'cobertura municipal':'No aplica'}</small></div>
     <div><span>Población</span><strong>${populationText}</strong><small>publicada</small></div>
   </div>
+  ${progress==null?'':`<div class="coverage-progress" aria-label="Proporción municipal ${progress.toFixed(1)}%"><span style="width:${progress.toFixed(1)}%"></span></div>`}
   <button id="expand" aria-expanded="${expanded}">${expanded?'Reducir ficha':'Ver ficha completa'}</button>
   <div class="panel-content">
-    <div class="detail-section"><h3>Alcance documentado</h3><p>${recordDetail}</p></div>
-    ${agreements.length?'<div class="detail-section"><h3>Gestor / convenio</h3><p>Convenios asociados a este territorio.</p></div>':''}
-    <div class="detail-section"><h3>Período y fuente</h3><p>${esc(snapshot()?.cutoff_date||snapshot()?.cutoff_note||'Sin dato')}</p><p>${sources.map(s=>`<a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join('<br>')||'Sin registro disponible'}</p></div>
+    <div class="provenance-rail" aria-label="Procedencia del dato">
+      <div><span>Período</span><strong>${esc(period())}</strong></div>
+      <div><span>Fuente</span><strong>${sources.length?sources.map(s=>`<a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join('<br>'):'Sin registro disponible'}</strong></div>
+      ${pages.length?'<div><span>Página</span><strong>'+pages.map(esc).join(', ')+'</strong></div>':''}
+    </div>
+    <div class="detail-section"><h3>Alcance</h3><p>${recordDetail}</p></div>
+    ${agreements.length?'<div class="detail-section"><h3>Convenios</h3><p>Convenios asociados a este territorio.</p></div>':''}
     ${t.type==='department'?'<div class="detail-section"><h3>Municipios</h3><div class="municipality-links">'+data.territories.filter(x=>x.parent_id===t.official_code).map(x=>`<button data-territory="${esc(x.official_code)}">${esc(x.name)}</button>`).join('')+'</div></div>':''}
     ${agreements.map(a=>`<div class="detail-section"><h3>${esc(a.agreement_id)}</h3>`+m.rows.filter(r=>r.agreement_ids.includes(a.agreement_id)).map(r=>`<button data-territory="${esc(r.territory_id)}">${esc(find(r.territory_id)?.name)}</button>`).join('')+'</div>').join('')}
   </div>`;
@@ -88,24 +116,49 @@ export async function startExplorer(data,config,load){
   $('#breadcrumbs').innerHTML=`<button data-territory="">Honduras</button>${d?` › <button data-territory="${esc(d.official_code)}" ${t===d?'aria-current="location"':''}>${esc(d.name)}</button>`:''}${t?.type==='municipality'?` › <span aria-current="location">${esc(t.name)}</span>`:''}`;bindSelection($('#breadcrumbs'));
  }
  function legend(){
-  $('#legend').textContent=state.layer==='status'?'Turquesa: cobertura reportada · Gris: sin cobertura reportada · Rayado gris: sin dato.':state.layer==='proportion'?'Proporción de municipios reportados en tabla departamental: 0%, 1–24%, 25–59%, 60–100%. No representa población. Rayado: sin agregado aplicable.':'Población municipal publicada: intensidad relativa al máximo visible (tercios). Rayado: sin dato municipal comparable. No se suman niveles o convenios.';
+  if(state.layer==='status'){
+    $('#legend').innerHTML='<span><i class="legend-swatch legend-covered"></i>Cobertura reportada</span><span><i class="legend-swatch legend-empty"></i>Sin cobertura reportada</span><span><i class="legend-swatch legend-unknown"></i>Sin dato</span>';
+  }else if(state.layer==='proportion'){
+    $('#legend').innerHTML='<span><i class="legend-swatch legend-low"></i>1–24%</span><span><i class="legend-swatch legend-mid"></i>25–59%</span><span><i class="legend-swatch legend-covered"></i>60–100%</span>';
+  }else{
+    $('#legend').innerHTML='<span><i class="legend-swatch legend-low"></i>Menor</span><span><i class="legend-swatch legend-mid"></i>Media</span><span><i class="legend-swatch legend-covered"></i>Mayor población</span>';
+  }
  }
+
+ async function contextMap(parent,token){
+  const wrap=$('#context-map-wrap'),svg=$('#context-map');
+  if(!parent){wrap.hidden=true;svg.replaceChildren();return;}
+  try{
+    const geo=await getGeometry('departamentos.geojson');if(token!==generation)return;
+    svg.setAttribute('viewBox',geometryBounds(geo.features));
+    svg.innerHTML=geo.features.map(f=>`<path d="${geometryPath(f.geometry)}" class="${f.properties.territorio_id===parent?'context-selected':''}"></path>`).join('');
+    wrap.hidden=false;
+  }catch{wrap.hidden=true;}
+ }
+
  async function map(token){
   const t=find(state.territory),parent=t?.type==='municipality'?t.parent_id:t?.official_code;
-  $('#map-status').textContent='Cargando cartografía…';$('#map').setAttribute('aria-busy','true');$('#map').replaceChildren();hidePreview();
+  const nextDepth=parent?'department':'national',wrap=$('.map-wrap'),mapEl=$('#map');
+  $('#map-status').textContent='Cargando cartografía…';mapEl.setAttribute('aria-busy','true');hidePreview();
   try{
    const geo=await getGeometry(parent?'municipios-'+parent+'.geojson':'departamentos.geojson');if(token!==generation)return;
-   const features=geo.features.filter(f=>find(f.properties.territorio_id));$('#map').setAttribute('viewBox',geometryBounds(features));
-   $('#map').innerHTML='<defs><pattern id="unknown" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(.005)"><rect width="8" height="8" fill="#edf0f2"/><path d="M0 8L8 0" stroke="#9aabb4"/></pattern></defs>'+features.map(f=>{const code=f.properties.territorio_id,m=model(code);return `<path tabindex="0" role="button" aria-pressed="${code===state.territory}" aria-label="${esc(m.territory.name+' · '+labels[m.status])}" data-code="${esc(code)}" fill="${color(m)}" fill-rule="evenodd" d="${geometryPath(f.geometry)}"><title>${esc(m.territory.name)}</title></path>`;}).join('');
-   const paths=[...$('#map').querySelectorAll('[data-code]')];paths.forEach((el,i)=>{
+   const features=geo.features.filter(f=>find(f.properties.territorio_id));
+   mapEl.setAttribute('viewBox',geometryBounds(features));
+   mapEl.innerHTML='<defs><pattern id="unknown" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(.005)"><rect width="8" height="8" fill="#edf0f2"/><path d="M0 8L8 0" stroke="#9aabb4"/></pattern></defs>'+features.map(f=>{const code=f.properties.territorio_id,m=model(code);return `<path tabindex="0" role="button" aria-pressed="${code===state.territory}" aria-label="${esc(m.territory.name+' · '+labels[m.status])}" data-code="${esc(code)}" fill="${color(m)}" fill-rule="evenodd" d="${geometryPath(f.geometry)}"><title>${esc(m.territory.name)}</title></path>`;}).join('');
+   mapEl.classList.remove('map-enter');void mapEl.getBoundingClientRect();mapEl.classList.add('map-enter');
+   wrap.dataset.depth=nextDepth;
+   await contextMap(parent,token);
+
+   const paths=[...mapEl.querySelectorAll('[data-code]')];paths.forEach((el,i)=>{
     el.onpointerenter=e=>{if(e.pointerType==='mouse')showPreview(el.dataset.code,el);};el.onpointerleave=hidePreview;el.onfocus=()=>showPreview(el.dataset.code,el);el.onblur=hidePreview;el.onclick=()=>select(el.dataset.code);
     el.onkeydown=e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();select(el.dataset.code);$('#detail h2').setAttribute('tabindex','-1');$('#detail h2').focus();}else if(e.key==='Escape'){e.preventDefault();select(t?.type==='municipality'?parent:'');$('#home').focus();}else if(['ArrowRight','ArrowDown','ArrowLeft','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();const index=e.key==='Home'?0:e.key==='End'?paths.length-1:(i+(['ArrowRight','ArrowDown'].includes(e.key)?1:-1)+paths.length)%paths.length;paths[index].focus();}};
-   });$('#map-status').textContent=parent?'Seleccione un municipio para abrir su ficha.':'Pase el cursor o seleccione un departamento.';
+   });
+   $('#map-status').textContent=parent?'Nivel municipal':'Nivel departamental';
   }catch{if(token===generation){$('#map-status').innerHTML='No se pudo cargar la cartografía. La tabla sigue disponible. <button id="retry-map">Reintentar mapa</button>';$('#retry-map').onclick=()=>map(++generation);}}
-  finally{if(token===generation)$('#map').setAttribute('aria-busy','false');}
+  finally{if(token===generation)mapEl.setAttribute('aria-busy','false');}
  }
  function update(push=false){
-  state=sanitizeState(data,state);history[push?'pushState':'replaceState']({},'',stateUrl(state,location.href));fill();breadcrumbs();detail();table();legend();
+  state=sanitizeState(data,state);history[push?'pushState':'replaceState']({},'',stateUrl(state,location.href));fill();breadcrumbs();atlasMeta();detail();table();legend();
   const s=snapshot(),source=s?data.sources.find(x=>x.source_id===s.source_id):null;
   $('#status').textContent=s?`Datos ${s.year} · ${period()}${source?' · '+source.title:''}`:`${state.year} · Sin datos publicados para el año seleccionado.`;
   const rows=exportRows(data,state);$('#csv').disabled=$('#json').disabled=!rows.length;map(++generation);
