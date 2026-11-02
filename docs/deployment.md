@@ -34,3 +34,9 @@ No poner autenticación ni información confidencial en archivos estáticos.
 Referencias:
 - https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
 - https://docs.github.com/en/enterprise-cloud@latest/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site
+
+## Despliegue activo en Pages
+
+El workflow `pages.yml` publica únicamente `dist/` al actualizar `main`, después de pruebas, validación, build y navegador. Configura Pages para usar GitHub Actions y usa el entorno `github-pages`. También admite ejecución manual; el trabajo de despliegue solo permite `main`. Si la política del repositorio impide cambiar la fuente con GITHUB_TOKEN, seleccionar **Settings → Pages → Source → GitHub Actions** y reintentar el trabajo.
+
+URL predeterminada: https://carlosmvks1.github.io/ugd-portal/. No se cambia DNS ni se despliega la administración Node/SQLite. `config.json` se incluye en la raíz del artefacto y las rutas de módulos, datos y cartografía permanecen relativas al subdirectorio.

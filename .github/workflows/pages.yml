@@ -1,0 +1,56 @@
+name: Publicar portal en GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - run: npm run validate
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - name: Comprobar salida pública
+        run: test -f dist/config.json && test ! -d dist/admin && test ! -d dist/work
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configurar Actions como fuente de Pages
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const { data } = await github.request('GET /repos/{owner}/{repo}/pages', { owner, repo });
+            if (data.build_type !== 'workflow') {
+              await github.request('PUT /repos/{owner}/{repo}/pages', { owner, repo, build_type: 'workflow' });
+            }
+      - uses: actions/configure-pages@v5
+      - name: Desplegar artefacto público
+        id: deployment
+        uses: actions/deploy-pages@v4
