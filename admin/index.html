@@ -3,6 +3,7 @@
 <main><p id="message" role="status" aria-live="polite">Inicie sesión para continuar.</p>
 <section id="login-panel" class="panel"><h2>Acceso del equipo</h2><form id="login"><label>Usuario<input name="username" autocomplete="username" required maxlength="64"></label><label>Contraseña<input name="password" type="password" autocomplete="current-password" required maxlength="256"></label><button>Iniciar sesión</button></form></section>
 <div id="workspace" hidden><p class="notice">Edición → revisión independiente → aprobación → paquete de publicación. Preparar un paquete no despliega el portal ni convierte una fuente provisional en verificada.</p>
+<section class="panel monitoring"><h2>Seguimiento de información</h2><div id="monitor" role="region" aria-label="Alertas internas"></div></section>
 <div class="layout"><aside class="panel"><h2>Borradores y versiones</h2><button id="new" hidden>Nuevo borrador</button><button id="refresh">Actualizar lista</button><div id="drafts"></div></aside>
 <section class="panel" id="editor-panel" hidden aria-labelledby="draft-heading"><h2 id="draft-heading">Nuevo borrador</h2><p id="draft-state"></p>
 <label>Título<input id="title" maxlength="160" required></label>

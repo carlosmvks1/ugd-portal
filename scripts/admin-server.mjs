@@ -4,6 +4,7 @@ import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {AdminStore,AdminError,validated,changes} from './admin-store.mjs';
 import {importCoverage} from './admin-import.mjs';
+import {operationalAlerts} from '../src/observatory/model.js';
 import {csv} from '../src/map/model.js';
 const project=new URL('../',import.meta.url);
 const stateLabels={draft:'Borrador',submitted:'En revisión',approved:'Aprobado',rejected:'Devuelto',released:'Paquete preparado'};
@@ -41,6 +42,7 @@ export function createAdminServer(store,{origin='http://127.0.0.1:4174'}={}){
    const user=store.user(token);if(!user)throw new AdminError(401,'Inicie sesión.');
    if(path==='/api/me'&&req.method==='GET'){json(200,{...user,stateLabels});return;}
    if(path==='/api/logout'&&req.method==='POST'){await body(req);store.logout(token);res.setHeader('Set-Cookie',`ugd_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0${secure?'; Secure':''}`);json(200,{ok:true});return;}
+   if(path==='/api/monitor'&&req.method==='GET'){json(200,{...operationalAlerts(store.current()),queue:store.list(user).reduce((counts,d)=>({...counts,[d.state]:(counts[d.state]??0)+1}),{})});return;}
    if(path==='/api/current'&&req.method==='GET'){json(200,{data:store.current(),hash:store.currentHash()});return;}
    if(path==='/api/coverage.csv'&&req.method==='GET'){
     res.writeHead(200,{'Content-Type':'text/csv; charset=utf-8','Content-Disposition':'attachment; filename="cobertura.csv"'});res.end(csv(store.current().coverage));return;
