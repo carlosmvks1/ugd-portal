@@ -11,6 +11,7 @@ npm run build
 npm run preview
 ```
 Abrir http://127.0.0.1:4173. Para desarrollo: npm run dev.
+Para instalar las herramientas de navegador de forma reproducible: `npm ci`, `npx playwright install chromium` y `npm run test:browser`. El CI usa el lockfile. Las pruebas, validación y build básicos siguen sin requerir dependencias instaladas.
 Frontend HTML/CSS/módulos ES y mapa SVG sin dependencias externas. Hover, selección móvil, drill-down, búsqueda, filtros respaldados por datos, tabla accesible, enlaces compartibles y exportación municipal contextual.
 
 ## Estructura

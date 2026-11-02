@@ -11,7 +11,7 @@ export function validate(value, schema, path = '$') {
   if ('const' in schema) assert.deepEqual(value,schema.const,path);
   if (schema.enum) assert(schema.enum.includes(value),path+': opción inválida');
   if (schema.type) {
-    const ok = schema.type === 'null' ? value === null : schema.type === 'array' ? Array.isArray(value) : schema.type === 'object' ? value !== null && typeof value === 'object' && !Array.isArray(value) : typeof value === schema.type;
+    const ok = schema.type === 'null' ? value === null : schema.type === 'integer' ? Number.isSafeInteger(value) : schema.type === 'array' ? Array.isArray(value) : schema.type === 'object' ? value !== null && typeof value === 'object' && !Array.isArray(value) : typeof value === schema.type;
     assert(ok,path+': tipo inválido');
   }
   if (typeof value === 'number') {assert(Number.isFinite(value),path); if ('minimum' in schema) assert(value>=schema.minimum,path);}
