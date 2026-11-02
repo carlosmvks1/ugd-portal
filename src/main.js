@@ -1,3 +1,4 @@
+import {renderInstitutional} from './institutional.js';
 import {initShell} from './ui.js';
 import {loadConfig,localUrl} from './config.js';
 import {renderHome} from './home.js';
@@ -20,6 +21,7 @@ async function init(){
     }
     const data=await load(localUrl(catalog.explorer,config.dataRoot));
     renderHome(data);
+    renderInstitutional(data);
     await Promise.all([initTerritorialArt(data,config,load),startExplorer(data,config,load)]);
   }catch(error){
     status.textContent='No se pudo cargar la consulta territorial. Puede reintentar.';
