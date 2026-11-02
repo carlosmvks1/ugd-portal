@@ -8,11 +8,21 @@ El catálogo registra este archivo mediante `explorer`. Los snapshots contractua
 
 El archivo contiene 18 departamentos, 298 municipios, 93 registros municipales reportados y 205 sin dato. Los agregados departamentales son una tabla independiente. La discrepancia 89/93, las diferencias por sexo, las equivalencias provisionales y las limitaciones cartográficas permanecen en `data_quality_issues`, también publicado como JSON separado y verificado contra el archivo. Una ausencia de registro no equivale a cero.
 
+## Contrato público y versiones
+
+`src/map/contract.js` define el contrato territorial estricto: campos permitidos y obligatorios, fechas de calendario, enteros no negativos, estados de cobertura/verificación y estructura de gestores/convenios. El validador rechaza campos inesperados también dentro de objetos anidados. Los registros explícitos requieren página de fuente; las ausencias históricas pueden omitir metadatos de transcripción. Se comprueban las relaciones de territorio, fuente, período, nivel y gestor de los convenios. Añadir un campo o estado requiere revisar este contrato y su publicabilidad; no introducir datos internos en campos de texto permitidos.
+
+El build proyecta el archivo sobre ese mismo contrato antes de escribir los JSON públicos. CSV y JSON de descarga también seleccionan únicamente campos permitidos, incluidos los metadatos de período, fuente y calidad. Esta defensa no sustituye la aprobación humana del contenido de los campos admitidos.
+
+Portada y explorador usan `latestSnapshot` de `src/map/snapshots.js`. El orden descendente es año, fin de período, `revision` numérica opcional, fecha de publicación, fecha de importación e identificador con comparación numérica (v10 sucede a v9). Para nuevos cortes del mismo período se recomienda declarar una `revision` entera positiva consistente en todas sus versiones. Un enlace con versión explícita válida la conserva; un año sin evidencia nunca cae al histórico. El orden físico del array no selecciona el período.
+
+La portada, el estado de consulta y la ficha muestran el estado provisional/aprobado/archivado y la verificación según sus metadatos. La nota del KPI explica las dos cifras 89/93 sin reemplazar ninguna.
+
 ## Geografía y carga
 
 `geography/departamentos.geojson` y `municipios-XX.geojson` contienen exclusivamente geometría e identificadores geográficos. Los códigos se mantienen como texto; `territorio_id` enlaza con `official_code`. La cartografía recuperada es SINIT/SEPLAN distribuida por HDX, con validez histórica declarada 2016-10-05 y licencia CC BY-IGO. No certifica límites vigentes. La simplificación heredada no garantiza topología catastral.
 
-La primera vista solicita solo departamentos. Cada departamento carga su GeoJSON municipal al entrar y lo conserva en memoria. Un contador de generación evita que una respuesta tardía sobrescriba la selección posterior. Un fallo permite reintentar el mapa sin bloquear la tabla.
+La primera vista solicita solo departamentos. Cada departamento carga su GeoJSON municipal al entrar y lo conserva en memoria. Un contador de generación evita que una respuesta tardía sobrescriba la selección posterior. Al iniciar una carga se eliminan la geometría anterior, sus eventos y el mapa de contexto; si falla, permanecen vacíos hasta reintentar, sin bloquear la tabla.
 
 Para repetir la recuperación, desde la raíz:
 

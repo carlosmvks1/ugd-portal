@@ -5,14 +5,22 @@ import assert from 'node:assert/strict';
 const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
-const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],requests=[];
-let failGeometry=false;
+const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],requests=[],externalRequests=[];
+let failGeometry=false,injectInternalFields=false;
 page.on('pageerror',e=>errors.push(e.message));
 const base='http://127.0.0.1:4173/ugd/';
+page.on('request',request=>{if(!request.url().startsWith(base))externalRequests.push(request.url());});
 await page.route(base+'**',async route=>{
  const path=new URL(route.request().url()).pathname.slice('/ugd'.length);requests.push(path);
  if(failGeometry&&path.endsWith('municipios-13.geojson'))return route.fulfill({status:503,body:'Unavailable'});
  const file=resolve('dist','.'+(path==='/'?'/index.html':path));
+ if(injectInternalFields&&path.endsWith('/archive.json')){
+  const data=JSON.parse(await readFile(file,'utf8')),marker='SYNTHETIC_AUDIT_MARKER';
+  data.coverage.find(r=>r.coverage_status==='reported').internal_note=marker;
+  data.snapshots[0].internal_note=marker;data.sources[0].internal_note=marker;
+  data.data_quality_issues[0].internal_note=marker;
+  return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+ }
  try{await route.fulfill({status:200,contentType:({'.html':'text/html','.js':'text/javascript','.json':'application/json','.geojson':'application/json','.css':'text/css'})[extname(file)],body:await readFile(file)});}catch{await route.fulfill({status:404,body:'Not found'});}
 });
 try{
@@ -44,7 +52,9 @@ try{
  assert.equal(await page.locator('.advanced-filters').getAttribute('open'),null);
  assert.equal(await page.locator('#manager').isDisabled(),true);
  assert.equal(await page.locator('#agreement').isDisabled(),true);
- assert(!(await page.locator('body').innerText()).match(/prototipo|en desarrollo|pendiente de verificación|pendiente de validación|requiere padrón|no acredita situación actual/i));
+ assert.match(await page.locator('#home-period').innerText(),/Archivo provisional.*Pendiente de verificación oficial/);
+ assert.match(await page.locator('#status').innerText(),/Archivo provisional.*Pendiente de verificación oficial/);
+ assert.match(await page.locator('#kpi-municipalities-note').innerText(),/89 en el texto \/ 93 en la tabla/);
  assert((await page.locator('.information-orbit').innerText()).includes('Gestores'));
  assert((await page.locator('.information-orbit').innerText()).includes('Monitoreo'));
  if(process.env.SCREENSHOT_DIR){
@@ -73,7 +83,7 @@ try{
  assert.equal(await page.locator('#context-map-wrap').isVisible(),true);
  assert.equal(await page.locator('#context-map path.context-selected').count(),1);
  assert(/período/i.test(await page.locator('.provenance-rail').innerText()));
- assert(!(await page.locator('#detail').innerText()).match(/pendiente de verificación|pendiente de validación|no acredita/i));
+ assert.match(await page.locator('#detail .detail-verification').innerText(),/Archivo provisional.*Pendiente de verificación oficial/);
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('28 / 28'));
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('100.0%'));
  await page.locator('#map path[data-code="1301"]').focus();await page.keyboard.press('Enter');assert.equal(await page.locator('#detail h2').innerText(),'Gracias');
@@ -97,8 +107,23 @@ try{
  assert.equal(await page.locator('#kpi-population').innerText(),'1,592,136');
  await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto(base+'?year=2026&territory=1301');await page.locator('#map path[data-code="1301"]').waitFor();assert((await page.locator('#status').innerText()).includes('Sin datos publicados'));assert(await page.locator('#csv').isDisabled());assert(!(await page.locator('#detail').innerText()).includes('62,863'));
- failGeometry=true;await page.goto(base+'?year=2024&territory=13');await page.locator('#retry-map').waitFor();assert.equal(await page.locator('#table tbody tr').count(),28);
+ // Empezar en otro departamento detecta geometrías y eventos obsoletos.
+ await page.goto(base+'?year=2024&territory=05');await page.locator('#map path[data-code="0501"]').waitFor();
+ failGeometry=true;await page.locator('#search').fill('Lempira');await page.locator('#results button').filter({hasText:'Lempira · 13'}).click();
+ await page.locator('#retry-map').waitFor();assert.equal(await page.locator('#table tbody tr').count(),28);
+ assert.equal(await page.locator('#detail h2').innerText(),'Lempira');
+ assert.equal(await page.locator('#map path[data-code]').count(),0,'No dejar el mapa anterior activo');
+ assert.equal(await page.locator('#context-map path').count(),0);
+ assert.equal(await page.locator('#context-map-wrap').isVisible(),false);
  failGeometry=false;await page.locator('#retry-map').click();await page.locator('#map path[data-code="1301"]').waitFor();
  await page.locator('#home').click();await page.locator('#map path[data-code="13"]').waitFor();await page.locator('#map path[data-code="13"]').focus();await page.keyboard.press('Enter');await page.locator('#map path[data-code="1301"]').waitFor();await page.locator('#map path[data-code="1301"]').focus();await page.keyboard.press('Escape');await page.locator('#map path[data-code="13"]').waitFor();
- assert.deepEqual(errors,[]);console.log('Navegador: firma territorial, Atlas UGD, contexto nacional, ficha de procedencia, ecosistema, móvil, KPIs, drill-down, teclado, filtros, URL, descarga y recuperación: OK');
+ // Una fuente de ejecución contaminada tampoco debe propagar campos internos
+ // a los metadatos ni a las filas de las descargas.
+ injectInternalFields=true;await page.goto(base);await page.locator('#map path[data-code]').first().waitFor();
+ for(const kind of ['json','csv']){
+  const pending=page.waitForEvent('download');await page.locator('#'+kind).click();const downloaded=await pending;
+  const text=await readFile(await downloaded.path(),'utf8');assert(!text.includes('SYNTHETIC_AUDIT_MARKER'));
+  if(kind==='json')assert.equal(JSON.parse(text).rows.length,93);
+ }
+ assert.deepEqual(errors,[]);assert.deepEqual(externalRequests,[],'El portal no debe solicitar fuentes ni servicios externos');console.log('Navegador: firma territorial, Atlas UGD, contexto nacional, ficha de procedencia, ecosistema, móvil, KPIs, drill-down, teclado, filtros, URL, descargas sin campos internos, advertencias y recuperación sin mapa obsoleto: OK');
 }finally{await browser.close();}

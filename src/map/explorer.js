@@ -1,6 +1,8 @@
 import {localUrl} from '../config.js';
 import {labels,normalize,options,sanitizeState,readState,stateUrl,territoryModel,visibleTerritories,exportRows,csv} from './model.js';
 import {geometryPath,geometryBounds} from './geometry.js';
+import {snapshotNotice,verificationLabels} from './snapshots.js';
+import {publicArchive} from './contract.js';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>n==null?'Sin dato':new Intl.NumberFormat('es-HN').format(n);
@@ -81,6 +83,7 @@ export async function startExplorer(data,config,load){
     <button id="close-detail" aria-label="Cerrar selección">Cerrar</button>
   </div>
   <p class="detail-status"><span class="detail-status-dot status-${esc(m.status)}" aria-hidden="true"></span>${esc(labels[m.status])}</p>
+  <p class="detail-verification">${esc(snapshotNotice(snapshot()))}${explicit.length?' · Registros: '+[...new Set(explicit.map(r=>verificationLabels[r.verification_status]||'Verificación no disponible'))].map(esc).join(', '):''}</p>
   <div class="detail-metrics">
     <div><span>Municipios</span><strong>${coverageText}</strong><small>${m.aggregate?'reportados / total':'No aplica'}</small></div>
     <div><span>Proporción</span><strong>${coveragePercent}</strong><small>${m.aggregate?'cobertura municipal':'No aplica'}</small></div>
@@ -119,9 +122,9 @@ export async function startExplorer(data,config,load){
   if(state.layer==='status'){
     $('#legend').innerHTML='<span><i class="legend-swatch legend-covered"></i>Cobertura reportada</span><span><i class="legend-swatch legend-empty"></i>Sin cobertura reportada</span><span><i class="legend-swatch legend-unknown"></i>Sin dato</span>';
   }else if(state.layer==='proportion'){
-    $('#legend').innerHTML='<span><i class="legend-swatch legend-low"></i>1–24%</span><span><i class="legend-swatch legend-mid"></i>25–59%</span><span><i class="legend-swatch legend-covered"></i>60–100%</span>';
+    $('#legend').innerHTML='<span><i class="legend-swatch legend-empty"></i>0%</span><span><i class="legend-swatch legend-low"></i>Más de 0 y menos de 25%</span><span><i class="legend-swatch legend-mid"></i>25 a menos de 60%</span><span><i class="legend-swatch legend-covered"></i>60–100%</span><span><i class="legend-swatch legend-unknown"></i>Sin dato aplicable</span>';
   }else{
-    $('#legend').innerHTML='<span><i class="legend-swatch legend-low"></i>Menor</span><span><i class="legend-swatch legend-mid"></i>Media</span><span><i class="legend-swatch legend-covered"></i>Mayor población</span>';
+    $('#legend').innerHTML='<span><i class="legend-swatch legend-low"></i>Menor</span><span><i class="legend-swatch legend-mid"></i>Media</span><span><i class="legend-swatch legend-covered"></i>Mayor población</span><span><i class="legend-swatch legend-unknown"></i>Sin dato aplicable</span>';
   }
  }
 
@@ -140,6 +143,9 @@ export async function startExplorer(data,config,load){
   const t=find(state.territory),parent=t?.type==='municipality'?t.parent_id:t?.official_code;
   const nextDepth=parent?'department':'national',wrap=$('.map-wrap'),mapEl=$('#map');
   $('#map-status').textContent='Cargando cartografía…';mapEl.setAttribute('aria-busy','true');hidePreview();
+  // No dejar geometrías o eventos del territorio anterior durante una carga.
+  mapEl.replaceChildren();$('#context-map').replaceChildren();$('#context-map-wrap').hidden=true;
+  wrap.dataset.depth=nextDepth;
   try{
    const geo=await getGeometry(parent?'municipios-'+parent+'.geojson':'departamentos.geojson');if(token!==generation)return;
    const features=geo.features.filter(f=>find(f.properties.territorio_id));
@@ -148,19 +154,20 @@ export async function startExplorer(data,config,load){
    mapEl.classList.remove('map-enter');void mapEl.getBoundingClientRect();mapEl.classList.add('map-enter');
    wrap.dataset.depth=nextDepth;
    await contextMap(parent,token);
+   if(token!==generation)return;
 
    const paths=[...mapEl.querySelectorAll('[data-code]')];paths.forEach((el,i)=>{
     el.onpointerenter=e=>{if(e.pointerType==='mouse')showPreview(el.dataset.code,el);};el.onpointerleave=hidePreview;el.onfocus=()=>showPreview(el.dataset.code,el);el.onblur=hidePreview;el.onclick=()=>select(el.dataset.code);
     el.onkeydown=e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();select(el.dataset.code);$('#detail h2').setAttribute('tabindex','-1');$('#detail h2').focus();}else if(e.key==='Escape'){e.preventDefault();select(t?.type==='municipality'?parent:'');$('#home').focus();}else if(['ArrowRight','ArrowDown','ArrowLeft','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();const index=e.key==='Home'?0:e.key==='End'?paths.length-1:(i+(['ArrowRight','ArrowDown'].includes(e.key)?1:-1)+paths.length)%paths.length;paths[index].focus();}};
    });
    $('#map-status').textContent=parent?'Nivel municipal':'Nivel departamental';
-  }catch{if(token===generation){$('#map-status').innerHTML='No se pudo cargar la cartografía. La tabla sigue disponible. <button id="retry-map">Reintentar mapa</button>';$('#retry-map').onclick=()=>map(++generation);}}
+  }catch{if(token===generation){mapEl.replaceChildren();$('#context-map').replaceChildren();$('#context-map-wrap').hidden=true;$('#map-status').innerHTML='No se pudo cargar la cartografía. La tabla sigue disponible. <button id="retry-map">Reintentar mapa</button>';$('#retry-map').onclick=()=>map(++generation);}}
   finally{if(token===generation)mapEl.setAttribute('aria-busy','false');}
  }
  function update(push=false){
   state=sanitizeState(data,state);history[push?'pushState':'replaceState']({},'',stateUrl(state,location.href));fill();breadcrumbs();atlasMeta();detail();table();legend();
   const s=snapshot(),source=s?data.sources.find(x=>x.source_id===s.source_id):null;
-  $('#status').textContent=s?`Datos ${s.year} · ${period()}${source?' · '+source.title:''}`:`${state.year} · Sin datos publicados para el año seleccionado.`;
+  $('#status').textContent=s?`Datos ${s.year} · ${period()}${source?' · '+source.title:''} · ${snapshotNotice(s)}`:`${state.year} · Sin datos publicados para el año seleccionado.`;
   const rows=exportRows(data,state);$('#csv').disabled=$('#json').disabled=!rows.length;map(++generation);
  }
  for(const key of ['year','snapshot','care','manager','agreement','layer'])$('#'+key).onchange=e=>{state[key]=e.target.value;if(key==='year'){state.snapshot='';for(const k of ['care','manager','agreement'])state[k]='';}update(true);};
@@ -168,7 +175,8 @@ export async function startExplorer(data,config,load){
  $('#share').onclick=async()=>{try{await navigator.clipboard.writeText(stateUrl(state,location.href).href);$('#status').textContent='Enlace copiado · '+period();}catch{$('#status').textContent='Copie la dirección del navegador para compartir esta consulta.';}};
  for(const kind of ['csv','json'])$('#'+kind).onclick=()=>{
   const rows=exportRows(data,state);if(!rows.length)return;
-  const payload={state,period:snapshot(),sources:data.sources,data_quality_issues:data.data_quality_issues,rows};
+  const approved=publicArchive(data);
+  const payload={state,period:approved.snapshots.find(s=>s.snapshot_id===state.snapshot),sources:approved.sources,data_quality_issues:approved.data_quality_issues,rows};
   const blob=new Blob([kind==='csv'?csv(rows):JSON.stringify(payload,null,2)],{type:kind==='csv'?'text/csv;charset=utf-8':'application/json'}),a=document.createElement('a'),url=URL.createObjectURL(blob);
   a.href=url;a.download=`ugd-${state.snapshot}-${state.territory||'HN'}.${kind}`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  };

@@ -29,7 +29,7 @@ No mantener SVG decorativos independientes cuando la cartografía del propio sis
 
 ## Tipografía
 
-El portal utiliza **Source Sans 3** como familia principal, con pila de sistema como respaldo.
+El portal utiliza una pila de fuentes del sistema (**Segoe UI, Arial, sans-serif**), sin descargas de fuentes ni solicitudes a servicios externos.
 
 Reglas:
 - texto base cercano a 16–17 px;

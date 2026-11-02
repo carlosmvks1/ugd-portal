@@ -1,3 +1,5 @@
+import {latestSnapshot} from './snapshots.js';
+import {coverageSchema,publicFields} from './contract.js';
 export const labels={covered:'Con cobertura reportada',not_covered:'Sin cobertura reportada',unknown:'Sin dato'};
 export const normalize=s=>String(s??'').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase().trim();
 export function readState(search){
@@ -17,10 +19,10 @@ export function options(data,snapshot){
 }
 export function sanitizeState(data,input){
  const state={...input};
- const snapshot=data.snapshots.find(s=>s.snapshot_id===state.snapshot&&(!state.year||String(s.year)===state.year))||data.snapshots.find(s=>String(s.year)===state.year);
+ const snapshot=data.snapshots.find(s=>s.snapshot_id===state.snapshot&&(!state.year||String(s.year)===state.year))||latestSnapshot(data.snapshots,state.year);
  // Un año solicitado sin datos no cae silenciosamente a otro período.
  if(snapshot){state.snapshot=snapshot.snapshot_id;state.year=String(snapshot.year);}
- else if(!state.year){const s=data.snapshots.at(-1);state.snapshot=s?.snapshot_id||'';state.year=s?String(s.year):'';}
+ else if(!state.year){const s=latestSnapshot(data.snapshots);state.snapshot=s?.snapshot_id||'';state.year=s?String(s.year):'';}
  else state.snapshot='';
  if(!data.territories.some(t=>t.official_code===state.territory))state.territory='';
  const available=options(data,state.snapshot);
@@ -56,7 +58,7 @@ export function visibleTerritories(data,state){
 }
 export function exportRows(data,state){
  const selected=data.territories.find(t=>t.official_code===state.territory);
- return filteredCoverage(data,state).filter(r=>r.coverage_status!=='unknown'&&(!selected||r.territory_id===selected.official_code||data.territories.some(t=>t.official_code===r.territory_id&&t.parent_id===selected.official_code))).map(r=>({snapshot:state.snapshot,year:state.year,...r,name:data.territories.find(t=>t.official_code===r.territory_id)?.name??''}));
+ return filteredCoverage(data,state).filter(r=>r.coverage_status!=='unknown'&&(!selected||r.territory_id===selected.official_code||data.territories.some(t=>t.official_code===r.territory_id&&t.parent_id===selected.official_code))).map(r=>({snapshot:state.snapshot,year:state.year,...publicFields(r,coverageSchema),name:data.territories.find(t=>t.official_code===r.territory_id)?.name??''}));
 }
 export function csv(rows){
  if(!rows.length)return '';

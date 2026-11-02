@@ -1,3 +1,4 @@
+import {latestSnapshot,snapshotNotice} from './map/snapshots.js';
 const fmt=new Intl.NumberFormat('es-HN');
 const safeUrl=value=>{try{const u=new URL(value);return ['http:','https:'].includes(u.protocol)?u.href:'';}catch{return '';}};
 
@@ -59,7 +60,7 @@ function accessibleKpi(element,label,value){
 }
 
 export function renderHome(data){
-  const snapshot=[...data.snapshots].sort((a,b)=>(b.year-a.year)||String(b.snapshot_id).localeCompare(String(a.snapshot_id)))[0];
+  const snapshot=latestSnapshot(data.snapshots);
   const period=document.querySelector('#home-period');
   if(!snapshot){
     period.textContent='No hay un consolidado territorial cargado.';
@@ -86,10 +87,10 @@ export function renderHome(data){
 
   const municipalityNote=document.querySelector('#kpi-municipalities-note');
   if(i.municipalities_narrative!=null&&i.municipalities_table!=null&&i.municipalities_narrative!==i.municipalities_table){
-    municipalityNote.textContent='Cifra reportada en la memoria institucional.';
+    municipalityNote.textContent=fmt.format(i.municipalities_narrative)+' en el texto / '+fmt.format(i.municipalities_table)+' en la tabla de la fuente. Discrepancia pendiente de resolver.';
   }else municipalityNote.textContent='Municipios reportados en el consolidado';
 
   const source=data.sources.find(s=>s.source_id===snapshot.source_id);
   const sourceText=source&&safeUrl(source.url)?' · Fuente: '+source.title:'';
-  period.textContent='Datos '+snapshot.year+sourceText+'.';
+  period.textContent='Datos '+snapshot.year+sourceText+' · '+snapshotNotice(snapshot)+'.';
 }
