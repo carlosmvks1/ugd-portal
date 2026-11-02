@@ -42,3 +42,7 @@ No se concede licencia de redistribución de código o datos hasta que el titula
 ## Administración interna
 
 Servicio separado con SQLite, acceso por roles, importación JSON/CSV y circuito de revisión. Ver [puesta en marcha y operación](docs/admin-workflow.md). No se incluye en `dist/` ni despliega el sitio.
+
+## Observatorio y seguimiento
+
+Indicadores nacionales, comparación condicionada por metodología y alertas internas sobre el último período disponible. Ver [metodología y alcance](docs/observatory.md). El histórico actual no permite calcular una tendencia entre años.

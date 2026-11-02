@@ -9,6 +9,7 @@ export function validateExplorer(data){
  unique(data.data_quality_issues,'issue_id');unique(data.managers,'manager_id');unique(data.agreements,'agreement_id');
  for(const t of data.territories){assert.equal(t.territory_id,t.official_code);assert(new RegExp(t.type==='department'?'^\\d{2}$':'^\\d{4}$').test(t.official_code));if(t.type==='municipality'){assert(t.parent_id);assert(t.official_code.startsWith(t.parent_id));assert(data.territories.some(d=>d.official_code===t.parent_id&&d.type==='department'));}else assert.equal(t.parent_id,null);assert(sources.has(t.source_id));}
  for(const s of data.snapshots){assert.equal(String(s.year),s.period_start.slice(0,4));assert.equal(String(s.year),s.period_end.slice(0,4));assert(s.period_start<=s.period_end);assert(s.cutoff_date===null||/^\d{4}-\d{2}-\d{2}$/.test(s.cutoff_date));assert(sources.has(s.source_id));}
+ for(const s of data.snapshots)if(s.comparison){assert(sources.has(s.comparison.source_id),'Fuente metodológica inexistente');assert.equal(s.period_start,String(s.year)+'-01-01','Comparación anual requiere año completo');assert.equal(s.period_end,String(s.year)+'-12-31','Comparación anual requiere año completo');}
  for(const m of data.managers)assert(sources.has(m.source_id));
  for(const a of data.agreements){
   assert(snapshots.has(a.snapshot_id));assert(sources.has(a.source_id));

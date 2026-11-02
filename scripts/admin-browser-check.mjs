@@ -16,7 +16,7 @@ let browser;const errors=[];
 try{
  browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
  async function login(role){const context=await browser.newContext({viewport:{width:1280,height:900}}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));await page.goto(origin);await page.locator('[name=username]').fill('check-'+role);await page.locator('[name=password]').fill(password);await page.locator('#login button').click();await page.locator('#workspace').waitFor({state:'visible'});return page;}
- const editor=await login('editor');await editor.locator('#new').click();await editor.locator('#editor-panel').waitFor({state:'visible'});
+ const editor=await login('editor');assert.match(await editor.locator('#monitor').innerText(),/Sin padrón individual/);await editor.locator('#new').click();await editor.locator('#editor-panel').waitFor({state:'visible'});
  await editor.locator('#title').fill('Prueba del circuito institucional');
  await editor.locator('#csv-file').setInputFiles({name:'cobertura.csv',mimeType:'text/csv',buffer:Buffer.from('snapshot_id,territory_id,care_level,population_covered\n2024-v1,1313,I,42711')});
  await editor.waitForFunction(()=>document.getElementById('message').textContent.startsWith('CSV integrado'));

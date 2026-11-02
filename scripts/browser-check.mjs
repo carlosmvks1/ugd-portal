@@ -6,7 +6,7 @@ const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
 const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],requests=[],externalRequests=[];
-let failGeometry=false,injectInternalFields=false;
+let failGeometry=false,injectInternalFields=false,comparisonFixture=false;
 page.on('pageerror',e=>errors.push(e.message));
 const base='http://127.0.0.1:4173/ugd/';
 page.on('request',request=>{if(!request.url().startsWith(base))externalRequests.push(request.url());});
@@ -14,6 +14,11 @@ await page.route(base+'**',async route=>{
  const path=new URL(route.request().url()).pathname.slice('/ugd'.length);requests.push(path);
  if(failGeometry&&path.endsWith('municipios-13.geojson'))return route.fulfill({status:503,body:'Unavailable'});
  const file=resolve('dist','.'+(path==='/'?'/index.html':path));
+ if(comparisonFixture&&path.endsWith('/archive.json')){
+  const data=JSON.parse(await readFile(file,'utf8')),s=data.snapshots[0];s.status='approved';s.verification_status='official_verified';s.comparison={methodology_id:'synthetic-test',source_id:s.source_id,geography_version:'synthetic-test',periodicity:'annual'};
+  const next={...structuredClone(s),snapshot_id:'2025-test',year:2025,period_start:'2025-01-01',period_end:'2025-12-31'};next.indicators.agreements_total=50;data.snapshots.push(next);
+  return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+ }
  if(injectInternalFields&&path.endsWith('/archive.json')){
   const data=JSON.parse(await readFile(file,'utf8')),marker='SYNTHETIC_AUDIT_MARKER';
   data.coverage.find(r=>r.coverage_status==='reported').internal_note=marker;
@@ -59,16 +64,22 @@ try{
  assert((await page.locator('.information-orbit').innerText()).includes('Monitoreo'));
  if(process.env.SCREENSHOT_DIR){
   await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});
-  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-home.png'),fullPage:true});
+  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-home.png'),fullPage:false});
   await page.setViewportSize({width:390,height:844});
   assert.equal(await page.locator('#nav-toggle').isVisible(),true);
   await page.locator('#nav-toggle').click();
   assert.equal(await page.locator('#nav-toggle').getAttribute('aria-expanded'),'true');
   assert.equal(await page.locator('#site-nav').isVisible(),true);
-  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile-home.png'),fullPage:true});
+  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile-home.png'),fullPage:false});
   await page.locator('#nav-toggle').click();
   await page.setViewportSize({width:1280,height:900});
  }
+ assert.equal(await page.locator('#obs-table tbody tr').count(),6);
+ assert.match(await page.locator('#obs-status').innerText(),/Se necesitan dos períodos/);
+ assert.match(await page.locator('#obs-table').innerText(),/No calculable/);
+ await page.locator('#obs-metric').selectOption('population_I');assert.match(await page.locator('#obs-chart').innerText(),/1,592,136/);
+ const obsPending=page.waitForEvent('download');await page.locator('#obs-json').click();const obsDownload=await obsPending;
+ const obsPayload=JSON.parse(await readFile(await obsDownload.path(),'utf8'));assert.equal(obsPayload.rows.length,6);assert(obsPayload.rows.every(r=>r.absolute===null&&r.percent===null));
  assert.equal(await page.locator('#document-list article').count(),2);
  assert.equal(await page.locator('#manager-list details').count(),39);
  assert.match(await page.locator('#agreement-list').innerText(),/No hay un padrón/);
@@ -107,9 +118,9 @@ try{
  await page.locator('#expand').click();assert(await page.locator('#detail').evaluate(el=>el.classList.contains('expanded')));
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Desbordamiento horizontal');
  if(process.env.SCREENSHOT_DIR){
-  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile-territory.png'),fullPage:true});
+  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile-territory.png'),fullPage:false});
   await page.setViewportSize({width:1280,height:900});
-  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-territory.png'),fullPage:true});
+  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-territory.png'),fullPage:false});
  }
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.goto(base);await page.locator('#map path[data-code]').first().waitFor();
@@ -134,5 +145,8 @@ try{
   const text=await readFile(await downloaded.path(),'utf8');assert(!text.includes('SYNTHETIC_AUDIT_MARKER'));
   if(kind==='json')assert.equal(JSON.parse(text).rows.length,93);
  }
+ comparisonFixture=true;await page.goto(base+'?obs_from=2024-v1&obs_to=2025-test');await page.locator('#obs-table tbody tr').first().waitFor();
+ assert.match(await page.locator('#obs-status').innerText(),/Períodos comparables/);assert.equal(await page.locator('#obs-table tbody tr').first().locator('td').nth(2).innerText(),'3');
+ await page.locator('#obs-from').selectOption('');await page.reload();await page.locator('#obs-table tbody tr').first().waitFor();assert.equal(await page.locator('#obs-from').inputValue(),'');assert.match(await page.locator('#obs-status').innerText(),/Se necesitan dos períodos/);
  assert.deepEqual(errors,[]);assert.deepEqual(externalRequests,[],'El portal no debe solicitar fuentes ni servicios externos');console.log('Navegador: firma territorial, Atlas UGD, contexto nacional, ficha de procedencia, ecosistema, móvil, KPIs, drill-down, teclado, filtros, URL, descargas sin campos internos, advertencias y recuperación sin mapa obsoleto: OK');
 }finally{await browser.close();}

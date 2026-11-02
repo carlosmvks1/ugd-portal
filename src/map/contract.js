@@ -18,8 +18,9 @@ export const snapshotSchema=object({
  snapshot_id:id,year:positive,revision:positive,period_start:date,period_end:date,
  cutoff_date:nullable(date),cutoff_note:text,published_at:nullable(date),imported_at:date,
  status:choice('provisional','approved','archived'),source_id:id,
- verification_status:verification,indicators,source_pages:list(positive)
-},['revision']);
+ verification_status:verification,indicators,source_pages:list(positive),
+ comparison:object({methodology_id:id,source_id:id,geography_version:id,periodicity:choice('annual')})
+},['revision','comparison']);
 export const coverageSchema=object({
  snapshot_id:id,territory_id:id,coverage_status:choice('reported','not_covered','unknown'),
  care_level:level,population_covered:nullable(count),men:nullable(count),women:nullable(count),
