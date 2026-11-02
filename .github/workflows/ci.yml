@@ -23,6 +23,9 @@ jobs:
       - run: npm run test:browser
         env:
           SCREENSHOT_DIR: artifacts/screenshots
+      - run: npm run test:admin-browser
+        env:
+          SCREENSHOT_DIR: artifacts/screenshots
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -6,3 +6,8 @@ dist/
 work/
 data/raw/
 *.log
+
+# Administración local: nunca versionar bases ni archivos auxiliares.
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

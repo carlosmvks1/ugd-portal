@@ -3,7 +3,7 @@ Explorador territorial privado UGD. Prototipo pendiente de aprobación instituci
 Integra el archivo histórico provisional SESAL 2024 y cartografía histórica SINIT/HDX recuperados del mapa previo. No acredita situación actual ni realiza despliegue público.
 
 ## Inicio
-Requiere Node.js 22+. No requiere instalar dependencias.
+Requiere Node.js 22.13+. No requiere instalar dependencias.
 ```sh
 npm test
 npm run validate
@@ -38,3 +38,7 @@ Mantener privado el repositorio. La privacidad del código no protege los archiv
 No guardar datos personales, secretos ni documentos internos. data/raw/ y .env están excluidos como medida auxiliar.
 El build publica únicamente catálogo, snapshots registrados, recursos frontend y GeoJSON; revisar estos archivos antes de publicar.
 No se concede licencia de redistribución de código o datos hasta que el titular la defina.
+
+## Administración interna
+
+Servicio separado con SQLite, acceso por roles, importación JSON/CSV y circuito de revisión. Ver [puesta en marcha y operación](docs/admin-workflow.md). No se incluye en `dist/` ni despliega el sitio.

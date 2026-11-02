@@ -1,0 +1,15 @@
+<!doctype html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>UGD · Administración interna</title><link rel="stylesheet" href="/admin.css"></head><body>
+<header><div><span class="eyebrow">Unidad de Gestión Descentralizada</span><h1>Administración de información</h1></div><div id="identity"></div></header>
+<main><p id="message" role="status" aria-live="polite">Inicie sesión para continuar.</p>
+<section id="login-panel" class="panel"><h2>Acceso del equipo</h2><form id="login"><label>Usuario<input name="username" autocomplete="username" required maxlength="64"></label><label>Contraseña<input name="password" type="password" autocomplete="current-password" required maxlength="256"></label><button>Iniciar sesión</button></form></section>
+<div id="workspace" hidden><p class="notice">Edición → revisión independiente → aprobación → paquete de publicación. Preparar un paquete no despliega el portal ni convierte una fuente provisional en verificada.</p>
+<div class="layout"><aside class="panel"><h2>Borradores y versiones</h2><button id="new" hidden>Nuevo borrador</button><button id="refresh">Actualizar lista</button><div id="drafts"></div></aside>
+<section class="panel" id="editor-panel" hidden aria-labelledby="draft-heading"><h2 id="draft-heading">Nuevo borrador</h2><p id="draft-state"></p>
+<label>Título<input id="title" maxlength="160" required></label>
+<div id="imports"><h3>Cargar datos</h3><label>Archivo territorial JSON<input id="json-file" type="file" accept=".json,application/json"></label><label>Actualizar cobertura con CSV (UTF-8)<input id="csv-file" type="file" accept=".csv,text/csv"></label><p>El CSV actualiza filas por versión, código municipal y nivel. No elimina filas ausentes. Puede exportarlo desde Excel como CSV UTF-8, separado por comas.</p><a href="/api/coverage.csv" download>Descargar cobertura vigente como plantilla CSV</a></div>
+<label>Archivo territorial<textarea id="payload" spellcheck="false" aria-describedby="payload-help"></textarea></label><p id="payload-help">Revise los datos y las observaciones de calidad. Los campos inesperados o las relaciones inválidas impiden guardar.</p>
+<div class="actions"><button id="preview">Validar y comparar</button><button id="save">Guardar borrador</button></div>
+<section id="comparison" aria-labelledby="comparison-heading"><h3 id="comparison-heading">Cambios respecto de la versión de base</h3><div id="diff"></div></section>
+<label>Comentario de revisión o envío<textarea id="note" maxlength="2000" rows="3"></textarea></label><div id="workflow" class="actions"></div>
+<section><h3>Historial y revisiones</h3><ol id="history"></ol></section><div id="releases"></div>
+</section></div></div></main><script type="module" src="/admin.js"></script></body></html>
