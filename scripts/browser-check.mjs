@@ -69,6 +69,15 @@ try{
   await page.locator('#nav-toggle').click();
   await page.setViewportSize({width:1280,height:900});
  }
+ assert.equal(await page.locator('#document-list article').count(),2);
+ assert.equal(await page.locator('#manager-list details').count(),39);
+ assert.match(await page.locator('#agreement-list').innerText(),/No hay un padrón/);
+ await page.locator('#document-year').selectOption('2024');assert.equal(await page.locator('#document-list article').count(),1);
+ await page.locator('#document-year').selectOption('');
+ await page.locator('#institution-search').fill('label-001');assert.equal(await page.locator('#manager-list details').count(),1);
+ await page.locator('#manager-list summary').click();assert.match(await page.locator('#manager-list').innerText(),/Sin confirmar/);
+ await page.locator('#institution-search').fill('sin-coincidencias-987');assert.equal(await page.locator('#manager-list details').count(),0);
+ await page.locator('#institution-search').fill('');
  assert.equal(await page.locator('#map path[data-code]').count(),18);
  assert(!requests.some(p=>p.includes('municipios-')),'Carga municipal prematura');
  assert(await page.locator('#manager').isDisabled());assert(await page.locator('#agreement').isDisabled());
