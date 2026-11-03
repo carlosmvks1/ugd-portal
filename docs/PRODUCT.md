@@ -4,9 +4,11 @@ Estado: propuesta de definición de producto para revisión. Las decisiones marc
 
 ## 1. Visión y propósito
 
-Desarrollar un sitio propio, público, claro, accesible y verificable para la Unidad de Gestión Descentralizada (UGD) de SESAL, Honduras. Permitirá conocer la unidad, sus funciones, la descentralización en salud, autoridades, cobertura, resultados y documentación.
+El encargo institucional confirmado es desarrollar una página web pública para la Unidad de Gestión Descentralizada (UGD) de SESAL, Honduras. Tener dominio propio es una decisión confirmada del proyecto; su nombre exacto, configuración y servicio de alojamiento siguen pendientes.
 
-El portal debe facilitar comprensión y consulta. El atlas es una herramienta complementaria, no el principio obligatorio de organización. El sistema privado de empleados no forma parte de este producto.
+El objetivo inmediato es preparar una propuesta institucional funcional para presentarla a la coordinadora y mejorarla con sus observaciones. Los contenidos y funcionalidades específicos de este documento son propuestas del equipo, no requisitos institucionales ya aprobados.
+
+El portal debe facilitar comprensión y consulta. Si se valida su inclusión, el atlas será una herramienta complementaria, no el principio obligatorio de organización. El sistema privado de empleados no forma parte de este producto.
 
 ## 2. Problema y punto de partida
 
@@ -47,17 +49,19 @@ Definir participantes, línea base y umbrales antes de la evaluación. No usar v
 
 ## 5. Alcance
 
-Incluido como alcance de contenido, sujeto a fuentes y autorización de publicación:
+Encargo institucional confirmado: una página web pública para la UGD. Este encargo no implica la aprobación de todas las secciones o funcionalidades propuestas.
+
+Contenidos propuestos por el equipo para validar con la coordinadora, sujetos a fuentes y autorización de publicación:
 - Presentación institucional, funciones, autoridades, estructura y base legal.
 - Explicación de la descentralización, participantes y niveles de atención.
 - Cobertura y resultados con contexto temporal y documental.
 - Documentos públicos y canales oficiales de contacto.
 
-Propuestas funcionales por validar:
+Funcionalidades propuestas por el equipo para validar con la coordinadora:
 - Navegación por tareas y páginas temáticas compartibles.
 - Consulta territorial mediante listado o tabla; mapa complementario.
 - Biblioteca organizada, con búsqueda y filtros solo cuando el volumen lo justifique.
-- Resúmenes de resultados por período y descargas cuando exista necesidad de reutilización.
+- Indicadores y resúmenes de resultados por período, con descargas cuando exista necesidad de reutilización.
 
 Fuera del alcance actual:
 - Cuentas de empleados, gestión privada de convenios e informes, aprobaciones internas, alertas operativas y expedientes.
@@ -102,9 +106,9 @@ Solicitar a la coordinadora y a las áreas competentes:
 3. Antes de publicar cobertura/resultados: fuentes autorizadas, períodos, definiciones, metodología, limitaciones y tratamiento de discrepancias.
 4. Para la biblioteca: inventario de documentos públicos, emisor, fecha, versión, vigencia confirmada cuando corresponda y permisos de uso.
 5. Para completar la presentación: fotografías autorizadas y explicación institucional del modelo.
-6. Para operar: responsables de contenido, frecuencia de revisión, dominio, alojamiento, mantenimiento y procedimiento de corrección.
+6. Para operar: responsables de contenido, frecuencia de revisión, nombre y configuración del dominio propio, servicio de alojamiento, mantenimiento y procedimiento de corrección.
 
-Se acordó preparar un ejemplo antes de pedir los datos aprobados. Usar marcadores explícitos para contenido ausente y etiquetas de período/estado para material histórico; no inventar cifras, autoridades ni textos oficiales.
+Se acordó preparar un ejemplo funcional antes de pedir los datos aprobados, presentarlo a la coordinadora y revisarlo con sus observaciones. Los pendientes se conservan con su estado y no deben resolverse artificialmente ni bloquear por defecto el prototipo. Usar marcadores explícitos para contenido ausente y etiquetas de período/estado para material histórico; no inventar cifras, autoridades ni textos oficiales.
 
 La aprobación del prototipo no aprueba automáticamente su contenido. La publicación requiere revisión y autorización; antes del lanzamiento deben resolverse o retirarse los marcadores. El contenido institucional básico debe seguir disponible si falla la consulta territorial.
 
@@ -112,13 +116,14 @@ La aprobación del prototipo no aprueba automáticamente su contenido. La public
 
 | Estado | Decisión o cuestión |
 | --- | --- |
-| Confirmado por el responsable del proyecto | Sitio propio institucional público; prototipo experimental autorizado; sistema interno excluido. |
+| Encargo institucional confirmado | Desarrollar una página web pública para la UGD; sistema interno excluido. |
+| Decisiones confirmadas del proyecto | Dominio propio; prototipo experimental autorizado; preparar una propuesta funcional para la coordinadora e iterar con sus observaciones. |
 | Confirmado como previsión operativa | El ingeniero de la unidad mantendría el sitio; falta formalizar responsabilidades y procedimiento. |
 | Confirmado en gobernanza | Trabajo por ramas y PR; despliegue manual y autorizado, conforme a AGENTS.md y al PR #13. |
-| Propuesto | Mapa del sitio, recorridos, criterios de éxito y alternativas de portada de este documento. |
+| Propuesto por el equipo, pendiente de validación con la coordinadora | Contenidos específicos, mapa territorial, indicadores, biblioteca documental, resultados, mapa del sitio, recorridos, criterios de éxito y alternativas de portada. |
 | Pendiente de investigación | Usuarios prioritarios, necesidades frecuentes, lenguaje y condiciones reales de consulta. |
 | Pendiente institucional | Textos, autoridades, identidad visual, contactos, datos y documentos publicables; responsable de aprobación. |
-| Pendiente técnico/operativo | Dominio, alojamiento, mecanismo editorial y frecuencia de actualización. |
+| Pendiente técnico/operativo | Nombre exacto y configuración del dominio propio, servicio de alojamiento, mecanismo editorial y frecuencia de actualización. |
 | No acordado | Contratación externa de mantenimiento; no constituye un requisito de arquitectura ni un compromiso institucional. |
 
 Registrar cambios de alcance o decisiones de producto con motivo, evidencia y PR; distinguir propuesta, aceptación y sustitución de decisiones previas. La incorporación de este documento no aprueba automáticamente sus propuestas.
@@ -128,13 +133,13 @@ Registrar cambios de alcance o decisiones de producto con motivo, evidencia y PR
 Una funcionalidad candidata debe:
 - Resolver una tarea identificada, con evidencia o una hipótesis explícita y un plan para validarla.
 - Encajar en el portal público; un cambio de alcance requiere acuerdo explícito.
-- Disponer de contenido publicable, responsable y mecanismo sostenible de actualización.
+- Para publicación oficial, disponer de contenido publicable, responsable y mecanismo sostenible de actualización; el prototipo puede representar esos pendientes con marcadores explícitos.
 - Aportar valor frente a una alternativa más simple.
 - Tener criterios verificables de utilidad, accesibilidad, privacidad y rendimiento.
 - Justificar costo, dependencias y mantenimiento; no elegir tecnología por popularidad.
 - Ser revisada mediante PR con resultados reales de las comprobaciones pertinentes.
 
-Posponer funcionalidades sin evidencia o contenido suficiente. No añadirlas solo porque existan en el prototipo, aparezcan en otra web o sean posibles técnicamente.
+Las funcionalidades con evidencia o contenido insuficientes pueden explorarse en el prototipo como propuestas identificadas para revisión; su inclusión definitiva y publicación quedan pendientes de validación. No añadirlas solo porque existan en el prototipo, aparezcan en otra web o sean posibles técnicamente.
 
 ## Referencias y decisiones anteriores
 
