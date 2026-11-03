@@ -26,7 +26,7 @@ Los sistemas internos de empleados, gestión de convenios e informes quedan fuer
 - No incluyas secretos, datos de pacientes, información interna ni contactos personales no autorizados en Git, artefactos o descargas.
 - Trabaja en ramas independientes y pull requests; no escribas directamente en main ni reescribas historial compartido.
 - No publiques el sitio, despliegues ni cambies visibilidad sin autorización explícita. Crear un PR no autoriza fusionarlo.
-- .github/workflows/pages.yml publica desde main: una fusión puede iniciar un despliegue. Comprueba automatizaciones antes de acciones que puedan publicarlo.
+- .github/workflows/pages.yml solo se activa manualmente con workflow_dispatch; el despliegue requiere main. Fusionar no despliega Pages automáticamente. Comprueba automatizaciones antes de acciones que puedan publicarlo.
 
 ## Verificación
 - Para cambios de código/datos, ejecuta las comprobaciones pertinentes de package.json: npm test, npm run validate y npm run build.
