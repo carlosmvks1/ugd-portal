@@ -9,13 +9,10 @@ export function institutionalRecords(data){
  };
 }
 export function renderInstitutional(data){
- const root=document.querySelector('#institutional-content');
+ const root=document.querySelector('#institutional-records');
  const records=institutionalRecords(data),snapshot=latestSnapshot(data.snapshots);
  const sourceLink=id=>{const s=data.sources.find(s=>s.source_id===id),href=safeUrl(s?.url);return href?`<a href="${href}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a>`:'Fuente no disponible';};
- root.innerHTML=`<section id="institucion" class="institution-intro" aria-labelledby="institution-title">
- <div><p class="eyebrow">Información institucional</p><h2 id="institution-title">Unidad de Gestión Descentralizada</h2><p>Secretaría de Salud de Honduras</p><p>Consulte las fuentes documentales y los registros de gestión vinculados al archivo territorial.</p></div>
- <div class="institution-note"><h3>Alcance de la información</h3><p>${esc(snapshotNotice(snapshot))}. La información disponible corresponde al archivo histórico ${esc(snapshot?.year??'sin período')}.</p><p>El mandato legal, el organigrama y los canales oficiales de atención se incorporarán cuando se disponga de documentación institucional aprobada.</p><a href="#calidad">Consultar fuentes y observaciones del atlas</a></div></section>
- <div class="institution-search"><label for="institution-search">Buscar en documentos, gestores y convenios</label><input id="institution-search" type="search" placeholder="Nombre, título o identificador" autocomplete="off"><p id="institution-count" role="status" aria-live="polite"></p></div>
+ root.innerHTML=` <div class="institution-search"><label for="institution-search">Buscar en documentos, gestores y convenios</label><input id="institution-search" type="search" placeholder="Nombre, título o identificador" autocomplete="off"><p id="institution-count" role="status" aria-live="polite"></p></div>
  <section id="documentos" aria-labelledby="documents-title"><div class="section-heading"><div><p class="eyebrow">Evidencia y consulta</p><h2 id="documents-title">Biblioteca documental</h2></div><p>Enlaces a las fuentes originales. Su presencia en esta biblioteca no certifica vigencia normativa ni aprobación institucional.</p></div>
  <div class="library-filters"><label>Período de referencia<select id="document-year"><option value="">Todos</option>${[...new Set(records.documents.flatMap(d=>d.years))].sort().reverse().map(y=>`<option>${esc(y)}</option>`).join('')}</select></label><label>Tipo de fuente<select id="document-type"><option value="">Todos</option><option>Informe institucional</option><option>Cartografía</option></select></label></div><div id="document-list" class="record-grid"></div></section>
  <section id="gestores" aria-labelledby="managers-title"><div class="section-heading"><div><p class="eyebrow">Directorio de registros</p><h2 id="managers-title">Gestores</h2></div><p>Se conservan las etiquetas de la fuente. Una etiqueta transcrita no acredita identidad jurídica ni una relación territorial confirmada.</p></div><div id="manager-list" class="record-grid"></div></section>

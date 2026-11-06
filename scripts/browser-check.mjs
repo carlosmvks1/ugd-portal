@@ -6,6 +6,7 @@ const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
 const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],requests=[],externalRequests=[];
+let failureMode=null, archiveRequests=0;
 let failGeometry=false,injectInternalFields=false,comparisonFixture=false;
 page.on('pageerror',e=>errors.push(e.message));
 const base='http://127.0.0.1:4173/ugd/';
@@ -13,6 +14,19 @@ page.on('request',request=>{if(!request.url().startsWith(base))externalRequests.
 await page.route(base+'**',async route=>{
  const path=new URL(route.request().url()).pathname.slice('/ugd'.length);requests.push(path);
  if(failGeometry&&path.endsWith('municipios-13.geojson'))return route.fulfill({status:503,body:'Unavailable'});
+ if(path.endsWith('/config.json')&&failureMode==='config')return route.fulfill({status:503,body:'Unavailable'});
+ if(path.endsWith('/catalog.json')&&failureMode==='absent')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({snapshots:[]})});
+ if(path.endsWith('/archive.json')){
+  archiveRequests++;
+  if(failureMode==='http')return route.fulfill({status:503,body:'Unavailable'});
+  if(failureMode==='json')return route.fulfill({status:200,contentType:'application/json',body:'{'});
+  if(failureMode==='incomplete')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({snapshots:[]})});
+  if(failureMode==='nested'){
+   const data=JSON.parse(await readFile(resolve('dist/data/explorer/archive.json'),'utf8'));
+   delete data.snapshots[0].indicators;
+   return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+  }
+ }
  const file=resolve('dist','.'+(path==='/'?'/index.html':path));
  if(comparisonFixture&&path.endsWith('/archive.json')){
   const data=JSON.parse(await readFile(file,'utf8')),s=data.snapshots[0];s.status='approved';s.verification_status='official_verified';s.comparison={methodology_id:'synthetic-test',source_id:s.source_id,geography_version:'synthetic-test',periodicity:'annual'};
@@ -148,5 +162,31 @@ try{
  comparisonFixture=true;await page.goto(base+'?obs_from=2024-v1&obs_to=2025-test');await page.locator('#obs-table tbody tr').first().waitFor();
  assert.match(await page.locator('#obs-status').innerText(),/Períodos comparables/);assert.equal(await page.locator('#obs-table tbody tr').first().locator('td').nth(2).innerText(),'3');
  await page.locator('#obs-from').selectOption('');await page.reload();await page.locator('#obs-table tbody tr').first().waitFor();assert.equal(await page.locator('#obs-from').inputValue(),'');assert.match(await page.locator('#obs-status').innerText(),/Se necesitan dos períodos/);
+ // Independent institutional shell, failure isolation and serialized recovery.
+ await page.setViewportSize({width:1280,height:900});
+ injectInternalFields=false;comparisonFixture=false;
+ for(const mode of ['absent','http','json','incomplete','nested','config']){
+  failureMode=mode;
+  await page.goto(base);
+  await page.locator('#retry').waitFor({state:'visible'});
+  assert.equal(await page.locator('#institution-title').count(),1);
+  assert.match(await page.locator('#institucion').innerText(),/Secretaría de Salud de Honduras/);
+  assert.match(await page.locator('#institucion').innerText(),/pendiente de validación/);
+  await page.locator('#site-nav a[href="#institucion"]').click();
+  assert.equal(new URL(page.url()).hash,'#institucion');
+  assert.match(await page.locator('#observatory').innerText(),/Sin archivo|No se pudo/);
+  assert.match(await page.locator('#documentos').innerText(),/Sin archivo|No se pudo/);
+  assert.equal(await page.locator('#kpi-agreements').innerText(),'—');
+  failureMode=null;archiveRequests=0;
+  await page.locator('#retry').evaluate(el=>{el.click();el.click();el.click();});
+  await page.locator('#map path[data-code]').first().waitFor();
+  assert.equal(archiveRequests,1,'Reintento concurrente duplicado');
+  assert.equal(await page.locator('#institution-title').count(),1);
+  assert.equal(await page.locator('#document-list article').count(),2);
+  assert.equal(await page.locator('#manager-list details').count(),39);
+  await page.locator('#institution-search').fill('label-001');
+  assert.equal(await page.locator('#manager-list details').count(),1);
+  assert(await page.locator('#retry').isHidden());
+ }
  assert.deepEqual(errors,[]);assert.deepEqual(externalRequests,[],'El portal no debe solicitar fuentes ni servicios externos');console.log('Navegador: firma territorial, Atlas UGD, contexto nacional, ficha de procedencia, ecosistema, móvil, KPIs, drill-down, teclado, filtros, URL, descargas sin campos internos, advertencias y recuperación sin mapa obsoleto: OK');
 }finally{await browser.close();}
