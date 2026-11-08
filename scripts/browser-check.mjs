@@ -98,10 +98,10 @@ try{
   await page.goBack();assert(await page.locator('h1').isVisible());
  }
  await page.goto(base+'?utm_source=ejemplo');
- assert(new URL(page.url()).pathname.endsWith('/index.html'),'Un parámetro no reconocido debe permanecer en la portada');
+ assert.equal(new URL(page.url()).pathname,new URL(base).pathname,'Un parámetro no reconocido debe permanecer en la portada');
  assert.equal(await page.locator('h1').innerText(),'Unidad de Gestión Descentralizada');
  await page.goto(base+'#ancla-no-reconocida');
- assert(new URL(page.url()).pathname.endsWith('/index.html'),'Un ancla no reconocida debe permanecer en la portada');
+ assert.equal(new URL(page.url()).pathname,new URL(base).pathname,'Un ancla no reconocida debe permanecer en la portada');
  await page.goto(base+'#institucion');await page.waitForURL(url=>url.pathname.endsWith('/portal.html')&&url.hash==='#institucion');
  await page.goto(base+'?year=2024&territory=1301&utm_source=ejemplo');
  assert(new URL(page.url()).pathname.endsWith('/portal.html'));
