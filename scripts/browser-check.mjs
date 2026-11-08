@@ -2,10 +2,12 @@ import {createRequire} from 'node:module';
 import {readFile,mkdir} from 'node:fs/promises';
 import {resolve,extname} from 'node:path';
 import assert from 'node:assert/strict';
+import {validateExplorer} from './validate-explorer.mjs';
 const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
 const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],requests=[],externalRequests=[];
+let failureMode=null, archiveRequests=0, emptyArchive=false;
 let failGeometry=false,injectInternalFields=false,comparisonFixture=false;
 page.on('pageerror',e=>errors.push(e.message));
 const base='http://127.0.0.1:4173/ugd/';
@@ -13,6 +15,30 @@ page.on('request',request=>{if(!request.url().startsWith(base))externalRequests.
 await page.route(base+'**',async route=>{
  const path=new URL(route.request().url()).pathname.slice('/ugd'.length);requests.push(path);
  if(failGeometry&&path.endsWith('municipios-13.geojson'))return route.fulfill({status:503,body:'Unavailable'});
+ if(path.endsWith('/config.json')&&failureMode==='config')return route.fulfill({status:503,body:'Unavailable'});
+ if(path.endsWith('/catalog.json')&&failureMode==='absent')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({snapshots:[]})});
+ if(path.endsWith('/archive.json')){
+  archiveRequests++;
+  if(failureMode==='http')return route.fulfill({status:503,body:'Unavailable'});
+  if(failureMode==='json')return route.fulfill({status:200,contentType:'application/json',body:'{'});
+  if(failureMode==='incomplete')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({snapshots:[]})});
+  if(emptyArchive){
+   const data=JSON.parse(await readFile(resolve('dist/data/explorer/archive.json'),'utf8'));
+   data.snapshots=[];data.coverage=[];data.departments=[];data.agreements=[];
+   validateExplorer(data); // Ausencia válida, sin referencias a cortes inexistentes.
+   return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+  }
+  if(['period','verification'].includes(failureMode)){
+   const data=JSON.parse(await readFile(resolve('dist/data/explorer/archive.json'),'utf8'));
+   delete data.snapshots[0][failureMode==='period'?'period_start':'verification_status'];
+   return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+  }
+  if(failureMode==='nested'){
+   const data=JSON.parse(await readFile(resolve('dist/data/explorer/archive.json'),'utf8'));
+   delete data.snapshots[0].indicators;
+   return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+  }
+ }
  const file=resolve('dist','.'+(path==='/'?'/index.html':path));
  if(comparisonFixture&&path.endsWith('/archive.json')){
   const data=JSON.parse(await readFile(file,'utf8')),s=data.snapshots[0];s.status='approved';s.verification_status='official_verified';s.comparison={methodology_id:'synthetic-test',source_id:s.source_id,geography_version:'synthetic-test',periodicity:'annual'};
@@ -28,6 +54,12 @@ await page.route(base+'**',async route=>{
  }
  try{await route.fulfill({status:200,contentType:({'.html':'text/html','.js':'text/javascript','.json':'application/json','.geojson':'application/json','.css':'text/css'})[extname(file)],body:await readFile(file)});}catch{await route.fulfill({status:404,body:'Not found'});}
 });
+async function assertHistoricalNotice(){
+ assert.equal(await page.locator('#institutional-records #institutional-notice').count(),1);
+ assert.match(await page.locator('#institutional-notice').innerText(),/Registros históricos.*Período de referencia: 2024.*2024-01-01 a 2024-12-31.*Archivo provisional.*Pendiente de verificación oficial/);
+ assert.match(await page.locator('#gestores .section-heading').innerText(),/registros históricos no acreditan identidad jurídica, relaciones territoriales ni vigencia actual sin verificación adicional/);
+ assert.equal(await page.locator('#institucion #institutional-notice').count(),0);
+}
 try{
  await page.goto(base);
  await page.waitForTimeout(100);
@@ -82,6 +114,7 @@ try{
  const obsPayload=JSON.parse(await readFile(await obsDownload.path(),'utf8'));assert.equal(obsPayload.rows.length,6);assert(obsPayload.rows.every(r=>r.absolute===null&&r.percent===null));
  assert.equal(await page.locator('#document-list article').count(),2);
  assert.equal(await page.locator('#manager-list details').count(),39);
+ await assertHistoricalNotice();
  assert.match(await page.locator('#agreement-list').innerText(),/No hay un padrón/);
  await page.locator('#document-year').selectOption('2024');assert.equal(await page.locator('#document-list article').count(),1);
  await page.locator('#document-year').selectOption('');
@@ -148,5 +181,42 @@ try{
  comparisonFixture=true;await page.goto(base+'?obs_from=2024-v1&obs_to=2025-test');await page.locator('#obs-table tbody tr').first().waitFor();
  assert.match(await page.locator('#obs-status').innerText(),/Períodos comparables/);assert.equal(await page.locator('#obs-table tbody tr').first().locator('td').nth(2).innerText(),'3');
  await page.locator('#obs-from').selectOption('');await page.reload();await page.locator('#obs-table tbody tr').first().waitFor();assert.equal(await page.locator('#obs-from').inputValue(),'');assert.match(await page.locator('#obs-status').innerText(),/Se necesitan dos períodos/);
+ // Independent institutional shell, failure isolation and serialized recovery.
+ await page.setViewportSize({width:1280,height:900});
+ injectInternalFields=false;comparisonFixture=false;
+ for(const mode of ['absent','http','json','incomplete','nested','config','period','verification']){
+  failureMode=mode;
+  await page.goto(base);
+  await page.locator('#retry').waitFor({state:'visible'});
+  assert.equal(await page.locator('#institution-title').count(),1);
+  assert.match(await page.locator('#institucion').innerText(),/Secretaría de Salud de Honduras/);
+  assert.match(await page.locator('#institucion').innerText(),/pendiente de validación/);
+  await page.locator('#site-nav a[href="#institucion"]').click();
+  assert.equal(new URL(page.url()).hash,'#institucion');
+  assert.match(await page.locator('#observatory').innerText(),/Sin archivo|No se pudo/);
+  assert.match(await page.locator('#documentos').innerText(),/Sin archivo|No se pudo/);
+  assert.equal(await page.locator('#kpi-agreements').innerText(),'—');
+  assert.equal(await page.locator('#institutional-notice').count(),0);
+  failureMode=null;archiveRequests=0;
+  await page.locator('#retry').evaluate(el=>{el.click();el.click();el.click();});
+  await page.locator('#map path[data-code]').first().waitFor();
+  assert.equal(archiveRequests,1,'Reintento concurrente duplicado');
+  assert.equal(await page.locator('#institution-title').count(),1);
+  assert.equal(await page.locator('#document-list article').count(),2);
+  assert.equal(await page.locator('#manager-list details').count(),39);
+  await assertHistoricalNotice();
+  await page.locator('#institution-search').fill('label-001');
+  assert.equal(await page.locator('#manager-list details').count(),1);
+  assert(await page.locator('#retry').isHidden());
+ }
+ // El contrato admite un archivo sin cortes: no deducir período ni verificación de sus fuentes.
+ emptyArchive=true;
+ await page.goto(base);
+ await page.locator('#map path[data-code]').first().waitFor();
+ assert.equal(await page.locator('#institutional-notice').count(),1);
+ assert.equal(await page.locator('#institutional-notice').innerText(),'Registros históricos del archivo territorial · Período de referencia no disponible · Estado del archivo y verificación no disponibles. No acreditan vigencia actual.');
+ assert.equal(await page.locator('#manager-list details').count(),39);
+ assert.equal(await page.locator('#institution-title').count(),1);
+ assert(await page.locator('#retry').isHidden());
  assert.deepEqual(errors,[]);assert.deepEqual(externalRequests,[],'El portal no debe solicitar fuentes ni servicios externos');console.log('Navegador: firma territorial, Atlas UGD, contexto nacional, ficha de procedencia, ecosistema, móvil, KPIs, drill-down, teclado, filtros, URL, descargas sin campos internos, advertencias y recuperación sin mapa obsoleto: OK');
 }finally{await browser.close();}
