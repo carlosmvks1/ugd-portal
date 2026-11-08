@@ -115,9 +115,10 @@ try{
  assert.equal(await page.locator('.institutional-header').evaluate(el=>getComputedStyle(el).position),'sticky','El encabezado interior debe permanecer fijo');
  assert.equal(await page.locator('h1').count(),1);
  assert.equal(await page.locator('h1').innerText(),'Información y consulta UGD');
- const headingLevels=await page.locator('h1,h2,h3,h4,h5,h6').evaluateAll(nodes=>nodes.map(el=>Number(el.tagName.slice(1))));
- assert.equal(headingLevels[0],1);
- assert(headingLevels.every((level,index)=>index===0||level<=headingLevels[index-1]+1),'Jerarquía de encabezados sin saltos');
+ const headingLevels=await page.locator('h1,h2,h3,h4,h5,h6').evaluateAll(nodes=>nodes.map(el=>({level:Number(el.tagName.slice(1)),text:el.innerText.trim().slice(0,60)})));
+ assert.equal(headingLevels[0].level,1);
+ const headingJumps=headingLevels.filter((heading,index)=>index>0&&heading.level>headingLevels[index-1].level+1);
+ assert.deepEqual(headingJumps,[],'Jerarquía de encabezados sin saltos: '+JSON.stringify(headingJumps));
  await page.locator('#site-nav a[href="#descentralizacion"]').click();
  await page.waitForFunction(()=>location.hash==='#descentralizacion');
  await page.waitForFunction(()=>{const e=document.querySelector('#decentralization-title'),h=document.querySelector('.institutional-header').getBoundingClientRect(),y=e.getBoundingClientRect().top;return y>=h.bottom-1&&y<h.bottom+80;});
