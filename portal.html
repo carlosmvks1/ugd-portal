@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Portal de la Unidad de Gestión Descentralizada de la Secretaría de Salud de Honduras.">
+  <title>UGD · Información y consulta territorial</title>
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+<a href="#cobertura" class="skip">Ir al explorador territorial</a>
+<a href="#table" class="skip skip-secondary">Ir a la tabla territorial</a>
+<header class="site-header institutional-header">
+  <div class="shell header-inner">
+    <a class="brand" href="./index.html" aria-label="UGD, inicio">
+      <span class="brand-mark" aria-hidden="true">UGD</span>
+      <span class="brand-copy">Secretaría de Salud</span>
+    </a>
+    <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+      <span class="sr-only">Abrir navegación</span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Navegación de UGD">
+      <a href="#institucion">La UGD</a>
+      <a href="#descentralizacion">Descentralización</a>
+      <a href="#documentos">Documentos</a>
+      <a href="#cobertura">Cobertura territorial</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section id="cobertura" class="coverage-section" aria-labelledby="coverage-title">
+    <div class="shell">
+      <div class="section-heading section-heading-large atlas-section-heading">
+        <div>
+          <p class="eyebrow">Atlas territorial UGD</p>
+          <h2 id="coverage-title">Honduras, territorio por territorio.</h2>
+        </div>
+        <p>Explore cobertura reportada desde el nivel nacional hasta el municipio, con período y fuente integrados en cada consulta.</p>
+      </div>
+
+      <p id="status" class="status-banner" role="status">Consultando fuentes…</p>
+
+      <section id="explorer" hidden aria-label="Consulta territorial">
+        <div class="explorer-controls">
+          <div class="primary-filters">
+            <label>Año<select id="year"></select></label>
+            <label>Nivel de atención<select id="care"></select></label>
+            <label>Visualización<select id="layer"><option value="status">Cobertura reportada</option><option value="proportion">Proporción municipal</option><option value="population">Población publicada</option></select></label>
+          </div>
+
+          <details class="advanced-filters">
+            <summary>Filtros adicionales</summary>
+            <div class="advanced-filter-grid">
+              <label>Versión<select id="snapshot"></select></label>
+              <label>Tipo de gestor<select id="manager"></select></label>
+              <label>Estado del convenio<select id="agreement"></select></label>
+            </div>
+          </details>
+
+          <div class="search-row">
+            <div class="search-block">
+              <label for="search">Buscar territorio</label>
+              <input id="search" type="search" placeholder="Departamento, municipio o código" autocomplete="off" aria-controls="results">
+              <ul id="results" aria-label="Resultados de búsqueda"></ul>
+            </div>
+            <p class="search-helper">Seleccione un departamento para entrar a su nivel municipal.</p>
+          </div>
+        </div>
+
+        <nav id="breadcrumbs" aria-label="Ubicación territorial"></nav>
+
+        <div class="atlas-workspace">
+          <section class="map-area atlas-map-area" aria-labelledby="atlas-title">
+            <header class="atlas-map-header">
+              <div>
+                <p class="atlas-map-kicker">Cobertura territorial</p>
+                <h3 id="atlas-title">Honduras</h3>
+                <p id="atlas-subtitle">Municipios reportados · territorio nacional</p>
+              </div>
+              <p id="atlas-source" class="atlas-source">Fuente institucional</p>
+            </header>
+
+            <div class="atlas-legend-row">
+              <div id="legend" class="atlas-legend" aria-label="Leyenda del mapa"></div>
+              <p id="map-status" class="map-status" role="status"></p>
+            </div>
+
+            <div class="map-wrap" data-depth="national">
+              <svg id="map" role="group" aria-label="Territorios; use Tab o flechas, Enter para seleccionar y Escape para volver"></svg>
+              <div id="tooltip" role="tooltip" hidden></div>
+
+              <div id="context-map-wrap" class="context-map-wrap" hidden aria-hidden="true">
+                <span>Ubicación nacional</span>
+                <svg id="context-map"></svg>
+              </div>
+
+              <div class="map-compass" aria-hidden="true"><span>N</span><i></i></div>
+            </div>
+
+            <footer class="map-footer">
+              <p>Cobertura territorial reportada para el período seleccionado.</p>
+              <p class="map-hint">Cursor en escritorio · toque en móvil</p>
+            </footer>
+          </section>
+
+          <aside id="detail" class="territory-sheet" aria-label="Detalle del territorio">
+            <div class="detail-empty">
+              <span aria-hidden="true">HN</span>
+              <p class="detail-kicker">Atlas territorial</p>
+              <h2>Explore el territorio</h2>
+              <p>Seleccione un departamento para consultar cobertura, población y fuentes.</p>
+            </div>
+          </aside>
+        </div>
+
+        <div class="actions atlas-actions">
+          <button id="home">Volver a Honduras</button>
+          <button id="share">Copiar enlace</button>
+          <button id="csv">Descargar CSV</button>
+          <button id="json">Descargar JSON</button>
+        </div>
+
+        <details class="data-drawer">
+          <summary>
+            <span>Tabla territorial accesible</span>
+            <small>Los mismos datos del mapa en formato tabular</small>
+          </summary>
+          <section class="data-table-section" aria-labelledby="table-title">
+            <h3 id="table-title">Tabla territorial accesible</h3>
+            <p>Alternativa equivalente al mapa para consulta, teclado y tecnologías de asistencia.</p>
+            <div class="table-wrap">
+              <table id="table">
+                <caption id="caption"></caption>
+                <thead><tr><th scope="col">Territorio</th><th scope="col">Estado</th><th scope="col">Municipios reportados / total</th><th scope="col">Población publicada</th><th scope="col">Fuente y período</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+        </details>
+
+        <details id="calidad" class="data-drawer quality-drawer">
+          <summary>
+            <span>Fuentes y calidad del dato</span>
+            <small>Metadatos, procedencia e inconsistencias registradas</small>
+          </summary>
+          <section class="quality-section" aria-labelledby="quality-title">
+            <h3 id="quality-title">Fuentes y calidad del dato</h3>
+            <div id="sources"></div>
+            <details><summary id="issuecount">Observaciones</summary><ul id="issues"></ul></details>
+          </section>
+        </details>
+      </section>
+
+      <button id="retry" hidden>Reintentar carga</button>
+    </div>
+  </section>
+
+  <section class="shell observatory-section" id="observatorio" aria-labelledby="observatory-heading"><h2 id="observatory-heading" class="sr-only">Observatorio de indicadores</h2><div id="observatory"><p>Los indicadores estarán disponibles al cargar las fuentes.</p></div></section>
+
+  <div class="shell institutional-portal" id="institutional-content" aria-label="Información institucional y registros">
+<section id="institucion" class="institution-intro" aria-labelledby="institution-title">
+<div><p class="eyebrow">Información institucional</p><h2 id="institution-title">Unidad de Gestión Descentralizada</h2><p>Secretaría de Salud de Honduras</p><p>Propuesta de portal público para facilitar la consulta de información institucional de la UGD.</p></div>
+<div class="institution-note"><h3>Contenido pendiente de validación institucional</h3><p>La presentación oficial, las funciones, las autoridades, el organigrama y los canales de contacto se incorporarán cuando se disponga de información aprobada.</p><a href="#cobertura">Consultar disponibilidad de información territorial</a></div></section>
+<section id="descentralizacion" aria-labelledby="decentralization-title">
+<h2 id="decentralization-title">Descentralización en salud</h2>
+<p>Contenido pendiente de validación institucional: explicación del concepto y su relación con la UGD.</p>
+</section>
+<nav aria-label="Consultas complementarias"><a href="#observatorio">Observatorio</a> · <a href="#gestores">Gestores</a> · <a href="#convenios">Convenios</a> · <a href="#calidad">Fuentes</a> · <a href="#modelo">Modelo del prototipo</a> · <a href="#informacion">Información</a></nav>
+<div id="institutional-records">
+<section id="documentos"><h2>Biblioteca documental</h2><p data-territorial-status>Las fuentes históricas requieren cargar el archivo territorial.</p></section>
+<section id="gestores"><h2>Gestores</h2><p data-territorial-status>Los registros históricos requieren cargar el archivo territorial.</p></section>
+<section id="convenios"><h2>Convenios</h2><p data-territorial-status>Los registros históricos requieren cargar el archivo territorial.</p></section>
+</div></div>
+
+  <section id="modelo" class="ecosystem-section section-dark" aria-labelledby="model-title">
+    <div class="shell">
+      <div class="section-heading ecosystem-heading">
+        <div>
+          <p class="eyebrow eyebrow-light">Modelo de gestión</p>
+          <h2 id="model-title">Una red que conecta rectoría, gestión y territorio.</h2>
+        </div>
+        <p>La gestión descentralizada articula decisiones institucionales, convenios, gestores, servicios, población y seguimiento dentro de una misma cadena.</p>
+      </div>
+
+      <div class="ecosystem-stage" role="group" aria-labelledby="ecosystem-title" aria-describedby="ecosystem-desc">
+        <h3 id="ecosystem-title" class="sr-only">Ecosistema de gestión descentralizada</h3>
+        <p id="ecosystem-desc" class="sr-only">Diagrama desde SESAL y rectoría hacia convenios, gestores, redes de salud, territorio, población y monitoreo.</p>
+
+        <svg class="ecosystem-lines" viewBox="0 0 1000 590" preserveAspectRatio="none" aria-hidden="true">
+          <path class="flow-primary" d="M500 75 L500 145 L500 238 L500 332 L500 425 L500 520"/>
+          <path d="M500 145 C390 145 335 175 270 228"/>
+          <path d="M500 145 C610 145 665 175 730 228"/>
+          <path d="M500 332 C385 332 332 365 270 420"/>
+          <path d="M500 332 C615 332 668 365 730 420"/>
+          <path class="flow-return" d="M730 420 C875 440 880 128 600 88"/>
+        </svg>
+
+        <article class="ecosystem-node node-sesal">
+          <span class="node-index">01</span>
+          <small>Rectoría</small>
+          <strong>SESAL</strong>
+          <p>Lineamientos, metas y conducción.</p>
+        </article>
+
+        <article class="ecosystem-node node-convenios">
+          <span class="node-index">02</span>
+          <small>Instrumento</small>
+          <strong>Convenios</strong>
+          <p>Alcance, territorio y condiciones.</p>
+        </article>
+
+        <article class="ecosystem-node node-gestores">
+          <span class="node-index">03</span>
+          <small>Gestión</small>
+          <strong>Gestores</strong>
+          <p>Ejecución del modelo descentralizado.</p>
+        </article>
+
+        <article class="ecosystem-node node-financiamiento">
+          <span class="node-index">04</span>
+          <small>Recursos</small>
+          <strong>Financiamiento</strong>
+          <p>Asignación vinculada a la gestión.</p>
+        </article>
+
+        <article class="ecosystem-node node-redes">
+          <span class="node-index">05</span>
+          <small>Prestación</small>
+          <strong>Redes de salud</strong>
+          <p>Servicios y establecimientos.</p>
+        </article>
+
+        <article class="ecosystem-node node-territorio">
+          <span class="node-index">06</span>
+          <small>Geografía</small>
+          <strong>Territorio</strong>
+          <p>Departamentos y municipios.</p>
+        </article>
+
+        <article class="ecosystem-node node-poblacion">
+          <span class="node-index">07</span>
+          <small>Resultado</small>
+          <strong>Población</strong>
+          <p>Cobertura y acceso reportados.</p>
+        </article>
+
+        <article class="ecosystem-node node-monitoreo">
+          <span class="node-index">08</span>
+          <small>Seguimiento</small>
+          <strong>Monitoreo</strong>
+          <p>Indicadores, evaluación y retroalimentación.</p>
+        </article>
+      </div>
+
+      <div id="informacion" class="information-system">
+        <div class="information-system-intro">
+          <p class="eyebrow eyebrow-light">Información institucional</p>
+          <h3>Distintas vistas de un mismo sistema.</h3>
+          <p>Territorio funciona como eje para relacionar la información institucional sin fragmentarla en silos.</p>
+        </div>
+
+        <div class="information-orbit" aria-label="Áreas de información institucional">
+          <article><span>01</span><div><h4>Gestores</h4><p>Organizaciones, territorios y relaciones de gestión.</p></div></article>
+          <article><span>02</span><div><h4>Convenios</h4><p>Vigencia, alcance y relaciones institucionales.</p></div></article>
+          <article class="orbit-center"><span>UGD</span><div><h4>Territorio</h4><p>Eje común de consulta.</p></div></article>
+          <article><span>03</span><div><h4>Documentos</h4><p>Fuentes por período, tema y territorio.</p></div></article>
+          <article><span>04</span><div><h4>Normativa</h4><p>Marco jurídico y documentos oficiales.</p></div></article>
+          <article><span>05</span><div><h4>Monitoreo</h4><p>Indicadores, instrumentos e informes.</p></div></article>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <div>
+      <strong>Unidad de Gestión Descentralizada</strong>
+      <p>Secretaría de Salud de Honduras</p>
+    </div>
+    <div class="footer-meta">
+      <span>Información territorial y documental</span>
+      <span>Fuentes y períodos de referencia</span>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

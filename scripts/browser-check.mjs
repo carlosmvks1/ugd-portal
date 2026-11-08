@@ -6,7 +6,8 @@ import {validateExplorer} from './validate-explorer.mjs';
 const require=createRequire(import.meta.url);
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
-const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[],requests=[],externalRequests=[];
+const page=await browser.newPage({viewport:{width:1440,height:900}}),errors=[],requests=[],externalRequests=[];
+page.setDefaultTimeout(15000);
 let failureMode=null, archiveRequests=0, emptyArchive=false;
 let failGeometry=false,injectInternalFields=false,comparisonFixture=false;
 page.on('pageerror',e=>errors.push(e.message));
@@ -61,51 +62,58 @@ async function assertHistoricalNotice(){
  assert.equal(await page.locator('#institucion #institutional-notice').count(),0);
 }
 try{
+ // Entrance: real links, keyboard menu, responsive layout, and legacy URL compatibility.
  await page.goto(base);
+ assert.equal(await page.locator('h1').innerText(),'Unidad de Gestión Descentralizada');
+ assert.equal(await page.locator('.home-primary').count(),1);
+ assert.equal(await page.locator('.home-links a').count(),3);
+ assert.equal(await page.locator('main p').innerText(),'Secretaría de Salud de Honduras');
+ assert(!requests.some(path=>/archive|geojson/.test(path)),'La portada no carga datos territoriales');
+ if(process.env.SCREENSHOT_DIR){
+  await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});
+  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-home.png'),fullPage:true});
+ }
+ for(const width of [320,390,768,850,1024,1440]){
+  await page.setViewportSize({width,height:844});
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Desbordamiento en '+width);
+ }
+ await page.setViewportSize({width:390,height:844});
+ if(process.env.SCREENSHOT_DIR)await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile-home.png'),fullPage:true});
+ const enlarged=await page.addStyleTag({content:':root{font-size:200%} .home-content{line-height:1.5;letter-spacing:.12em;word-spacing:.16em} .home-content p{margin-bottom:2em}'});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Texto ampliado y espaciado');
+ await enlarged.evaluate(el=>el.remove());
+ assert(await page.locator('#site-nav').isHidden());
+ await page.locator('#nav-toggle').focus();await page.keyboard.press('Enter');
+ assert.equal(await page.locator('#nav-toggle').getAttribute('aria-expanded'),'true');
+ await page.keyboard.press('Tab');assert.equal(await page.locator('#site-nav a').first().evaluate(el=>el===document.activeElement),true);
+ await page.keyboard.press('Escape');
+ assert(await page.locator('#site-nav').isHidden());
+ assert(await page.locator('#nav-toggle').evaluate(el=>el===document.activeElement));
+ await page.keyboard.press('Tab');assert(await page.locator('.home-primary').evaluate(el=>el===document.activeElement));
+ for(const selector of ['.home-primary','.home-links a:nth-child(1)','.home-links a:nth-child(2)','.home-links a:nth-child(3)']){
+  await page.goto(base);await page.locator(selector).click();
+  await page.locator(new URL(page.url()).hash).waitFor({state:'visible'});
+  await page.reload();assert(await page.locator(new URL(page.url()).hash).isVisible());
+  await page.goBack();assert(await page.locator('h1').isVisible());
+ }
+ await page.goto(base+'#institucion');await page.waitForURL(url=>url.pathname.endsWith('/portal.html')&&url.hash==='#institucion');
+ await page.goto(base+'?year=2024&territory=1301');await page.locator('#map path[data-code="1301"]').waitFor();
+ assert.equal(await page.locator('#detail h2').innerText(),'Gracias');
+ await page.setViewportSize({width:1440,height:900});
+ requests.length=0;
+ await page.goto(base+'portal.html');
  await page.waitForTimeout(100);
  assert.deepEqual(errors,[],'Errores JavaScript durante la carga inicial');
  await page.locator('#map path[data-code]').first().waitFor();
- assert((await page.locator('#hero-title').innerText()).includes('Gestión descentralizada'));
- await page.waitForFunction(()=>[
-   ['#kpi-agreements','47'],
-   ['#kpi-levels','40 / 7'],
-   ['#kpi-municipalities','89'],
-   ['#kpi-population','1,592,136']
-  ].every(([selector,value])=>document.querySelector(selector)?.textContent===value));
- assert.equal(await page.locator('#kpi-agreements').innerText(),'47');
- assert.equal(await page.locator('#kpi-levels').innerText(),'40 / 7');
- assert.equal(await page.locator('#kpi-municipalities').innerText(),'89');
- assert.equal(await page.locator('#kpi-population').innerText(),'1,592,136');
- assert.equal(await page.locator('#kpi-agreements').getAttribute('aria-hidden'),'true');
- assert((await page.locator('.kpi-item').first().getAttribute('aria-label')).includes('47'));
- assert((await page.locator('#home-period').innerText()).includes('2024'));
- assert.equal(await page.locator('#kpi-snapshot-year').innerText(),'2024');
- await page.waitForFunction(()=>document.querySelectorAll('#hero-map-signature path[data-signature-code]').length===18);
- assert.equal(await page.locator('#hero-map-signature path[data-signature-code]').count(),18);
- assert((await page.locator('#hero-territory-count').innerText()).includes('18 departamentos'));
  assert((await page.locator('#atlas-title').innerText()).includes('Honduras'));
  assert.equal(await page.locator('.ecosystem-node').count(),8);
  assert.equal(await page.locator('.information-orbit article').count(),6);
  assert.equal(await page.locator('.advanced-filters').getAttribute('open'),null);
  assert.equal(await page.locator('#manager').isDisabled(),true);
  assert.equal(await page.locator('#agreement').isDisabled(),true);
- assert.match(await page.locator('#home-period').innerText(),/Archivo provisional.*Pendiente de verificación oficial/);
  assert.match(await page.locator('#status').innerText(),/Archivo provisional.*Pendiente de verificación oficial/);
- assert.match(await page.locator('#kpi-municipalities-note').innerText(),/89 en el texto \/ 93 en la tabla/);
  assert((await page.locator('.information-orbit').innerText()).includes('Gestores'));
  assert((await page.locator('.information-orbit').innerText()).includes('Monitoreo'));
- if(process.env.SCREENSHOT_DIR){
-  await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});
-  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-home.png'),fullPage:false});
-  await page.setViewportSize({width:390,height:844});
-  assert.equal(await page.locator('#nav-toggle').isVisible(),true);
-  await page.locator('#nav-toggle').click();
-  assert.equal(await page.locator('#nav-toggle').getAttribute('aria-expanded'),'true');
-  assert.equal(await page.locator('#site-nav').isVisible(),true);
-  await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile-home.png'),fullPage:false});
-  await page.locator('#nav-toggle').click();
-  await page.setViewportSize({width:1280,height:900});
- }
  assert.equal(await page.locator('#obs-table tbody tr').count(),6);
  assert.match(await page.locator('#obs-status').innerText(),/Se necesitan dos períodos/);
  assert.match(await page.locator('#obs-table').innerText(),/No calculable/);
@@ -152,16 +160,15 @@ try{
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'Desbordamiento horizontal');
  if(process.env.SCREENSHOT_DIR){
   await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-mobile-territory.png'),fullPage:false});
-  await page.setViewportSize({width:1280,height:900});
+  await page.setViewportSize({width:1440,height:900});
   await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop-territory.png'),fullPage:false});
  }
  await page.emulateMedia({reducedMotion:'reduce'});
- await page.goto(base);await page.locator('#map path[data-code]').first().waitFor();
- assert.equal(await page.locator('#kpi-population').innerText(),'1,592,136');
+ await page.goto(base+'portal.html');await page.locator('#map path[data-code]').first().waitFor();
  await page.emulateMedia({reducedMotion:'no-preference'});
- await page.goto(base+'?year=2026&territory=1301');await page.locator('#map path[data-code="1301"]').waitFor();assert((await page.locator('#status').innerText()).includes('Sin datos publicados'));assert(await page.locator('#csv').isDisabled());assert(!(await page.locator('#detail').innerText()).includes('62,863'));
+ await page.goto(base+'portal.html?year=2026&territory=1301');await page.locator('#map path[data-code="1301"]').waitFor();assert((await page.locator('#status').innerText()).includes('Sin datos publicados'));assert(await page.locator('#csv').isDisabled());assert(!(await page.locator('#detail').innerText()).includes('62,863'));
  // Empezar en otro departamento detecta geometrías y eventos obsoletos.
- await page.goto(base+'?year=2024&territory=05');await page.locator('#map path[data-code="0501"]').waitFor();
+ await page.goto(base+'portal.html?year=2024&territory=05');await page.locator('#map path[data-code="0501"]').waitFor();
  failGeometry=true;await page.locator('#search').fill('Lempira');await page.locator('#results button').filter({hasText:'Lempira · 13'}).click();
  await page.locator('#retry-map').waitFor();assert.equal(await page.locator('#table tbody tr').count(),28);
  assert.equal(await page.locator('#detail h2').innerText(),'Lempira');
@@ -172,21 +179,21 @@ try{
  await page.locator('#home').click();await page.locator('#map path[data-code="13"]').waitFor();await page.locator('#map path[data-code="13"]').focus();await page.keyboard.press('Enter');await page.locator('#map path[data-code="1301"]').waitFor();await page.locator('#map path[data-code="1301"]').focus();await page.keyboard.press('Escape');await page.locator('#map path[data-code="13"]').waitFor();
  // Una fuente de ejecución contaminada tampoco debe propagar campos internos
  // a los metadatos ni a las filas de las descargas.
- injectInternalFields=true;await page.goto(base);await page.locator('#map path[data-code]').first().waitFor();
+ injectInternalFields=true;await page.goto(base+'portal.html');await page.locator('#map path[data-code]').first().waitFor();
  for(const kind of ['json','csv']){
   const pending=page.waitForEvent('download');await page.locator('#'+kind).click();const downloaded=await pending;
   const text=await readFile(await downloaded.path(),'utf8');assert(!text.includes('SYNTHETIC_AUDIT_MARKER'));
   if(kind==='json')assert.equal(JSON.parse(text).rows.length,93);
  }
- comparisonFixture=true;await page.goto(base+'?obs_from=2024-v1&obs_to=2025-test');await page.locator('#obs-table tbody tr').first().waitFor();
+ comparisonFixture=true;await page.goto(base+'portal.html?obs_from=2024-v1&obs_to=2025-test');await page.locator('#obs-table tbody tr').first().waitFor();
  assert.match(await page.locator('#obs-status').innerText(),/Períodos comparables/);assert.equal(await page.locator('#obs-table tbody tr').first().locator('td').nth(2).innerText(),'3');
  await page.locator('#obs-from').selectOption('');await page.reload();await page.locator('#obs-table tbody tr').first().waitFor();assert.equal(await page.locator('#obs-from').inputValue(),'');assert.match(await page.locator('#obs-status').innerText(),/Se necesitan dos períodos/);
  // Independent institutional shell, failure isolation and serialized recovery.
- await page.setViewportSize({width:1280,height:900});
+ await page.setViewportSize({width:1440,height:900});
  injectInternalFields=false;comparisonFixture=false;
  for(const mode of ['absent','http','json','incomplete','nested','config','period','verification']){
   failureMode=mode;
-  await page.goto(base);
+  await page.goto(base+'portal.html');
   await page.locator('#retry').waitFor({state:'visible'});
   assert.equal(await page.locator('#institution-title').count(),1);
   assert.match(await page.locator('#institucion').innerText(),/Secretaría de Salud de Honduras/);
@@ -195,7 +202,6 @@ try{
   assert.equal(new URL(page.url()).hash,'#institucion');
   assert.match(await page.locator('#observatory').innerText(),/Sin archivo|No se pudo/);
   assert.match(await page.locator('#documentos').innerText(),/Sin archivo|No se pudo/);
-  assert.equal(await page.locator('#kpi-agreements').innerText(),'—');
   assert.equal(await page.locator('#institutional-notice').count(),0);
   failureMode=null;archiveRequests=0;
   await page.locator('#retry').evaluate(el=>{el.click();el.click();el.click();});
@@ -211,12 +217,12 @@ try{
  }
  // El contrato admite un archivo sin cortes: no deducir período ni verificación de sus fuentes.
  emptyArchive=true;
- await page.goto(base);
+ await page.goto(base+'portal.html');
  await page.locator('#map path[data-code]').first().waitFor();
  assert.equal(await page.locator('#institutional-notice').count(),1);
  assert.equal(await page.locator('#institutional-notice').innerText(),'Registros históricos del archivo territorial · Período de referencia no disponible · Estado del archivo y verificación no disponibles. No acreditan vigencia actual.');
  assert.equal(await page.locator('#manager-list details').count(),39);
  assert.equal(await page.locator('#institution-title').count(),1);
  assert(await page.locator('#retry').isHidden());
- assert.deepEqual(errors,[]);assert.deepEqual(externalRequests,[],'El portal no debe solicitar fuentes ni servicios externos');console.log('Navegador: firma territorial, Atlas UGD, contexto nacional, ficha de procedencia, ecosistema, móvil, KPIs, drill-down, teclado, filtros, URL, descargas sin campos internos, advertencias y recuperación sin mapa obsoleto: OK');
+ assert.deepEqual(errors,[]);assert.deepEqual(externalRequests,[],'El portal no debe solicitar fuentes ni servicios externos');console.log('Navegador: portada institucional, navegación, Atlas UGD, contexto nacional, ficha de procedencia, ecosistema, móvil, drill-down, teclado, filtros, URL, descargas sin campos internos, advertencias y recuperación sin mapa obsoleto: OK');
 }finally{await browser.close();}
