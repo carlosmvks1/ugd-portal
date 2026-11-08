@@ -120,6 +120,7 @@ try{
  assert(headingLevels.every((level,index)=>index===0||level<=headingLevels[index-1]+1),'Jerarquía de encabezados sin saltos');
  await page.locator('#site-nav a[href="#descentralizacion"]').click();
  await page.waitForFunction(()=>location.hash==='#descentralizacion');
+ await page.waitForFunction(()=>{const e=document.querySelector('#decentralization-title'),h=document.querySelector('.institutional-header').getBoundingClientRect(),y=e.getBoundingClientRect().top;return y>=h.bottom-1&&y<h.bottom+80;});
  const anchorClear=await page.locator('#decentralization-title').evaluate(el=>({top:el.getBoundingClientRect().top,headerBottom:document.querySelector('.institutional-header').getBoundingClientRect().bottom}));
  assert(anchorClear.top>=anchorClear.headerBottom-1,'El encabezado no debe cubrir el destino del ancla');
  await page.locator('#coverage-title').evaluate(el=>{el.setAttribute('tabindex','-1');el.focus();});
@@ -130,6 +131,7 @@ try{
  await page.locator('#site-nav a[href="#documentos"]').click();
  await page.waitForFunction(()=>location.hash==='#documentos');
  assert.equal(await page.locator('#nav-toggle').getAttribute('aria-expanded'),'false','El menú interior se cierra al navegar');
+ await page.waitForFunction(()=>{const e=document.querySelector('#documentos'),h=document.querySelector('.institutional-header').getBoundingClientRect(),y=e.getBoundingClientRect().top;return y>=h.bottom-1&&y<h.bottom+80;});
  const mobileAnchorClear=await page.locator('#documentos').evaluate(el=>({top:el.getBoundingClientRect().top,headerBottom:document.querySelector('.institutional-header').getBoundingClientRect().bottom}));
  assert(mobileAnchorClear.top>=mobileAnchorClear.headerBottom-1,'El encabezado móvil no debe cubrir el ancla');
  await page.setViewportSize({width:1440,height:900});
