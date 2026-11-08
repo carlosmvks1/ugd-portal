@@ -367,7 +367,7 @@ table button{font-size:.76rem;border-radius:6px;padding:.3rem .42rem}
   --home-ink:#203b3d;
   --home-line:#cddbd6;
 }
-.institutional-header{position:relative;background:#fff;backdrop-filter:none;border-color:var(--home-line)}
+.institutional-home .institutional-header{position:relative;background:#fff;backdrop-filter:none;border-color:var(--home-line)}
 .institutional-header .shell{width:min(calc(100% - 3rem),1120px)}
 .institutional-header .header-inner{min-height:88px;grid-template-columns:minmax(0,1fr) auto;gap:1.5rem}
 .institutional-header .brand{color:var(--home-primary);gap:.9rem}
@@ -401,3 +401,7 @@ table button{font-size:.76rem;border-radius:6px;padding:.3rem .42rem}
   .home-content{padding-top:3.5rem}
   .home-links{margin-top:3.5rem}
 }
+
+/* Keep portal anchors and keyboard focus clear of the sticky interior header. */
+body:not(.institutional-home) main :target,
+body:not(.institutional-home) main :focus{scroll-margin-block-start:110px}
