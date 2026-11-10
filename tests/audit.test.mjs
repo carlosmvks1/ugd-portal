@@ -62,7 +62,7 @@ test('metadatos de validación se traducen sin certificar el histórico',()=>{
 test('build publica el contrato histórico completo y bloquea importaciones con campos internos',async()=>{
  const temp=await mkdtemp(join(tmpdir(),'ugd-publication-'));
  try{
-  for(const name of ['package.json','index.html','src','scripts','data','geography','public'])await cp(new URL('../'+name,import.meta.url),join(temp,name),{recursive:true});
+  for(const name of ['package.json','index.html','portal.html','src','scripts','data','geography','public'])await cp(new URL('../'+name,import.meta.url),join(temp,name),{recursive:true});
   execFileSync(process.execPath,['scripts/build.mjs'],{cwd:temp,stdio:'pipe'});
   assert.deepEqual(JSON.parse(await readFile(join(temp,'dist/data/explorer/archive.json'),'utf8')),data);
   const contaminated=clone();contaminated.coverage[0].internal_note='SYNTHETIC_AUDIT_MARKER';

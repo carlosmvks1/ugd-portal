@@ -6,7 +6,7 @@ const catalog=await validateData();
 const {rm}=await import('node:fs/promises');
 await rm(new URL('dist/',root),{recursive:true,force:true});
 await mkdir(new URL('dist/data/',root),{recursive:true});
-await copyFile(new URL('index.html',root),new URL('dist/index.html',root));
+for(const page of ['index.html','portal.html'])await copyFile(new URL(page,root),new URL('dist/'+page,root));
 await cp(new URL('src/',root),new URL('dist/src/',root),{recursive:true,filter:path=>!path.endsWith('.md')});
 await cp(new URL('public/',root),new URL('dist/',root),{recursive:true});
 await copyFile(new URL('data/catalog.json',root),new URL('dist/data/catalog.json',root));

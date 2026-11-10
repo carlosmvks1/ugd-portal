@@ -3,7 +3,6 @@ import {renderInstitutional} from './institutional.js';
 import {assertArchiveStructure} from './map/structure.js';
 import {initShell} from './ui.js';
 import {loadConfig,localUrl} from './config.js';
-import {renderHome} from './home.js';
 import {startExplorer} from './map/explorer.js';
 import {initTerritorialArt} from './territorial-art.js';
 
@@ -14,7 +13,6 @@ let loading=false, initialized=false;
 const retry=document.querySelector('#retry');
 function unavailable(message){
  status.textContent=message;
- document.querySelector('#home-period').textContent=message;
  document.querySelector('#observatory').textContent=message;
  document.querySelectorAll('[data-territorial-status]').forEach(el=>el.textContent=message);
 }
@@ -34,7 +32,6 @@ async function init(){
     }
     const data=await load(localUrl(catalog.explorer,config.dataRoot));
     assertArchiveStructure(data);
-    renderHome(data);
     renderInstitutional(data);
     renderObservatory(data);
     await Promise.all([initTerritorialArt(data,config,load),startExplorer(data,config,load)]);
