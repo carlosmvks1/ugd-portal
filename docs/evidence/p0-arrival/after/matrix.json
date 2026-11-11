@@ -1,0 +1,1434 @@
+[
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 139.3125,
+    "headingBottom": 226.59375,
+    "headerBottom": 89,
+    "scrollY": 3877,
+    "focus": "institution-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-institucion-home.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "direct",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 139.3125,
+    "headingBottom": 226.59375,
+    "headerBottom": 89,
+    "scrollY": 3877,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-institucion-direct.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "reload",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 139.3125,
+    "headingBottom": 226.59375,
+    "headerBottom": 89,
+    "scrollY": 3877,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-institucion-reload.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 139.3125,
+    "headingBottom": 226.59375,
+    "headerBottom": 89,
+    "scrollY": 3877,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-institucion-back.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 139.3125,
+    "headingBottom": 226.59375,
+    "headerBottom": 89,
+    "scrollY": 3877,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-institucion-forward.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 108.515625,
+    "headingBottom": 198.046875,
+    "headerBottom": 89,
+    "scrollY": 4194,
+    "focus": "decentralization-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-descentralizacion-home.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "direct",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 108.515625,
+    "headingBottom": 198.046875,
+    "headerBottom": 89,
+    "scrollY": 4194,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-descentralizacion-direct.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "reload",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 108.515625,
+    "headingBottom": 198.046875,
+    "headerBottom": 89,
+    "scrollY": 4194,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-descentralizacion-reload.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 108.515625,
+    "headingBottom": 198.046875,
+    "headerBottom": 89,
+    "scrollY": 4194,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-descentralizacion-back.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 108.515625,
+    "headingBottom": 198.046875,
+    "headerBottom": 89,
+    "scrollY": 4194,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-descentralizacion-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-home.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "direct",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-direct.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "reload",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-reload.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-back.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-forward.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 204.46875,
+    "headingBottom": 294,
+    "headerBottom": 89,
+    "scrollY": 0,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-cobertura-home.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "direct",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 204.46875,
+    "headingBottom": 294,
+    "headerBottom": 89,
+    "scrollY": 0,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-cobertura-direct.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "reload",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 204.46875,
+    "headingBottom": 294,
+    "headerBottom": 89,
+    "scrollY": 0,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-cobertura-reload.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 204.46875,
+    "headingBottom": 294,
+    "headerBottom": 89,
+    "scrollY": 0,
+    "focus": "institution-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-cobertura-back.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 204.46875,
+    "headingBottom": 294,
+    "headerBottom": 89,
+    "scrollY": 0,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-cobertura-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "sequence-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-sequence-back.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "sequence-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 108.515625,
+    "headingBottom": 198.046875,
+    "headerBottom": 89,
+    "scrollY": 4194,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-descentralizacion-sequence-back.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "sequence-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 139.3125,
+    "headingBottom": 226.59375,
+    "headerBottom": 89,
+    "scrollY": 3877,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-institucion-sequence-back.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "sequence-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 108.515625,
+    "headingBottom": 198.046875,
+    "headerBottom": 89,
+    "scrollY": 4194,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-descentralizacion-sequence-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "sequence-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-sequence-forward.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "sequence-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 204.46875,
+    "headingBottom": 294,
+    "headerBottom": 89,
+    "scrollY": 0,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-cobertura-sequence-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "repeat-no-duplicate",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-repeat-no-duplicate.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "repeat-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 204.46875,
+    "headingBottom": 294,
+    "headerBottom": 89,
+    "scrollY": 0,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-cobertura-repeat-forward.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "selection-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status&territory=13#cobertura",
+    "headingTop": -145.53125,
+    "headingBottom": -56,
+    "headerBottom": 89,
+    "scrollY": 350,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-cobertura-selection-back.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "selection-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status&territory=13#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-selection-forward.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "shared-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?territory=13&year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": -145.53125,
+    "headingBottom": -56,
+    "headerBottom": 89,
+    "scrollY": 350,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-cobertura-shared-back.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "shared-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?territory=13&year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-shared-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "delayed-navigate",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "documents-title",
+    "resource": "departamentos.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 321,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-delayed-navigate.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "delayed-wheel",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 3526.3125,
+    "headingBottom": 3613.59375,
+    "headerBottom": 89,
+    "scrollY": 490,
+    "focus": "",
+    "resource": "departamentos.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 232,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-institucion-delayed-wheel.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "delayed-rapid",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "documents-title",
+    "resource": "departamentos.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 512,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-delayed-rapid.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "delayed-keyboard",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 3384.3125,
+    "headingBottom": 3471.59375,
+    "headerBottom": 89,
+    "scrollY": 632,
+    "focus": "",
+    "resource": "archive.json",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 2,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-institucion-delayed-keyboard.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "delayed-municipal-navigate",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?territory=13&year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "documents-title",
+    "resource": "municipios-13.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 383,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-delayed-municipal-navigate.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "delayed-municipal-wheel",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?territory=13&year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 3504.3125,
+    "headingBottom": 3591.59375,
+    "headerBottom": 89,
+    "scrollY": 512,
+    "focus": "",
+    "resource": "municipios-13.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 321,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-institucion-delayed-municipal-wheel.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "keyboard-menu",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 135.0625,
+    "headingBottom": 224.59375,
+    "headerBottom": 89,
+    "scrollY": 4769,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-documentos-keyboard-menu.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "reduced-motion",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 108.515625,
+    "headingBottom": 198.046875,
+    "headerBottom": 89,
+    "scrollY": 4194,
+    "focus": "decentralization-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "1280x720-descentralizacion-reduced-motion.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 126.125,
+    "headingBottom": 210.75,
+    "headerBottom": 77,
+    "scrollY": 5257,
+    "focus": "institution-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-institucion-home.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "direct",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 126.125,
+    "headingBottom": 210.75,
+    "headerBottom": 77,
+    "scrollY": 5257,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-institucion-direct.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "reload",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 126.125,
+    "headingBottom": 210.75,
+    "headerBottom": 77,
+    "scrollY": 5257,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-institucion-reload.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 126.125,
+    "headingBottom": 210.75,
+    "headerBottom": 77,
+    "scrollY": 5257,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-institucion-back.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 126.125,
+    "headingBottom": 210.75,
+    "headerBottom": 77,
+    "scrollY": 5257,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-institucion-forward.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 96.84375,
+    "headingBottom": 164.65625,
+    "headerBottom": 77,
+    "scrollY": 5866,
+    "focus": "decentralization-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-descentralizacion-home.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "direct",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 96.84375,
+    "headingBottom": 164.65625,
+    "headerBottom": 77,
+    "scrollY": 5866,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-descentralizacion-direct.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "reload",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 96.84375,
+    "headingBottom": 164.65625,
+    "headerBottom": 77,
+    "scrollY": 5866,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-descentralizacion-reload.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 96.84375,
+    "headingBottom": 164.65625,
+    "headerBottom": 77,
+    "scrollY": 5866,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-descentralizacion-back.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 96.84375,
+    "headingBottom": 164.65625,
+    "headerBottom": 77,
+    "scrollY": 5866,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-descentralizacion-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-home.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "direct",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-direct.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "reload",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-reload.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-back.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-forward.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 169.28125,
+    "headingBottom": 237.09375,
+    "headerBottom": 77,
+    "scrollY": 0,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-cobertura-home.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "direct",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 169.28125,
+    "headingBottom": 237.09375,
+    "headerBottom": 77,
+    "scrollY": 0,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-cobertura-direct.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "reload",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 169.28125,
+    "headingBottom": 237.09375,
+    "headerBottom": 77,
+    "scrollY": 0,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-cobertura-reload.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 169.28125,
+    "headingBottom": 237.09375,
+    "headerBottom": 77,
+    "scrollY": 0,
+    "focus": "institution-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-cobertura-back.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 169.28125,
+    "headingBottom": 237.09375,
+    "headerBottom": 77,
+    "scrollY": 0,
+    "focus": "",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-cobertura-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "sequence-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-sequence-back.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "sequence-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 96.84375,
+    "headingBottom": 164.65625,
+    "headerBottom": 77,
+    "scrollY": 5866,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-descentralizacion-sequence-back.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "sequence-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 126.125,
+    "headingBottom": 210.75,
+    "headerBottom": 77,
+    "scrollY": 5257,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-institucion-sequence-back.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "sequence-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 96.84375,
+    "headingBottom": 164.65625,
+    "headerBottom": 77,
+    "scrollY": 5866,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-descentralizacion-sequence-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "sequence-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-sequence-forward.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "sequence-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 169.28125,
+    "headingBottom": 237.09375,
+    "headerBottom": 77,
+    "scrollY": 0,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-cobertura-sequence-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "repeat-no-duplicate",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-repeat-no-duplicate.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "repeat-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 169.28125,
+    "headingBottom": 237.09375,
+    "headerBottom": 77,
+    "scrollY": 0,
+    "focus": "coverage-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-cobertura-repeat-forward.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "selection-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status&territory=13#cobertura",
+    "headingTop": -180.71875,
+    "headingBottom": -112.90625,
+    "headerBottom": 77,
+    "scrollY": 350,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-cobertura-selection-back.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "selection-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status&territory=13#documentos",
+    "headingTop": 122.359375,
+    "headingBottom": 190.171875,
+    "headerBottom": 77,
+    "scrollY": 6162,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-selection-forward.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "shared-back",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?territory=13&year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": -180.71875,
+    "headingBottom": -112.90625,
+    "headerBottom": 77,
+    "scrollY": 350,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-cobertura-shared-back.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "shared-forward",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?territory=13&year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.359375,
+    "headingBottom": 190.171875,
+    "headerBottom": 77,
+    "scrollY": 6162,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-shared-forward.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "delayed-navigate",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "documents-title",
+    "resource": "departamentos.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 239,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-delayed-navigate.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "delayed-wheel",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 4927.125,
+    "headingBottom": 5011.75,
+    "headerBottom": 77,
+    "scrollY": 456,
+    "focus": "",
+    "resource": "departamentos.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 234,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-institucion-delayed-wheel.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "delayed-rapid",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "documents-title",
+    "resource": "departamentos.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 401,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-delayed-rapid.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "delayed-keyboard",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 4662.125,
+    "headingBottom": 4746.75,
+    "headerBottom": 77,
+    "scrollY": 721,
+    "focus": "nav-toggle",
+    "resource": "archive.json",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 2,
+      "focus": "nav-toggle"
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-institucion-delayed-keyboard.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "delayed-municipal-navigate",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?territory=13&year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.359375,
+    "headingBottom": 190.171875,
+    "headerBottom": 77,
+    "scrollY": 6162,
+    "focus": "documents-title",
+    "resource": "municipios-13.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 239,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-delayed-municipal-navigate.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "delayed-municipal-wheel",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?territory=13&year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 4586.25,
+    "headingBottom": 4670.875,
+    "headerBottom": 77,
+    "scrollY": 503,
+    "focus": "",
+    "resource": "municipios-13.geojson",
+    "releasedAfterInteraction": true,
+    "beforeRelease": {
+      "y": 234,
+      "focus": ""
+    },
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-institucion-delayed-municipal-wheel.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "keyboard-menu",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 122.234375,
+    "headingBottom": 190.046875,
+    "headerBottom": 77,
+    "scrollY": 6456,
+    "focus": "documents-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-documentos-keyboard-menu.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "reduced-motion",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 96.84375,
+    "headingBottom": 164.65625,
+    "headerBottom": 77,
+    "scrollY": 5866,
+    "focus": "decentralization-title",
+    "result": "pasa",
+    "reason": "",
+    "evidence": "390x844-descentralizacion-reduced-motion.png"
+  }
+]

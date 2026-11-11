@@ -258,3 +258,4 @@ try{
  assert(await page.locator('#retry').isHidden());
  assert.deepEqual(errors,[]);assert.deepEqual(externalRequests,[],'El portal no debe solicitar fuentes ni servicios externos');console.log('Navegador: portada institucional, navegación, Atlas UGD, contexto nacional, ficha de procedencia, ecosistema, móvil, drill-down, teclado, filtros, URL, descargas sin campos internos, advertencias y recuperación sin mapa obsoleto: OK');
 }finally{await browser.close();}
+await import('./arrival-check.mjs');
