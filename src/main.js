@@ -5,6 +5,7 @@ import {initShell} from './ui.js';
 import {loadConfig,localUrl} from './config.js';
 import {startExplorer} from './map/explorer.js';
 import {initTerritorialArt} from './territorial-art.js';
+import {layoutReady} from './navigation.js';
 
 const status=document.querySelector('#status');
 initShell();
@@ -40,7 +41,7 @@ async function init(){
     unavailable('No se pudo cargar la información territorial: recurso no disponible o datos incompletos/ inválidos. Puede reintentar.');
     document.querySelector('#retry').hidden=false;
     console.error(error);
-  }finally{loading=false;retry.disabled=false;}
+  }finally{loading=false;retry.disabled=false;layoutReady();}
 }
 
 document.querySelector('#retry').onclick=init;

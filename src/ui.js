@@ -1,4 +1,6 @@
+import {initNavigation} from './navigation.js';
 export function initShell(){
+  initNavigation();
   const toggle=document.querySelector('#nav-toggle');
   const nav=document.querySelector('#site-nav');
   if(!toggle||!nav)return;

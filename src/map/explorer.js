@@ -3,6 +3,7 @@ import {labels,normalize,options,sanitizeState,readState,stateUrl,territoryModel
 import {geometryPath,geometryBounds} from './geometry.js';
 import {snapshotNotice,verificationLabels} from './snapshots.js';
 import {publicArchive} from './contract.js';
+import {trackLayout,writeHistory} from '../navigation.js';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>n==null?'Sin dato':new Intl.NumberFormat('es-HN').format(n);
@@ -161,14 +162,14 @@ export async function startExplorer(data,config,load){
     el.onkeydown=e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();select(el.dataset.code);$('#detail h2').setAttribute('tabindex','-1');$('#detail h2').focus();}else if(e.key==='Escape'){e.preventDefault();select(t?.type==='municipality'?parent:'');$('#home').focus();}else if(['ArrowRight','ArrowDown','ArrowLeft','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();const index=e.key==='Home'?0:e.key==='End'?paths.length-1:(i+(['ArrowRight','ArrowDown'].includes(e.key)?1:-1)+paths.length)%paths.length;paths[index].focus();}};
    });
    $('#map-status').textContent=parent?'Nivel municipal':'Nivel departamental';
-  }catch{if(token===generation){mapEl.replaceChildren();$('#context-map').replaceChildren();$('#context-map-wrap').hidden=true;$('#map-status').innerHTML='No se pudo cargar la cartografía. La tabla sigue disponible. <button id="retry-map">Reintentar mapa</button>';$('#retry-map').onclick=()=>map(++generation);}}
+  }catch{if(token===generation){mapEl.replaceChildren();$('#context-map').replaceChildren();$('#context-map-wrap').hidden=true;$('#map-status').innerHTML='No se pudo cargar la cartografía. La tabla sigue disponible. <button id="retry-map">Reintentar mapa</button>';$('#retry-map').onclick=()=>trackLayout(map(++generation));}}
   finally{if(token===generation)mapEl.setAttribute('aria-busy','false');}
  }
  function update(push=false){
-  state=sanitizeState(data,state);history[push?'pushState':'replaceState']({},'',stateUrl(state,location.href));fill();breadcrumbs();atlasMeta();detail();table();legend();
+  state=sanitizeState(data,state);writeHistory(stateUrl(state,location.href),push);fill();breadcrumbs();atlasMeta();detail();table();legend();
   const s=snapshot(),source=s?data.sources.find(x=>x.source_id===s.source_id):null;
   $('#status').textContent=s?`Datos ${s.year} · ${period()}${source?' · '+source.title:''} · ${snapshotNotice(s)}`:`${state.year} · Sin datos publicados para el año seleccionado.`;
-  const rows=exportRows(data,state);$('#csv').disabled=$('#json').disabled=!rows.length;map(++generation);
+  const rows=exportRows(data,state);$('#csv').disabled=$('#json').disabled=!rows.length;return trackLayout(map(++generation));
  }
  for(const key of ['year','snapshot','care','manager','agreement','layer'])$('#'+key).onchange=e=>{state[key]=e.target.value;if(key==='year'){state.snapshot='';for(const k of ['care','manager','agreement'])state[k]='';}update(true);};
  $('#search').oninput=search;$('#search').onkeydown=e=>{if(e.key==='ArrowDown'){e.preventDefault();$('#results button')?.focus();}};$('#home').onclick=()=>select('');
@@ -183,6 +184,6 @@ export async function startExplorer(data,config,load){
  window.onpopstate=()=>{state=sanitizeState(data,readState(location.search));update();};
  $('#sources').innerHTML=data.sources.map(s=>`<p><a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> · ${esc(s.publisher)} · consulta ${esc(s.retrieved_at)}${s.valid_on?' · Geografía histórica válida al '+esc(s.valid_on):''}${s.license?' · '+esc(s.license):''}</p>`).join('');
  $('#issuecount').textContent=data.data_quality_issues.length+' observaciones registradas';$('#issues').innerHTML=data.data_quality_issues.map(i=>`<li><strong>${esc(i.issue_id)}</strong> · ${esc(i.status)} · ${esc(i.detail)}</li>`).join('');
- $('#explorer').hidden=false;update();
+ $('#explorer').hidden=false;await update();
 }
 

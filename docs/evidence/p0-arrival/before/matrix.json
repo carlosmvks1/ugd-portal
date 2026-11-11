@@ -1,0 +1,130 @@
+[
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 3416.3125,
+    "headingBottom": 3503.59375,
+    "headerBottom": 89,
+    "scrollY": 600,
+    "focus": "",
+    "result": "falla",
+    "evidence": "1280x720-institucion-home.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 3386.515625,
+    "headingBottom": 3476.046875,
+    "headerBottom": 89,
+    "scrollY": 916,
+    "focus": "",
+    "result": "falla",
+    "evidence": "1280x720-descentralizacion-home.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 3728.0625,
+    "headingBottom": 3817.59375,
+    "headerBottom": 89,
+    "scrollY": 1176,
+    "focus": "",
+    "result": "falla",
+    "evidence": "1280x720-documentos-home.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 204.46875,
+    "headingBottom": 294,
+    "headerBottom": 89,
+    "scrollY": 0,
+    "focus": "",
+    "result": "pasa",
+    "evidence": "1280x720-cobertura-home.png"
+  },
+  {
+    "destination": "institucion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#institucion",
+    "headingTop": 4797.125,
+    "headingBottom": 4881.75,
+    "headerBottom": 77,
+    "scrollY": 586,
+    "focus": "",
+    "result": "falla",
+    "evidence": "390x844-institucion-home.png"
+  },
+  {
+    "destination": "descentralizacion",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#descentralizacion",
+    "headingTop": 4767.84375,
+    "headingBottom": 4835.65625,
+    "headerBottom": 77,
+    "scrollY": 1195,
+    "focus": "",
+    "result": "falla",
+    "evidence": "390x844-descentralizacion-home.png"
+  },
+  {
+    "destination": "documentos",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#documentos",
+    "headingTop": 5133.234375,
+    "headingBottom": 5201.046875,
+    "headerBottom": 77,
+    "scrollY": 1445,
+    "focus": "",
+    "result": "falla",
+    "evidence": "390x844-documentos-home.png"
+  },
+  {
+    "destination": "cobertura",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "journey": "home",
+    "url": "http://127.0.0.1:4173/ugd/portal.html?year=2024&snapshot=2024-v1&layer=status#cobertura",
+    "headingTop": 169.28125,
+    "headingBottom": 237.09375,
+    "headerBottom": 77,
+    "scrollY": 0,
+    "focus": "",
+    "result": "pasa",
+    "evidence": "390x844-cobertura-home.png"
+  }
+]
