@@ -105,12 +105,11 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
   const codes=new Set(data.territories.filter(x=>x.parent_id===t.official_code).map(x=>x.official_code));
   const warnings=data.data_quality_issues.filter(i=>codes.has(i.territory_id));
   const src=sum.source_ids.map(id=>data.sources.find(s=>s.source_id===id)?.title).filter(Boolean).join(', ');
-  const parts=[`Población cubierta: ${fmt(sum.population)}. Total calculado a partir de los registros disponibles: suma de ${fmt(sum.records)} ${sum.records===1?'registro municipal':'registros municipales'}, uno por municipio. La fuente no publica este total por departamento.`,
+  const parts=[`Población cubierta: ${fmt(sum.population)}, calculada sumando ${sum.partial?`los ${fmt(sum.records)} de ${fmt(sum.municipalities)} municipios con registro (alcance parcial; los demás no cuentan como cero)`:`los registros de sus ${fmt(sum.municipalities)} municipios`}.`,
    `Período: ${esc(period())} · ${esc(careLabel(content,sum.care_level))}${src?' · Fuente: '+esc(src):''}.`];
-  parts.push(sum.partial?`Alcance parcial: ${fmt(sum.records)} de ${fmt(sum.municipalities)} municipios tienen población reportada; los demás no se cuentan como cero.`:`Incluye los ${fmt(sum.municipalities)} municipios del departamento.`);
   for(const n of sum.notes)parts.push(`${esc(find(n.territory_id)?.name||n.territory_id)}: ${esc(n.note)}.`);
   for(const w of warnings)parts.push(`${esc(find(w.territory_id)?.name||w.territory_id)}: ${esc(w.detail)}`);
-  parts.push('Es población cubierta por los establecimientos, no población total de habitantes. No consta si algún establecimiento atiende también a población de municipios vecinos; por eso la suma no se presenta como población única confirmada.');
+  parts.push('Nota metodológica: es población cubierta por los establecimientos, no total de habitantes; la fuente no indica si hay solapamientos entre municipios.');
   return parts.map(p=>`<p class="detail-note">${p}</p>`).join('');
  }
  function detail(){
@@ -176,7 +175,7 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
   if(matches.length>40)$('#results').insertAdjacentHTML('beforeend','<li>Más resultados; precise la búsqueda.</li>');bindSelection($('#results'));
  }
  function table(){
-  const territories=visibleTerritories(data,state);$('#caption').textContent=territories.length+' territorios · '+period()+(sourceTitle()?' · Fuente: '+sourceTitle():'')+(territories.some(t=>t.type==='department')?' · Población cubierta por departamento: total calculado a partir de los registros municipales disponibles del mismo período y nivel; los municipios sin valor no se cuentan como cero.':'');
+  const territories=visibleTerritories(data,state);$('#caption').textContent=territories.length+' territorios · '+period()+(sourceTitle()?' · Fuente: '+sourceTitle():'')+(territories.some(t=>t.type==='department')?' · Población departamental: suma de los registros municipales disponibles.':'');
   const hl=state.gestor?highlight():null;
   $('#table tbody').innerHTML=territories.map(t=>{const m=model(t.official_code),links=snapshot()?linksForTerritory(content,data,state,t.official_code):[];
    const shown=links.slice(0,3).map(({manager})=>`<a data-state-link href="${esc(profileUrl(manager.manager_id))}">${esc(manager.name)}</a>`).join(', ')+(links.length>3?` y ${links.length-3} más`:'');
