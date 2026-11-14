@@ -2,6 +2,7 @@ import {renderManagers} from './institutional.js';
 import {renderHome,homeUnavailable} from './home.js';
 import {assertArchiveStructure} from './map/structure.js';
 import {initShell} from './ui.js';
+import {initMotion} from './motion.js';
 import {loadConfig,localUrl} from './config.js';
 import {startExplorer} from './map/explorer.js';
 import {initTerritorialArt} from './territorial-art.js';
@@ -17,6 +18,7 @@ import {emptyContent} from './content/model.js';
 const status=document.querySelector('#status');
 followLegacyAnchor();
 initShell();
+initMotion();
 
 let loading=false, initialized=false, config=null, contentResult=null, managersView=null;
 const retry=document.querySelector('#retry');

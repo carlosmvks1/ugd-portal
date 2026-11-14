@@ -549,6 +549,17 @@ td:nth-child(4){font-variant-numeric:tabular-nums}
   .footer-inner{flex-direction:column}
   th,td{padding:.55rem .5rem}
 }
+/* ───── Movimiento (src/motion.js; docs/visual-system.md §6) ─────
+   Las entradas se animan en motion.js con la Web Animations API. Aquí solo
+   quedan transiciones de estado, bajo html.has-motion, que motion.js añade si
+   el sistema no pide reducir movimiento. Ningún estado deja texto o controles
+   invisibles ni bloquea el puntero. */
+:root{--ease-std:cubic-bezier(.2,0,.38,.9);--t-fast:110ms;--t-mod:160ms}
+.has-motion a,.has-motion button,.has-motion .btn,.has-motion summary{transition:color var(--t-fast) var(--ease-std),background-color var(--t-fast) var(--ease-std),border-color var(--t-fast) var(--ease-std),text-decoration-color var(--t-fast) var(--ease-std)}
+.has-motion #map path[data-code]{transition:fill var(--t-mod) var(--ease-std),opacity var(--t-mod) var(--ease-std)}
+.has-motion .m-photo-pending{clip-path:inset(0 0 100% 0)}
+
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+  .m-photo-pending{clip-path:none!important}
 }
