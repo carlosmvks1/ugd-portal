@@ -1,6 +1,7 @@
 # Preview y migración a SESAL
 ## Desarrollo y revisión
 Node 22 o posterior. Ejecutar npm test, npm run validate, npm run build y npm run preview.
+`npm run preview:content` construye en `work/preview/` una vista previa con piezas de contenido no aprobadas rotuladas; nunca escribe en `dist/` ni debe publicarse.
 También se pueden ejecutar directamente node scripts/validate.mjs y node scripts/build.mjs.
 El workflow de CI valida y produce un artefacto dist; no publica ningún sitio.
 Los artefactos heredan el acceso del repositorio. Revisar permisos de colaboradores.
@@ -9,7 +10,7 @@ Los artefactos heredan el acceso del repositorio. Revisar permisos de colaborado
 El repositorio es público: su código, datos e historial son visibles con independencia de que el sitio esté publicado. Incorporar solo material con autorización de publicación.
 Un sitio Pages es público: revisar aprobación institucional del contenido antes de desplegarlo.
 Configurar Pages con GitHub Actions y un environment protegido cuando se autorice publicar.
-No se incluye workflow de despliegue activo.
+El workflow de despliegue (`pages.yml`) solo se ejecuta manualmente; ver «Despliegue activo en Pages».
 
 ## Un único artefacto portable
 La compilación utiliza ./src/, ./data/ y ./geography/ respecto a index.html.
@@ -36,6 +37,6 @@ Referencias:
 
 ## Despliegue activo en Pages
 
-El workflow `pages.yml` publica únicamente `dist/` al actualizar `main`, después de pruebas, validación, build y navegador. Configura Pages para usar GitHub Actions y usa el entorno `github-pages`. También admite ejecución manual; el trabajo de despliegue solo permite `main`. Si la política del repositorio impide cambiar la fuente con GITHUB_TOKEN, seleccionar **Settings → Pages → Source → GitHub Actions** y reintentar el trabajo.
+El workflow `pages.yml` se activa **solo manualmente** (`workflow_dispatch`); fusionar en `main` no despliega. Publica únicamente `dist/`, después de pruebas, validación, build y navegador. Configura Pages para usar GitHub Actions y usa el entorno `github-pages`; el trabajo de despliegue solo permite `main`. Ejecutarlo requiere autorización explícita. Si la política del repositorio impide cambiar la fuente con GITHUB_TOKEN, seleccionar **Settings → Pages → Source → GitHub Actions** y reintentar el trabajo.
 
 URL predeterminada: https://carlosmvks1.github.io/ugd-portal/. No se cambia DNS ni se despliega la administración Node/SQLite. `config.json` se incluye en la raíz del artefacto y las rutas de módulos, datos y cartografía permanecen relativas al subdirectorio.

@@ -1,0 +1,176 @@
+{
+ "schema_version": "institution-1",
+ "synthetic": true,
+ "sections": {
+  "ugd": {
+   "blocks": [
+    {
+     "block_id": "presentacion",
+     "kind": "text",
+     "title": "Qué es la UGD",
+     "status": "approved",
+     "placeholder": "Presentación institucional.",
+     "paragraphs": [
+      "[SINTÉTICO] Párrafo ficticio de presentación para comprobar el formato.",
+      "[SINTÉTICO] Segundo párrafo ficticio."
+     ],
+     "source_ids": [
+      "sint-fuente-a"
+     ],
+     "reference_date": "2025-03-01"
+    },
+    {
+     "block_id": "funciones",
+     "kind": "list",
+     "title": "Funciones",
+     "status": "approved",
+     "placeholder": "Funciones.",
+     "items": [
+      {
+       "title": "[SINTÉTICO] Función ficticia uno",
+       "text": "Descripción ficticia."
+      },
+      {
+       "title": "[SINTÉTICO] Función ficticia dos"
+      }
+     ],
+     "source_ids": [
+      "sint-fuente-a"
+     ]
+    },
+    {
+     "block_id": "estructura",
+     "kind": "list",
+     "title": "Estructura",
+     "status": "collecting",
+     "placeholder": "Organización de la unidad y su coordinación."
+    },
+    {
+     "block_id": "autoridades",
+     "kind": "people",
+     "title": "Autoridades",
+     "status": "approved",
+     "placeholder": "Autoridades.",
+     "items": [
+      {
+       "name": "[SINTÉTICO] Persona ficticia",
+       "role": "[SINTÉTICO] Cargo ficticio",
+       "since": "2025-01-01"
+      }
+     ],
+     "source_ids": [
+      "sint-fuente-a"
+     ]
+    },
+    {
+     "block_id": "fundamento-legal",
+     "kind": "legal",
+     "title": "Fundamento legal",
+     "status": "outdated",
+     "placeholder": "Normas.",
+     "items": [
+      {
+       "title": "[SINTÉTICO] Norma ficticia",
+       "issuer": "[SINTÉTICO] Emisor ficticio",
+       "number": "0000",
+       "date": "2020-01-01",
+       "url": "https://example.org/sintetico/norma",
+       "validity": "unknown"
+      }
+     ],
+     "source_ids": [
+      "sint-fuente-a"
+     ]
+    }
+   ]
+  },
+  "decentralization": {
+   "blocks": [
+    {
+     "block_id": "secretaria",
+     "kind": "text",
+     "title": "La Secretaría de Salud",
+     "status": "approved",
+     "placeholder": "Papel de la Secretaría.",
+     "paragraphs": [
+      "[SINTÉTICO] Texto ficticio del paso uno."
+     ]
+    },
+    {
+     "block_id": "gestores",
+     "kind": "text",
+     "title": "Los gestores",
+     "status": "approved",
+     "placeholder": "Qué es un gestor.",
+     "paragraphs": [
+      "[SINTÉTICO] Texto ficticio del paso dos."
+     ]
+    },
+    {
+     "block_id": "servicios",
+     "kind": "text",
+     "title": "Los servicios en el territorio",
+     "status": "pending_verification",
+     "placeholder": "Cómo llegan los servicios.",
+     "paragraphs": [
+      "[SINTÉTICO] Borrador no aprobado: solo visible en vista previa."
+     ]
+    },
+    {
+     "block_id": "papel-ugd",
+     "kind": "text",
+     "title": "El papel de la UGD",
+     "status": "collecting",
+     "placeholder": "Qué hace la UGD dentro del modelo."
+    }
+   ]
+  },
+  "contact": {
+   "blocks": [
+    {
+     "block_id": "direccion",
+     "kind": "channels",
+     "title": "Dirección",
+     "status": "approved",
+     "placeholder": "Dirección.",
+     "items": [
+      {
+       "type": "address",
+       "label": "Oficina",
+       "value": "[SINTÉTICO] Dirección ficticia"
+      }
+     ]
+    },
+    {
+     "block_id": "telefono",
+     "kind": "channels",
+     "title": "Teléfono",
+     "status": "approved",
+     "placeholder": "Teléfono.",
+     "items": [
+      {
+       "type": "phone",
+       "label": "Central",
+       "value": "+504 0000-0000",
+       "note": "[SINTÉTICO] Horario ficticio"
+      }
+     ]
+    },
+    {
+     "block_id": "correo",
+     "kind": "channels",
+     "title": "Correo electrónico",
+     "status": "approved",
+     "placeholder": "Correo.",
+     "items": [
+      {
+       "type": "email",
+       "label": "Consultas",
+       "value": "sintetico@example.org"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

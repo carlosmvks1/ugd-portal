@@ -1,0 +1,193 @@
+{
+ "schema_version": "investment-1",
+ "synthetic": true,
+ "datasets": [
+  {
+   "dataset_id": "sint-gestion-2024",
+   "title": "[SINTÉTICO] Inversión por nivel de gestión",
+   "dimension": "management_level",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "period": {
+    "start": "2024-01-01",
+    "end": "2024-12-31"
+   },
+   "currency": "HNL",
+   "amount_type": "sint-transferido",
+   "definition": "[SINTÉTICO] Definición ficticia del monto.",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "scope": {
+    "type": "national",
+    "id": null
+   },
+   "rows": [
+    {
+     "category": "sint-central",
+     "amount": 1250000.5
+    },
+    {
+     "category": "sint-regional",
+     "amount": 830000
+    },
+    {
+     "category": "sint-local",
+     "amount": 0
+    }
+   ],
+   "reported_total": 2080000.5,
+   "notes": [
+    "[SINTÉTICO] Un monto 0 indica cero reportado; no es ausencia de dato."
+   ]
+  },
+  {
+   "dataset_id": "sint-gestion-2025",
+   "title": "[SINTÉTICO] Inversión por nivel de gestión",
+   "dimension": "management_level",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "period": {
+    "start": "2025-01-01",
+    "end": "2025-12-31"
+   },
+   "currency": "HNL",
+   "amount_type": "sint-transferido",
+   "definition": "[SINTÉTICO] Definición ficticia del monto.",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "scope": {
+    "type": "national",
+    "id": null
+   },
+   "rows": [
+    {
+     "category": "sint-central",
+     "amount": 990000
+    },
+    {
+     "category": "sint-regional",
+     "amount": null,
+     "note": "[SINTÉTICO] Pendiente de reporte"
+    },
+    {
+     "category": "sint-local",
+     "amount": 410000
+    }
+   ]
+  },
+  {
+   "dataset_id": "sint-atencion-2024",
+   "title": "[SINTÉTICO] Inversión por nivel de atención",
+   "dimension": "care_level",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "period": {
+    "start": "2024-01-01",
+    "end": "2024-12-31"
+   },
+   "currency": "HNL",
+   "amount_type": "sint-transferido",
+   "definition": "[SINTÉTICO] Definición ficticia del monto.",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "scope": {
+    "type": "national",
+    "id": null
+   },
+   "rows": [
+    {
+     "category": "I",
+     "amount": 2400000
+    },
+    {
+     "category": "II",
+     "amount": null
+    }
+   ]
+  },
+  {
+   "dataset_id": "sint-depto-13",
+   "title": "[SINTÉTICO] Inversión atribuida a Lempira",
+   "dimension": "management_level",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "period": {
+    "start": "2024-01-01",
+    "end": "2024-12-31"
+   },
+   "currency": "HNL",
+   "amount_type": "sint-transferido",
+   "definition": "[SINTÉTICO] Definición ficticia del monto.",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "scope": {
+    "type": "department",
+    "id": "13"
+   },
+   "rows": [
+    {
+     "category": "sint-regional",
+     "amount": 150000
+    }
+   ]
+  },
+  {
+   "dataset_id": "sint-gestor-largo-2024",
+   "title": "[SINTÉTICO] Inversión atribuida al gestor",
+   "dimension": "care_level",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "period": {
+    "start": "2024-01-01",
+    "end": "2024-12-31"
+   },
+   "currency": "HNL",
+   "amount_type": "sint-transferido",
+   "definition": "[SINTÉTICO] Definición ficticia del monto.",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "scope": {
+    "type": "manager",
+    "id": "sint-gestor-largo"
+   },
+   "rows": [
+    {
+     "category": "I",
+     "amount": 75000
+    }
+   ]
+  },
+  {
+   "dataset_id": "sint-pendiente",
+   "title": "[SINTÉTICO] Conjunto no aprobado",
+   "dimension": "care_level",
+   "status": "collecting",
+   "verification_status": "pending_UGD",
+   "period": {
+    "start": "2024-01-01",
+    "end": "2024-12-31"
+   },
+   "currency": "HNL",
+   "amount_type": "sint-transferido",
+   "definition": "[SINTÉTICO] Definición ficticia del monto.",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "scope": {
+    "type": "national",
+    "id": null
+   },
+   "rows": [
+    {
+     "category": "I",
+     "amount": 1
+    }
+   ]
+  }
+ ]
+}

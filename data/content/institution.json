@@ -1,0 +1,29 @@
+{
+  "schema_version": "institution-1",
+  "sections": {
+    "ugd": {
+      "blocks": [
+        {"block_id": "presentacion", "kind": "text", "title": "Qué es la UGD", "status": "collecting", "placeholder": "Presentación institucional de la unidad dentro de la Secretaría de Salud."},
+        {"block_id": "funciones", "kind": "list", "title": "Funciones", "status": "collecting", "placeholder": "Lo que la UGD hace en el modelo de gestión descentralizada."},
+        {"block_id": "estructura", "kind": "list", "title": "Estructura", "status": "collecting", "placeholder": "Organización de la unidad y su coordinación."},
+        {"block_id": "autoridades", "kind": "people", "title": "Autoridades", "status": "collecting", "placeholder": "Autoridades de la unidad, con cargo y fecha de referencia."},
+        {"block_id": "fundamento-legal", "kind": "legal", "title": "Fundamento legal", "status": "collecting", "placeholder": "Normas que respaldan el trabajo de la UGD."}
+      ]
+    },
+    "decentralization": {
+      "blocks": [
+        {"block_id": "secretaria", "kind": "text", "title": "La Secretaría de Salud", "status": "collecting", "placeholder": "Papel de la Secretaría de Salud en el modelo."},
+        {"block_id": "gestores", "kind": "text", "title": "Los gestores", "status": "collecting", "placeholder": "Qué es un gestor y qué responsabilidades asume."},
+        {"block_id": "servicios", "kind": "text", "title": "Los servicios en el territorio", "status": "collecting", "placeholder": "Cómo llegan los servicios a la población."},
+        {"block_id": "papel-ugd", "kind": "text", "title": "El papel de la UGD", "status": "collecting", "placeholder": "Qué hace la UGD dentro del modelo."}
+      ]
+    },
+    "contact": {
+      "blocks": [
+        {"block_id": "direccion", "kind": "channels", "title": "Dirección", "status": "collecting", "placeholder": "Dirección institucional confirmada por la UGD."},
+        {"block_id": "telefono", "kind": "channels", "title": "Teléfono", "status": "collecting", "placeholder": "Teléfono institucional confirmado por la UGD."},
+        {"block_id": "correo", "kind": "channels", "title": "Correo electrónico", "status": "collecting", "placeholder": "Correo institucional confirmado por la UGD."}
+      ]
+    }
+  }
+}

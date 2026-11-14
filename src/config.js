@@ -5,7 +5,7 @@ export function localUrl(path, base) {
   return url;
 }
 export function resolveConfig(raw, appRoot) {
-  return {dataRoot:localUrl(raw.dataRoot, appRoot), geographyRoot:localUrl(raw.geographyRoot, appRoot), catalog:raw.catalog};
+  return {dataRoot:localUrl(raw.dataRoot, appRoot), geographyRoot:localUrl(raw.geographyRoot, appRoot), catalog:raw.catalog, preview:raw.preview===true};
 }
 export async function loadConfig() {
   const appRoot = new URL('../', import.meta.url);

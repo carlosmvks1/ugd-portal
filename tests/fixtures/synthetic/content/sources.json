@@ -1,0 +1,20 @@
+{
+ "schema_version": "content-sources-1",
+ "synthetic": true,
+ "sources": [
+  {
+   "source_id": "sint-fuente-a",
+   "title": "[SINTÉTICO] Informe ficticio de gestión",
+   "publisher": "[SINTÉTICO] Unidad ficticia",
+   "date": "2025-03-01",
+   "url": "https://example.org/sintetico/informe",
+   "status": "approved"
+  },
+  {
+   "source_id": "sint-fuente-pendiente",
+   "title": "[SINTÉTICO] Fuente pendiente",
+   "publisher": "[SINTÉTICO] Unidad ficticia",
+   "status": "collecting"
+  }
+ ]
+}

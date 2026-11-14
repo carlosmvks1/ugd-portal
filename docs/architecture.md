@@ -28,7 +28,7 @@ El stack reduce capas de compilación y permite alojamiento estático. Sus lími
 
 [main.js](../src/main.js) inicializa navegación, carga configuración, catálogo y archivo indicado por `catalog.explorer`. Solo después llama a portada, contenido institucional y observatorio; inicia arte territorial y explorador mediante `Promise.all`. La ausencia del archivo produce retorno temprano; un error llega a un manejador general con reintento.
 
-[institutional.js](../src/institutional.js) importa normalización y utilidades de snapshots del mapa. Su biblioteca se deriva de `data.sources`; clasifica fuentes por presencia de `valid_on`, y obtiene gestores/convenios del mismo archivo. No existe aquí un modelo editorial institucional independiente.
+El contenido institucional editable vive en `data/content/*.json` con contrato en [src/content/contract.js](../src/content/contract.js), reglas entre archivos y consultas en [model.js](../src/content/model.js) y vistas en `src/content/*-view.js` (ver [guía](content-guide.md)). [main.js](../src/main.js) lo carga primero e independientemente del archivo territorial: un fallo de uno no impide mostrar el otro, y un archivo de contenido que falla solo afecta a su sección. Las fichas de gestor (`?gestor=<id>#ficha-gestor`) y el resaltado en el mapa comparten el parámetro `gestor`; los vínculos gestor–territorio se toman únicamente de `managers.json → assignments`. [institutional.js](../src/institutional.js) solo muestra las 39 etiquetas históricas del archivo, sin tratarlas como identidades confirmadas. La biblioteca y los convenios se retiraron del sitio público.
 
 El [explorador](../src/map/explorer.js) conserva estado en URL, carga geometría municipal por departamento, utiliza caché de promesas y un contador de generación para descartar respuestas obsoletas. Si falla la geometría, deja disponible la tabla y permite reintento. Esa tolerancia no resuelve el fallo previo del archivo común.
 
@@ -44,12 +44,15 @@ El [explorador](../src/map/explorer.js) conserva estado en URL, carga geometría
 
 [build.mjs](../scripts/build.mjs) valida primero, recrea `dist/` y:
 
-1. Copia `index.html`.
-2. Copia recursivamente `src/`, excluyendo archivos terminados en `.md`.
-3. Copia recursivamente `public/` a la raíz de salida.
-4. Copia catálogo y cortes registrados; genera el archivo territorial público y sus observaciones mediante proyección.
-5. Copia los `.geojson` de geography tras comprobar FeatureCollection e identificador territorial.
-6. Crea `.nojekyll`.
+1. Copia `index.html` y `portal.html` (redirección de enlaces antiguos).
+2. Copia recursivamente `src/`, excluyendo archivos `.md` y `src/observatory/`.
+3. Copia `public/` a la raíz de salida salvo `public/media/`; de ahí copia solo las fotografías publicables.
+4. Escribe `data/content/*.json` con la proyección pública (solo piezas `approved`, `published` u `outdated`).
+5. Copia catálogo y cortes registrados; genera el archivo territorial público y sus observaciones mediante proyección.
+6. Copia los `.geojson` de geography tras comprobar FeatureCollection e identificador territorial.
+7. Crea `.nojekyll` y, si la salida es `dist/`, falla ante rutas internas (`admin`, `observatory`, `work`, `tests`) o marcas de contenido sintético.
+
+Con `--preview`, `--content`, `--media` o `--archive-extra` la salida debe estar dentro de `work/` y nunca puede ser `dist/`.
 
 No copia por esas rutas admin, scripts, tests o docs. **No es una lista exhaustiva de archivos autorizados:** nuevos archivos en src o public pueden entrar automáticamente. La comprobación GeoJSON no acredita topología, límites oficiales ni vigencia.
 

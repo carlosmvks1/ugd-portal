@@ -1,4 +1,5 @@
 # Contrato de datos v1
+Este contrato describe los cortes generales del catálogo. El contenido institucional editable (textos, gestores y vínculos, población, inversión, fotografías) usa otro contrato: [src/content/contract.js](../src/content/contract.js) y la [guía de contenido](content-guide.md). La colección «convenios» queda fuera de alcance según [PRODUCT.md](PRODUCT.md).
 Los esquemas JSON Schema 2020-12 están en data/schemas/. El validador local implementa únicamente las keywords utilizadas y rechaza keywords no soportadas.
 Cada snapshot incluye metadatos y las seis colecciones completas; no se mezclan cortes para calcular indicadores.
 No hay snapshots de ejemplo en el catálogo. Vacío significa sin publicar, no cobertura cero.

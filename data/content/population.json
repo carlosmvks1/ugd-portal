@@ -1,0 +1,6 @@
+{
+  "schema_version": "population-1",
+  "periods": [
+    {"snapshot_id": "2024-v1", "definition": null, "unit": "personas", "note": "La fuente reporta población por municipio para el primer nivel de atención; la definición exacta (cubierta, asignada u otra) está pendiente de confirmación por la UGD.", "status": "collecting"}
+  ]
+}

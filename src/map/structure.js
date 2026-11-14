@@ -2,9 +2,9 @@ import {explorerSchema} from './contract.js';
 
 // Guard estructural de entrada, no sustituye validación de relaciones del build.
 // Campos extra se toleran: las descargas conservan su proyección defensiva.
-export function assertArchiveStructure(data){
+export function checkStructure(data,schema,label){
  function check(value,schema,path){
-  const fail=()=>{throw new Error('Estructura territorial inválida: '+path);};
+  const fail=()=>{throw new Error('Estructura '+label+' inválida: '+path);};
   if(schema.anyOf){
    if(value===null&&schema.anyOf.some(s=>s.type==='null'))return;
    return check(value,schema.anyOf.find(s=>s.type!=='null'),path);
@@ -19,8 +19,13 @@ export function assertArchiveStructure(data){
    value.forEach((item,i)=>check(item,schema.items,path+'['+i+']'));
   }else if(schema.type==='integer'){
    if(!Number.isSafeInteger(value)||(schema.minimum!==undefined&&value<schema.minimum))fail();
-  }else if(schema.type==='string'&&typeof value!=='string')fail();
+  }else if(schema.type==='number'){
+   if(!Number.isFinite(value)||(schema.minimum!==undefined&&value<schema.minimum))fail();
+  }else if(schema.type==='boolean'&&typeof value!=='boolean')fail();
+  else if(schema.type==='string'&&(typeof value!=='string'||(schema.pattern&&!new RegExp(schema.pattern).test(value))))fail();
   if(schema.enum&&!schema.enum.includes(value))fail();
  }
- check(data,explorerSchema,'archive');
+ check(data,schema,label);
+ return data;
 }
+export const assertArchiveStructure=data=>checkStructure(data,explorerSchema,'territorial');

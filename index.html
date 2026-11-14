@@ -84,7 +84,8 @@
         <h2 id="ugd-title">Quiénes somos y qué hacemos</h2>
         <p>Identidad, funciones, estructura y fundamento legal de la Unidad de Gestión Descentralizada.</p>
       </div>
-      <div class="card-grid card-grid-4">
+      <!-- Contenido editable: data/content/institution.json (sections.ugd). Este marcado es la alternativa sin JavaScript. -->
+      <div class="card-grid card-grid-auto" data-content="ugd">
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Qué es la UGD</h3><p>Presentación institucional de la unidad dentro de la Secretaría de Salud.</p></article>
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Funciones</h3><p>Lo que la UGD hace en el modelo de gestión descentralizada.</p></article>
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Estructura y autoridades</h3><p>Organización de la unidad y su coordinación.</p></article>
@@ -101,7 +102,8 @@
         <h2 id="decentralization-title">Cómo funciona la gestión descentralizada</h2>
         <p>Cómo se organiza la prestación de servicios a través de gestores y cuál es el papel de la UGD en ese modelo.</p>
       </div>
-      <ol class="steps" aria-label="Pasos del modelo, en preparación">
+      <!-- Contenido editable: data/content/institution.json (sections.decentralization). -->
+      <ol class="steps" aria-label="Participantes del modelo" data-content="decentralization">
         <li><span class="step-number" aria-hidden="true">1</span><h3>La Secretaría de Salud</h3><p><span class="badge-prep">En preparación</span></p></li>
         <li><span class="step-number" aria-hidden="true">2</span><h3>Los gestores</h3><p><span class="badge-prep">En preparación</span></p></li>
         <li><span class="step-number" aria-hidden="true">3</span><h3>Los servicios en el territorio</h3><p><span class="badge-prep">En preparación</span></p></li>
@@ -125,6 +127,7 @@
         <div class="explorer-controls">
           <div class="primary-filters">
             <label>Nivel de atención<select id="care"></select></label>
+            <label>Gestor<select id="gestor" aria-describedby="gestor-help"></select><small id="gestor-help">Resalta en el mapa y la tabla los territorios vinculados.</small></label>
             <div class="search-block">
               <label for="search">Buscar departamento o municipio</label>
               <input id="search" type="search" placeholder="Ej.: Lempira, Gracias" autocomplete="off" aria-controls="results">
@@ -137,13 +140,12 @@
               <label>Año<select id="year"></select></label>
               <label>Versión de los datos<select id="snapshot"></select></label>
               <label>Colorear el mapa por<select id="layer"><option value="status">Cobertura reportada</option><option value="proportion">Proporción de municipios</option><option value="population">Población reportada</option></select></label>
-              <label>Tipo de gestor<select id="manager"></select></label>
-              <label>Estado del convenio<select id="agreement"></select></label>
             </div>
           </details>
         </div>
 
         <nav id="breadcrumbs" aria-label="Ubicación en el mapa"></nav>
+        <div id="gestor-banner" class="gestor-banner" role="status" hidden></div>
 
         <div class="atlas-workspace">
           <section class="map-area atlas-map-area" aria-labelledby="atlas-title">
@@ -189,18 +191,10 @@
           <div class="table-wrap">
             <table id="table">
               <caption id="caption"></caption>
-              <thead><tr><th scope="col">Territorio</th><th scope="col">Estado</th><th scope="col">Municipios con cobertura / total</th><th scope="col">Población reportada</th><th scope="col">Período</th></tr></thead>
+              <thead><tr><th scope="col">Territorio</th><th scope="col">Estado</th><th scope="col">Municipios con cobertura / total</th><th scope="col">Población reportada</th><th scope="col">Gestores vinculados</th><th scope="col">Período</th></tr></thead>
               <tbody></tbody>
             </table>
           </div>
-        </details>
-
-        <details class="data-drawer" id="gestores">
-          <summary>
-            <span>Gestores registrados</span>
-            <small id="managers-summary">Organizaciones que aparecen en la fuente</small>
-          </summary>
-          <div id="manager-list" class="manager-list"></div>
         </details>
 
         <details id="calidad" class="data-drawer">
@@ -221,6 +215,23 @@
       </section>
 
       <button id="retry" type="button" hidden>Reintentar carga</button>
+
+      <!-- Directorio y fichas: data/content/managers.json. Disponible aunque falle la carga territorial. -->
+      <div id="gestores" class="managers-block">
+        <div class="managers-head">
+          <h3 id="managers-title">Gestores</h3>
+          <p>Entidades gestoras vinculadas al trabajo de la UGD. Cada ficha indica sus territorios por período y nivel de atención, con la fuente de cada dato.</p>
+        </div>
+        <div id="manager-profile"></div>
+        <div id="manager-directory"><p class="managers-empty">Cargando directorio…</p></div>
+        <details class="data-drawer" id="etiquetas-historicas" hidden>
+          <summary>
+            <span>Nombres en el archivo histórico</span>
+            <small id="managers-summary">Etiquetas transcritas de la fuente</small>
+          </summary>
+          <div id="manager-list" class="manager-list"></div>
+        </details>
+      </div>
     </div>
   </section>
 
@@ -232,19 +243,12 @@
         <h2 id="investment-title">Cómo se distribuye la inversión</h2>
         <p>Recursos vinculados al trabajo de la UGD, por nivel de gestión y por nivel de atención. Las categorías, montos y períodos los define la UGD.</p>
       </div>
-      <div class="card-grid card-grid-2">
-        <article class="info-card chart-placeholder is-pending" aria-describedby="investment-note">
-          <span class="badge-prep">En preparación</span>
-          <h3>Por nivel de gestión</h3>
-          <div class="ghost-bars" aria-hidden="true"><i style="width:82%"></i><i style="width:64%"></i><i style="width:41%"></i></div>
-        </article>
-        <article class="info-card chart-placeholder is-pending" aria-describedby="investment-note">
-          <span class="badge-prep">En preparación</span>
-          <h3>Por nivel de atención</h3>
-          <div class="ghost-bars" aria-hidden="true"><i style="width:74%"></i><i style="width:38%"></i></div>
-        </article>
+      <!-- Contenido editable: data/content/investment.json y categories.json. -->
+      <div class="card-grid card-grid-2" data-content="investment">
+        <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Por nivel de gestión</h3><p>Se publicará con las categorías, montos y períodos que defina la UGD.</p></article>
+        <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Por nivel de atención</h3><p>Se publicará con las categorías, montos y períodos que defina la UGD.</p></article>
       </div>
-      <p id="investment-note" class="source-line">Los gráficos se publicarán con los datos que entregue la UGD; las barras grises son solo una muestra del formato.</p>
+      <p id="investment-note" class="source-line">Los datos se publicarán con las categorías, montos y períodos que defina la UGD.</p>
     </div>
   </section>
 
@@ -256,7 +260,8 @@
         <h2 id="teams-title">Los equipos en el territorio</h2>
         <p>Fotografías del trabajo de los equipos de salud, con lugar y fecha.</p>
       </div>
-      <div class="photo-grid">
+      <!-- Contenido editable: data/content/photos.json (placements: teams) y public/media/. -->
+      <div class="photo-grid" data-content="teams">
         <figure class="photo-slot"><div class="photo-frame" aria-hidden="true"></div><figcaption><span class="badge-prep">En preparación</span> Lugar · fecha</figcaption></figure>
         <figure class="photo-slot"><div class="photo-frame" aria-hidden="true"></div><figcaption><span class="badge-prep">En preparación</span> Lugar · fecha</figcaption></figure>
         <figure class="photo-slot"><div class="photo-frame" aria-hidden="true"></div><figcaption><span class="badge-prep">En preparación</span> Lugar · fecha</figcaption></figure>
@@ -272,7 +277,8 @@
         <h2 id="contact-title">Comuníquese con la UGD</h2>
         <p>Canales institucionales confirmados por la UGD.</p>
       </div>
-      <div class="card-grid card-grid-3">
+      <!-- Contenido editable: data/content/institution.json (sections.contact). -->
+      <div class="card-grid card-grid-3" data-content="contact">
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Dirección</h3></article>
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Teléfono</h3></article>
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Correo electrónico</h3></article>
