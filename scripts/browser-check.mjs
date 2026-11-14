@@ -251,3 +251,4 @@ try{
 await import('./arrival-check.mjs');
 await import('./synthetic-check.mjs');
 await import('./content-walkthrough.mjs');
+await import('./motion-check.mjs');

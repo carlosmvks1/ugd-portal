@@ -65,7 +65,28 @@ Anchura máxima 1240 px; márgenes laterales de 32 px (20 px en tableta, 16 px e
 
 ## 6. Movimiento y rendimiento
 
-Solo una transición de opacidad al redibujar el mapa y cambios de color al pasar el puntero; todo se desactiva con `prefers-reduced-motion`. Sin carruseles, vídeo ni desplazamiento secuestrado. Imágenes con `width`/`height` reservados, `loading="lazy"` salvo la de portada (`fetchpriority="high"`), máximo 1 MB por foto (validado). Hoja de estilos ~40 KB sin dependencias.
+Combinación aprobada (14 nov. 2026): A «sutil» + C «territorial» + de B solo la entrada de portada y la aparición de fotografías. Implementación en `src/motion.js` (Web Animations API, sin dependencias) y transiciones de estado en la sección «Movimiento» de `src/styles.css`.
+
+| Elemento | Efecto | Duración |
+|---|---|---|
+| Enlaces, botones, territorios del mapa | Cambio de color o relleno al pasar el puntero o enfocar | 110–160 ms |
+| Ficha del territorio al cambiar de selección | Sus bloques suben 6 px desde opacidad 0,4 (escalonado máx. 60 ms) | 200 ms |
+| Hoja de detalle en móvil (primera selección) | Desplazamiento de 16 px | 240 ms |
+| Mapa al bajar o subir de nivel | Acercamiento o alejamiento desde el territorio pulsado | 320 ms |
+| Territorio seleccionado | Trazado del contorno dorado | 480 ms |
+| Municipios de un gestor | Relleno desde el tono vacío; escalonado total ≤ 240 ms y simultáneo con más de 24 municipios (total ≤ 600 ms) | 360 ms |
+| Cabecera de la ficha del gestor | Entrada desde opacidad 0,4 | 240 ms |
+| Portada (solo si se carga arriba) | Hasta cuatro elementos suben desde opacidad 0,4, escalonado 60 ms | 360 ms |
+| Fotografías y retrato bajo el pliegue | Revelado vertical de la imagen al llegar; el pie de foto nunca se oculta | 520 ms |
+
+Reglas:
+- Ningún texto ni control espera a una animación: las entradas parten de opacidad ≥ 0,4, nada bloquea el puntero y se puede pulsar durante cualquier efecto. No hay efectos encadenados (el acercamiento sustituye al fundido genérico del mapa) ni animaciones permanentes: en reposo no queda ninguna en curso.
+- Sin JavaScript o si `motion.js` falla, no se aplica ningún estado inicial: todo el contenido es visible. Con `prefers-reduced-motion: reduce` el módulo no añade `html.has-motion`, no registra observadores y la regla global anula transiciones y animaciones.
+- Sin desplazamiento secuestrado, parallax, contadores, carruseles ni vídeo. La selección rápida reinicia el efecto en curso; atrás/adelante y foco no cambian.
+- Descartado tras medirlo: atenuar el resto del mapa al seleccionar (cambiar la opacidad de cientos de trazados añadía ~25 ms a la selección en escritorio) y la transición de vista nombre del gestor → ficha (bloquea la interacción mientras dura y el navegador la cancela al cambiar el tamaño de la ventana en móvil).
+- Comprobación: `node scripts/motion-check.mjs <url>` sobre `preview:synthetic` (legibilidad inmediata, fotografías, resaltado acotado, atrás/adelante, selección rápida, teclado, reposo y movimiento reducido) y `node scripts/motion-perf.mjs <repeticiones> antes=<url> despues=<url>` para comparar rendimiento alternando las versiones.
+
+Imágenes con `width`/`height` reservados, `loading="lazy"` salvo la de portada (`fetchpriority="high"`), máximo 1 MB por foto (validado). Hoja de estilos ~41 KB sin dependencias.
 
 ## 7. Verificación y mantenimiento
 
