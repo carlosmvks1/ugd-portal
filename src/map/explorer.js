@@ -2,7 +2,7 @@ import {localUrl} from '../config.js';
 import {labels,normalize,options,sanitizeState,readState,stateUrl,territoryModel,visibleTerritories,exportRows,csv} from './model.js';
 import {geometryPath,geometryBounds} from './geometry.js';
 import {snapshotNotice,verificationLabels,latestSnapshot} from './snapshots.js';
-import {publicArchive} from './contract.js';
+import {siteArchive} from './contract.js';
 import {trackLayout,writeHistory} from '../navigation.js';
 import {emptyContent,linksForTerritory,highlightCodes,managersInPeriod,managerById,careLabel,categoryLabel,photosFor,investmentFor,populationPeriod} from '../content/model.js';
 import {figure} from '../content/format.js';
@@ -235,8 +235,9 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
  $('#share').onclick=async()=>{try{await navigator.clipboard.writeText(stateUrl(visibleState(),location.href).href);$('#status').textContent='Enlace copiado · '+period();}catch{$('#status').textContent='Copie la dirección del navegador para compartir esta consulta.';}};
  for(const kind of ['csv','json'])$('#'+kind).onclick=()=>{
   const rows=exportRows(data,state);if(!rows.length)return;
-  const approved=publicArchive(data);
-  // Los conteos de convenios del corte quedan fuera de alcance (PRODUCT.md) y no se exportan.
+  const approved=siteArchive(data);
+  // Convenios fuera de alcance (PRODUCT.md): siteArchive vacía sus valores y la
+  // descarga, que no está sujeta al contrato del archivo, omite además las claves.
   const snap=approved.snapshots.find(s=>s.snapshot_id===state.snapshot),indicators=Object.fromEntries(Object.entries(snap?.indicators||{}).filter(([k])=>!k.startsWith('agreements')));
   const payload={state,period:snap&&{...snap,indicators},sources:approved.sources,data_quality_issues:approved.data_quality_issues,rows};
   const blob=new Blob([kind==='csv'?csv(rows):JSON.stringify(payload,null,2)],{type:kind==='csv'?'text/csv;charset=utf-8':'application/json'}),a=document.createElement('a'),url=URL.createObjectURL(blob);

@@ -52,7 +52,7 @@ Estado tras completar la estructura técnica de contenidos. Todo lo de §1 se in
 | La ficha usa `?gestor=<id>#ficha-gestor` dentro de la misma página | Conserva la estructura de una página, enlaces compartibles y atrás/adelante; funciona bajo cualquier subdirectorio | — |
 | El parámetro `gestor` también resalta sus territorios en mapa y tabla | Un solo estado compartible para «ver en el mapa» | — |
 | Filtros retirados `manager` y `agreement`: se ignoran y se eliminan de la URL | Convenios fuera de alcance; las etiquetas no son gestores | — |
-| Los conteos de convenios del corte no se exportan (JSON) ni se muestran | Fuera de alcance según PRODUCT.md; el archivo conserva el campo por contrato | — |
+| Los convenios del corte no llegan al artefacto público: `siteArchive` (src/map/contract.js) deja `agreements_*` en `null`, `agreements` y `agreement_ids` vacíos y retira las observaciones sobre convenios de `dist/data/explorer/`; la descarga omite además esas claves | Fuera de alcance según PRODUCT.md; el archivo fuente conserva los campos por contrato y la administración experimental usa `publicArchive` sin cambios | Ajustar `siteArchive` |
 | Solo `approved`, `published` y `outdated` llegan a `dist/`; la vista previa se construye en `work/` | Proyección en el build en vez de ocultar en la interfaz | `publishableStates` en `src/content/contract.js` |
 | Ni la vista previa muestra fotografías sin autorización o con personas identificables sin consentimiento | Es una condición legal, no editorial | — |
 | La inversión nacional se muestra en la sección Inversión; la departamental en el detalle del departamento; la de gestor en su ficha | No repartir montos agregados entre territorios | — |
