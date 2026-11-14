@@ -12,7 +12,6 @@
         {"block_id": "funciones", "kind": "list", "title": "Funciones", "status": "collecting", "placeholder": "Lo que la UGD hace en el modelo de gestión descentralizada."},
         {"block_id": "direccion-ugd", "kind": "profile", "title": "Dirección de la UGD", "status": "collecting", "placeholder": "Nombre, cargo oficial y responsabilidades de la dirección, con retrato institucional y contacto cuando estén autorizados."},
         {"block_id": "estructura", "kind": "list", "title": "Estructura", "status": "collecting", "placeholder": "Organización de la unidad y su coordinación."},
-        {"block_id": "autoridades", "kind": "people", "title": "Autoridades", "status": "collecting", "placeholder": "Autoridades de la unidad, con cargo y fecha de referencia."},
         {"block_id": "fundamento-legal", "kind": "legal", "title": "Fundamento legal", "status": "collecting", "placeholder": "Normas que respaldan el trabajo de la UGD."}
       ]
     },

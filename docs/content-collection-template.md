@@ -18,12 +18,12 @@ No enviar por este medio datos de pacientes, contactos personales no autorizados
 
 ## Bloques institucionales (`institution.json`)
 
-Secciones y bloques ya preparados: **Portada** (mensaje breve), **La UGD** (presentación, funciones, dirección de la UGD, estructura, autoridades, fundamento legal), **Descentralización** (Secretaría de Salud, gestores, servicios en el territorio, papel de la UGD), **Contacto** (dirección, teléfono, correo).
+Secciones y bloques ya preparados: **Portada** (mensaje breve), **La UGD** (presentación, funciones, dirección de la UGD, estructura, fundamento legal), **Descentralización** (Secretaría de Salud, gestores, servicios en el territorio, papel de la UGD), **Contacto** (dirección, teléfono, correo).
 
 | Campo | | Descripción |
 | --- | --- | --- |
 | Texto | O* | Párrafos (bloques de tipo texto) |
-| Elementos | O* | Funciones / estructura: título y descripción. Autoridades: nombre, cargo, unidad (op), desde (op). Normas: título, emisor, número (op), fecha (op), enlace (op), vigencia (`current`, `historical`, `unknown`). Canales: tipo (`address`, `phone`, `email`, `website`, `hours`, `other`), etiqueta, valor, nota (op) |
+| Elementos | O* | Funciones / estructura: título y descripción. Normas: título, emisor, número (op), fecha (op), enlace (op), vigencia (`current`, `historical`, `unknown`). Canales: tipo (`address`, `phone`, `email`, `website`, `hours`, `other`), etiqueta, valor, nota (op) |
 | Fuentes | op | Identificadores de fuente |
 | Fecha de referencia | op | A qué fecha corresponde (p. ej. autoridades vigentes al…) |
 | Nota | op | Aclaración visible |

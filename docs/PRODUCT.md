@@ -35,7 +35,7 @@ Nombres y agrupaciones son propuesta del equipo; el contenido dependerá del mat
 | Sección | Contenido | Resultado para el visitante |
 | --- | --- | --- |
 | **Inicio** | Presentación breve, fotografía representativa y accesos principales. | Identificar la UGD y saber qué puede consultar. |
-| **Conocer la UGD** | Presentación, funciones, dirección de la UGD (retrato, nombre, cargo, responsabilidades validadas y contacto autorizado), estructura, autoridades y fundamento legal pertinente. | Comprender su papel institucional. |
+| **Conocer la UGD** | Presentación, funciones, dirección de la UGD (retrato, nombre, cargo, responsabilidades validadas y contacto autorizado), estructura y fundamento legal pertinente. La autoridad de la unidad se presenta en el bloque «Dirección de la UGD»; no hay un bloque aparte de autoridades (decisión de Carlos, 14 nov. 2026). | Comprender su papel institucional. |
 | **Descentralización en salud** | Explicación del modelo, participantes y responsabilidades. | Entender cómo funciona sin conocer previamente las siglas. |
 | **Presencia territorial** | Gestores, territorios y población, mediante mapa y listado equivalente. | Consultar qué información existe para un lugar. |
 | **Inversión** | Distribución por nivel de gestión y por nivel de atención, en los períodos que defina la UGD. | Interpretar montos y su alcance correctamente. |

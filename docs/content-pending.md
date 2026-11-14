@@ -9,7 +9,6 @@ Estado tras completar la estructura técnica de contenidos. Todo lo de §1 se in
 | Presentación de la UGD | `institution.json → sections.ugd.blocks[presentacion]` | `collecting`, marcador |
 | Funciones | `… ugd.blocks[funciones]` (lista) | `collecting` |
 | Estructura | `… ugd.blocks[estructura]` (lista) | `collecting` |
-| Autoridades (nombre, cargo, fecha de referencia) | `… ugd.blocks[autoridades]` (personas) | `collecting` |
 | Fundamento legal (norma, emisor, número, fecha, vigencia) | `… ugd.blocks[fundamento-legal]` (normas) | `collecting` |
 | Explicación de la descentralización (4 pasos) | `… sections.decentralization.blocks[secretaria, gestores, servicios, papel-ugd]` | `collecting` |
 | Contacto institucional (dirección, teléfono, correo) | `… sections.contact.blocks[direccion, telefono, correo]` | `collecting` |
