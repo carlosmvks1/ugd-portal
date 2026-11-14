@@ -1,5 +1,7 @@
 # Primera etapa institucional
 
+> **Estado:** documento histórico del prototipo. La biblioteca documental y la consulta de convenios quedan **fuera del alcance** según [PRODUCT.md](PRODUCT.md); su acceso público se retira en el paso 4 del plan. Los registros de gestores se reutilizan para la sección de presencia territorial.
+
 El portal incorpora presentación institucional, biblioteca documental, directorio de registros de gestores y consulta de convenios, conservando el atlas territorial.
 
 La biblioteca se deriva de `archive.sources`: los años se obtienen de los períodos que citan la fuente o de su validez cartográfica histórica. `retrieved_at` es fecha de consulta y no se presenta como fecha de publicación. Los enlaces conducen a las fuentes originales; no se descargan ni redistribuyen documentos automáticamente. La búsqueda común consulta títulos, emisores, etiquetas, nombres e identificadores; período y tipo filtran exclusivamente la biblioteca. Los estados sin coincidencias se explican en cada módulo.

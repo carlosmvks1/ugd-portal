@@ -1,6 +1,7 @@
 # UGD · Portal institucional
-Explorador territorial privado UGD. Prototipo pendiente de aprobación institucional.
-Integra el archivo histórico provisional SESAL 2024 y cartografía histórica SINIT/HDX recuperados del mapa previo. No acredita situación actual ni realiza despliegue público.
+Portal institucional público de la Unidad de Gestión Descentralizada (UGD) de SESAL, Honduras: qué hace la UGD, dónde tiene presencia y cómo se distribuyen la población y la inversión vinculadas a su trabajo. Prototipo pendiente de aprobación institucional. Propósito, estructura y alcance: [PRODUCT.md](docs/PRODUCT.md) y [AGENTS.md](AGENTS.md).
+La consulta territorial usa por ahora el archivo histórico provisional SESAL 2024 y cartografía histórica SINIT/HDX; se sustituirá con datos actualizados de la UGD. No acredita situación actual ni realiza despliegue público.
+El prototipo conserva módulos que quedan fuera del alcance (biblioteca documental, convenios, observatorio y administración interna); su retiro del sitio público está planificado en PRODUCT.md.
 
 ## Inicio
 Requiere Node.js 22.13+. No requiere instalar dependencias.
@@ -25,6 +26,8 @@ Frontend HTML/CSS/módulos ES y mapa SVG sin dependencias externas. Hover, selec
 - docs/: arquitectura, modelo de datos y despliegue.
 
 ## Documentación
+- [Producto: propósito, estructura y alcance](docs/PRODUCT.md)
+- [Gobernanza de contenidos](docs/content-governance.md)
 - [Arquitectura](docs/architecture.md)
 - [Modelo de datos y publicación de cortes](docs/data-model.md)
 - [Preview y migración a SESAL](docs/deployment.md)
@@ -34,15 +37,15 @@ Frontend HTML/CSS/módulos ES y mapa SVG sin dependencias externas. Hover, selec
 ## Portabilidad y privacidad
 dist/ usa rutas relativas y config.json en ejecución, sin dominio ni prefijo GitHub codificado.
 El mismo artefacto puede alojarse en GitHub Pages/preview o infraestructura oficial.
-Mantener privado el repositorio. La privacidad del código no protege los archivos de un sitio publicado.
-No guardar datos personales, secretos ni documentos internos. data/raw/ y .env están excluidos como medida auxiliar.
+El repositorio es público: todo lo que se incorpora a Git, incluido su historial, queda visible. Incorporar solo material con autorización de publicación.
+No guardar datos personales, datos de pacientes, secretos ni documentos internos. data/raw/ y .env están excluidos como medida auxiliar.
 El build publica únicamente catálogo, snapshots registrados, recursos frontend y GeoJSON; revisar estos archivos antes de publicar.
 No se concede licencia de redistribución de código o datos hasta que el titular la defina.
 
-## Administración interna
+## Administración interna (experimental, fuera de alcance)
 
 Servicio separado con SQLite, acceso por roles, importación JSON/CSV y circuito de revisión. Ver [puesta en marcha y operación](docs/admin-workflow.md). No se incluye en `dist/` ni despliega el sitio.
 
-## Observatorio y seguimiento
+## Observatorio y seguimiento (prototipo, fuera de alcance)
 
 Indicadores nacionales, comparación condicionada por metodología y alertas internas sobre el último período disponible. Ver [metodología y alcance](docs/observatory.md). El histórico actual no permite calcular una tendencia entre años.

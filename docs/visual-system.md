@@ -8,7 +8,7 @@ Este documento orienta futuras interfaces del portal institucional público. [AG
 - **Propuestas de diseño:** alternativas para explorar y validar, no compromisos de implementación.
 - **Decisiones pendientes:** requieren evidencia, selección del equipo o consulta institucional según corresponda.
 
-La incorporación del documento no aprueba los wireframes ni demuestra accesibilidad del prototipo. Los contenidos y funcionalidades específicos siguen sujetos a validación con la coordinadora. Los pendientes pueden representarse explícitamente en el prototipo; su publicación se rige por PRODUCT.md y AGENTS.md.
+La incorporación del documento no aprueba los wireframes ni demuestra accesibilidad del prototipo. Los contenidos y funcionalidades específicos siguen sujetos a validación con la coordinadora de UGD. Las referencias a biblioteca, documentos, convenios o indicadores de resultados en este documento quedan superadas por el alcance de [PRODUCT.md](PRODUCT.md). Los pendientes pueden representarse explícitamente en el prototipo; su publicación se rige por PRODUCT.md y AGENTS.md.
 
 ## 2. Auditoría y sustitución de reglas anteriores
 
@@ -149,7 +149,7 @@ Aplicar las pruebas pertinentes de AGENTS.md. Un cambio documental requiere exac
 | Propuesta | Portada institucional con accesos a tareas, o portada orientada a consultas: evaluar las alternativas de PRODUCT.md con contenido y visitantes; ninguna composición definitiva. |
 | Pendiente institucional | Manual de identidad, logotipos, permisos de imágenes, contenido oficial y responsable de aprobación: solicitar a UGD. |
 | Pendiente de diseño | Paleta, tipografía, escala, espacios, contenedores y tratamientos visuales: comparar muestras accesibles y registrar selección; consultar restricciones de identidad antes de declararlos definitivos. |
-| Pendiente de producto | Prioridad de tareas, nombres de navegación y utilidad de mapa, indicadores, biblioteca y formularios: validar con coordinadora y visitantes. |
+| Pendiente de producto | Prioridad de tareas, nombres de navegación, presentación de inversión, uso de fotografías y formularios: validar con la coordinadora de UGD y visitantes. Biblioteca e indicadores de resultados quedan fuera de alcance. |
 | Pendiente técnico | Matriz de compatibilidad y presupuestos de rendimiento: acordar con evidencia de condiciones de uso, sin cambiar stack por este documento. |
 
 Registrar cada decisión futura con estado, motivo, evidencia y PR; indicar qué regla sustituye. Consultar documentos especializados solo para la tarea afectada. Las referencias históricas al atlas dominante quedan sustituidas por este documento; reconciliar después la descripción histórica de esta referencia en AGENTS.md y PRODUCT.md, sin modificar esos archivos en esta fase.

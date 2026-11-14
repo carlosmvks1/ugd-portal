@@ -11,7 +11,7 @@ Consultar [PRODUCT.md](PRODUCT.md) para alcance y prototipo, [sistema visual](vi
 - El [catálogo](../data/catalog.json) referencia el archivo territorial y no contiene cortes generales publicados. El [archivo](../data/explorer/archive.json) registra fuentes, emisor, URL, fecha de consulta, períodos, páginas y estados de verificación; algunos campos son opcionales.
 - El corte 2024-v1 figura como provisional y `official_unverified`, con fecha de publicación desconocida. La observación Q001 conserva la discrepancia de 93 municipios en tabla y 89 en texto: no resolverla por inferencia.
 - [contract.js](../src/map/contract.js) define `official_verified`, `official_unverified` y `pending_UGD`; son estados de datos, **no autorizaciones editoriales**. Los estados propuestos abajo no sustituyen ni migran ese contrato.
-- La biblioteca de [institutional.js](../src/institutional.js) deriva de fuentes territoriales; no acredita un inventario completo de documentos institucionales.
+- La biblioteca de [institutional.js](../src/institutional.js) deriva de fuentes territoriales; no acredita un inventario completo de documentos institucionales. La biblioteca documental y los convenios quedan fuera del alcance según [PRODUCT.md](PRODUCT.md); las fuentes acompañan a las cifras sin formar un repositorio documental.
 - [Pages](../.github/workflows/pages.yml) se activa manualmente y su despliegue exige main. Aprobar un contenido, fusionar un PR y autorizar un despliegue son decisiones distintas.
 - No contamos todavía con todos los contenidos oficiales ni un procedimiento institucional formal de aprobación. La presencia de una fuente en Git no demuestra vigencia, exactitud ni permiso de publicación. Esta revisión comprobó registros del repositorio, no revalidó las fuentes externas.
 
@@ -25,9 +25,10 @@ Todas son candidatas, no secciones ya aprobadas.
 | Marco normativo | Instrumento, emisor, fecha y versión; confirmar vigencia o señalar que es histórica/desconocida. No interpretar facultades legales por cuenta del equipo. |
 | Autoridades y estructura | Nombre/cargo, fecha de referencia y confirmación competente; organigrama autorizado. |
 | Descentralización sanitaria | Explicación institucional validada; fuentes de responsabilidades y relaciones, sin trasladar diagramas del prototipo como hechos oficiales. |
-| Cobertura e indicadores | Fuente, período, ámbito, unidad, definición/denominador, metodología y limitaciones; distinguir ausencia, cero y datos históricos. |
-| Resultados y actividades | Fecha, alcance, evidencia y límites de interpretación; no atribuir resultados o causalidad sin respaldo. |
-| Documentos descargables | Emisor, título, versión/fecha cuando consten, permiso de difusión y accesibilidad; vínculo con documento sustituido si aplica. |
+| Presencia territorial y población | Gestor, territorio, fuente, período, unidad territorial y definición de la población; distinguir ausencia, cero y datos históricos. |
+| Inversión | Nivel de gestión o de atención, categoría, moneda, tipo de monto, período, unidad territorial y fuente definidos por UGD; no presentarla como impacto ni repartirla entre territorios sin respaldo. |
+| Fotografías del trabajo de los equipos | Descripción, lugar y fecha cuando consten, crédito, autorización de uso y consentimiento si aparecen personas identificables; texto alternativo. |
+| Fuentes de cifras | Emisor, título, fecha o período y enlace cuando exista. Citar la fuente no implica alojar ni catalogar documentos. |
 | Contacto | Canal institucional autorizado, propósito y confirmación de funcionamiento; evitar contactos personales no autorizados. |
 
 ## 3. Estados editoriales propuestos
@@ -65,7 +66,7 @@ El visitante debe ver la procedencia, período y límites necesarios para interp
 
 1. El equipo propone la pieza y solicita material; identifica huecos y evita completar hechos por inferencia.
 2. Contrasta texto/datos con la fuente, registra discrepancias y prepara una versión accesible.
-3. La persona designada por UGD revisa exactitud institucional, pertinencia y posibilidad de difusión. La coordinadora puede orientar y designar responsables; no se presume que deba aprobar todas las categorías.
+3. La persona designada por UGD revisa exactitud institucional, pertinencia y posibilidad de difusión. La coordinadora de UGD puede orientar y designar responsables; no se presume que deba aprobar todas las categorías.
 4. El responsable con competencia acordada autoriza la versión concreta; si hay dudas legales o de privacidad, solicita revisión pertinente.
 5. El responsable técnico comprueba versión, enlaces y artefacto. Publica únicamente con autorización editorial y autorización de despliegue; verifica la URL y registra la entrega.
 6. El responsable de contenido revisa cambios y correcciones; el técnico aplica la versión autorizada.
@@ -124,11 +125,11 @@ Solo después del despliegue autorizado y comprobado cambia a “Publicado”. E
 
 ## 10. Solicitudes y decisiones pendientes
 
-Solicitar a la coordinadora, por prioridad:
+Solicitar a la coordinadora de UGD, por prioridad (inventario detallado en [PRODUCT.md §8](PRODUCT.md)):
 
 1. Quién valida cada categoría, quién autoriza difusión y qué evidencia/canal se aceptará; mecanismo de atención a errores o retiros.
 2. Presentación, funciones, base normativa, autoridades/estructura y contacto respaldados; identidad y permisos de imágenes.
-3. Inventario de documentos publicables y fuentes de cobertura/resultados con períodos, definiciones y discrepancias conocidas.
+3. Datos actualizados de gestores, territorios, población e inversión por nivel de gestión y por nivel de atención, con fuentes, períodos, definiciones y discrepancias conocidas; fotografías autorizadas con su contexto.
 4. Responsable de mantenimiento editorial, eventos/frecuencias de revisión y tratamiento de históricos.
 
 Quedan por acordar roles, delegación de correcciones menores, registro editorial y su acceso, frecuencia de revisión y criterios jurídicos de privacidad/licencias. No seleccionar un CMS ni adoptar el flujo administrativo experimental para resolver estos pendientes. Registrar decisiones con evidencia y estado, sin crear obligaciones institucionales no aceptadas.
