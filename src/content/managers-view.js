@@ -3,6 +3,7 @@
 // institucional, no una persona. Las relaciones con territorios provienen solo
 // de managers.json → assignments (identificadores explícitos).
 import {esc,number,periodLabel,snapshotPeriod,sourceLine,verification,editorialNote,figure,safeLink} from './format.js';
+import {isPublishable} from './contract.js';
 import {careLabel,categoryLabel,managerById,sortManagers,territoriesForManager,photosFor,investmentFor} from './model.js';
 import {datasetView} from './investment-view.js';
 import {normalize} from '../map/model.js';
@@ -63,9 +64,27 @@ export function createManagersView(result){
   if(!sets.length)return '';
   return `<section class="profile-section"><h5>Inversión atribuida a este gestor</h5>${sets.map(d=>datasetView(content,archive,d,{preview,heading:'h6'})).join('')}</section>`;
  }
+ // La primera fotografía del gestor encabeza la ficha; las demás forman la
+ // galería. Ninguna se repite.
  function photosSection(m){
-  const list=photosFor(content,{manager:m.manager_id});
+  const list=photosFor(content,{manager:m.manager_id}).slice(1);
   return list.length?`<section class="profile-section"><h5>Fotografías</h5><div class="profile-photos">${list.map(p=>figure(p,{preview})).join('')}</div></section>`:'';
+ }
+ function banner(m){
+  const photo=photosFor(content,{manager:m.manager_id})[0];
+  if(!photo)return '';
+  const meta=[photo.description,photo.place,photo.date_label||(photo.date?photo.date.slice(0,4):'')].filter(Boolean).join(' · ');
+  return `<figure class="profile-banner" data-photo="${esc(photo.photo_id)}"><img src="./${esc(photo.src)}" alt="${esc(photo.alt)}" width="${Number(photo.width)}" height="${Number(photo.height)}"${photo.focus?` style="object-position:${esc(photo.focus)}"`:''} decoding="async"><figcaption class="profile-banner-credit">${esc(meta)} · Crédito: ${esc(photo.credit)}${preview&&!isPublishable(photo)?' · Vista previa, no se publica':''}</figcaption></figure>`;
+ }
+ // Datos esenciales en la cabecera: ámbito territorial actual y población más reciente.
+ function facts(m){
+  const {latest}=latestGroups(m.manager_id);
+  const codes=new Set(latest.flatMap(g=>g.assignments.map(a=>a.territory_id)));
+  const items=[];
+  if(codes.size)items.push(`<li><strong>${number(codes.size)}</strong> ${codes.size===1?'territorio':'territorios'} · ${esc(snapshotPeriod(latest[0].snapshot))}</li>`);
+  const pop=[...(m.population||[])].filter(p=>p.value!=null).sort((a,b)=>b.period.end.localeCompare(a.period.end))[0];
+  if(pop)items.push(`<li>Población reportada: <strong>${esc(number(pop.value))}</strong> · ${esc(periodLabel(pop.period))}</li>`);
+  return items.length?`<ul class="profile-facts">${items.join('')}</ul>`:'';
  }
  function contactSection(m){
   if(!m.contact?.length)return '';
@@ -79,18 +98,26 @@ export function createManagersView(result){
  function profile(m){
   const {latest}=latestGroups(m.manager_id);
   const mapAll=latest[0]?`<a class="btn btn-secondary" data-state-link href="${esc(viewUrl({gestor:m.manager_id,year:latest[0].snapshot?String(latest[0].snapshot.year):'',snapshot:latest[0].snapshot_id,care:latest.length===1?latest[0].care_level||'':'',territory:''},'presencia'))}">Ver sus territorios en el mapa</a>`:'';
-  return `<article id="ficha-gestor" class="manager-profile" aria-labelledby="ficha-gestor-title" data-manager="${esc(m.manager_id)}">
-   <p class="detail-kicker">${esc(typeLabel(m))}</p>
-   <h4 id="ficha-gestor-title">${esc(m.name)}</h4>
-   ${m.short_name?`<p class="profile-short">${esc(m.short_name)}</p>`:''}
-   <p class="profile-verification">${esc(verification(m.verification_status))}</p>
-   ${editorialNote(m,preview)}
-   ${m.note?`<p class="content-warning">${esc(m.note)}</p>`:''}
-   ${m.description?`<section class="profile-section"><h5>Descripción</h5><p>${esc(m.description)}</p></section>`:''}
+  const head=banner(m);
+  const aside=`${m.description?`<section class="profile-section"><h5>Descripción</h5><p>${esc(m.description)}</p></section>`:''}
    ${m.scope?`<section class="profile-section"><h5>Ámbito de trabajo</h5><p>${esc(m.scope)}</p></section>`:''}
-   ${territoriesSection(m)}${populationSection(m)}${investmentSection(m)}${photosSection(m)}${contactSection(m)}
+   ${contactSection(m)}
    ${m.source_ids.length?`<section class="profile-section"><h5>Fuentes</h5>${sourceLine(content,archive,m.source_ids)}</section>`:''}
-   ${labelsSection(m)}
+   ${labelsSection(m)}`.trim();
+  return `<article id="ficha-gestor" class="manager-profile" aria-labelledby="ficha-gestor-title" data-manager="${esc(m.manager_id)}">
+   <header class="profile-head${head?' has-photo':''}">${head}
+    <p class="detail-kicker">${esc(typeLabel(m))}</p>
+    <h4 id="ficha-gestor-title">${esc(m.name)}</h4>
+    ${m.short_name?`<p class="profile-short">${esc(m.short_name)}</p>`:''}
+    ${facts(m)}
+    <p class="profile-verification">${esc(verification(m.verification_status))}</p>
+    ${editorialNote(m,preview)}
+    ${m.note?`<p class="content-warning">${esc(m.note)}</p>`:''}
+   </header>
+   <div class="profile-body">
+    <div class="profile-main">${territoriesSection(m)}${populationSection(m)}${investmentSection(m)}${photosSection(m)}</div>
+    ${aside?`<div class="profile-aside">${aside}</div>`:''}
+   </div>
    <div class="profile-actions">${mapAll}<button type="button" class="link-button" data-copy-profile>Copiar enlace a esta ficha</button><a class="link-button" data-state-link href="${esc(viewUrl({gestor:''},'gestores'))}">Volver al directorio</a></div>
    <p class="profile-copy-status" role="status">${esc(copied)}</p>
   </article>`;

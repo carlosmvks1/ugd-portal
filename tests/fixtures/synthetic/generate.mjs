@@ -11,23 +11,44 @@ const S='[SINTÉTICO] ';
 const head=version=>({schema_version:version,synthetic:true});
 const ok='approved';
 
-// PNG mínimo sin dependencias: franjas de color con un recuadro claro.
-function png(width,height,[r,g,b]){
- const raw=Buffer.alloc((width*3+1)*height);
+// PNG sin dependencias. «scene» dibuja un paisaje abstracto (cielo, colinas y
+// un disco) para evaluar encuadres; «stripes» conserva el patrón de prueba.
+// Filtro «Sub» por fila para que los degradados compriman bien.
+function png(width,height,palette,kind='scene'){
+ const [sky1,sky2,hill1,hill2,sun]=palette;
+ const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+ const pixel=(x,y)=>{
+  if(kind==='stripes'){const band=((x+y)>>5)&1,box=x>width*.3&&x<width*.7&&y>height*.3&&y<height*.7;return box?[240,244,242]:sky1.map(v=>v-band*30);}
+  const u=x/width,v=y/height;
+  const h1=.62+.08*Math.sin(u*5.1+1.2)+.03*Math.sin(u*17.3);
+  const h2=.76+.06*Math.sin(u*3.3+4)+.02*Math.sin(u*23.1+2);
+  if(v>h2)return mix(hill2,hill2.map(c=>c*.72),(v-h2)/(1-h2));
+  if(v>h1)return mix(hill1,hill2,(v-h1)/(h2-h1)*.5);
+  const d=Math.hypot(u-.68,(v-.3)*height/width);
+  if(d<.06)return sun;
+  return mix(sky1,sky2,v/h1);
+ };
+ const stride=width*3+1,raw=Buffer.alloc(stride*height);
  for(let y=0;y<height;y++){
-  raw[y*(width*3+1)]=0;
+  raw[y*stride]=1;let prev=[0,0,0];
   for(let x=0;x<width;x++){
-   const o=y*(width*3+1)+1+x*3,band=((x+y)>>5)&1,box=x>width*.3&&x<width*.7&&y>height*.3&&y<height*.7;
-   raw[o]=box?240:r-band*30;raw[o+1]=box?244:g-band*30;raw[o+2]=box?242:b-band*30;
+   const c=pixel(x,y),o=y*stride+1+x*3;
+   for(let k=0;k<3;k++){raw[o+k]=(c[k]-prev[k]+256)&255;}prev=c;
   }
  }
  const crcTable=Array.from({length:256},(_,n)=>{let c=n;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
  const crc=buf=>{let c=0xffffffff;for(const byte of buf)c=crcTable[(c^byte)&0xff]^(c>>>8);return (c^0xffffffff)>>>0;};
  const chunk=(type,data)=>{const len=Buffer.alloc(4);len.writeUInt32BE(data.length);const td=Buffer.concat([Buffer.from(type),data]);const c=Buffer.alloc(4);c.writeUInt32BE(crc(td));return Buffer.concat([len,td,c]);};
  const ihdr=Buffer.alloc(13);ihdr.writeUInt32BE(width,0);ihdr.writeUInt32BE(height,4);ihdr[8]=8;ihdr[9]=2;
- return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',ihdr),chunk('IDAT',deflateSync(raw)),chunk('IEND',Buffer.alloc(0))]);
+ return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',ihdr),chunk('IDAT',deflateSync(raw,{level:9})),chunk('IEND',Buffer.alloc(0))]);
 }
-
+const palettes={
+ dawn:[[52,78,128],[214,184,140],[96,128,92],[52,84,60],[246,226,170]],
+ noon:[[96,148,204],[206,226,238],[120,150,90],[70,102,64],[255,248,220]],
+ dusk:[[34,48,92],[180,120,110],[90,96,110],[48,52,70],[250,204,150]],
+ green:[[110,160,140],[220,232,214],[96,140,96],[56,96,62],[255,250,230]],
+ portrait:[[60,72,96],[160,170,186],[120,110,104],[80,72,70],[230,214,196]],
+};
 const categories={...head('categories-1'),
  entity_types:[{key:'sint-asociacion',label:S+'Asociación',description:'Categoría ficticia.',status:ok},{key:'sint-mancomunidad',label:S+'Mancomunidad',status:ok}],
  care_levels:[{key:'I',label:S+'Primer nivel de atención',status:ok},{key:'II',label:S+'Segundo nivel de atención',status:ok}],
@@ -38,9 +59,11 @@ const sources={...head('content-sources-1'),sources:[
  {source_id:'sint-fuente-a',title:S+'Informe ficticio de gestión',publisher:S+'Unidad ficticia',date:'2025-03-01',url:'https://example.org/sintetico/informe',status:ok},
  {source_id:'sint-fuente-pendiente',title:S+'Fuente pendiente',publisher:S+'Unidad ficticia',status:'collecting'}]};
 const institution={...head('institution-1'),sections:{
+ home:{blocks:[{block_id:'mensaje',kind:'text',title:'Mensaje de portada',status:ok,placeholder:'Mensaje breve de portada.',paragraphs:[S+'Mensaje ficticio de portada: qué hace la UGD y qué puede consultar aquí.']}]},
  ugd:{blocks:[
   {block_id:'presentacion',kind:'text',title:'Qué es la UGD',status:ok,placeholder:'Presentación institucional.',paragraphs:[S+'Párrafo ficticio de presentación para comprobar el formato.',S+'Segundo párrafo ficticio.'],source_ids:['sint-fuente-a'],reference_date:'2025-03-01'},
   {block_id:'funciones',kind:'list',title:'Funciones',status:ok,placeholder:'Funciones.',items:[{title:S+'Función ficticia uno',text:'Descripción ficticia.'},{title:S+'Función ficticia dos'}],source_ids:['sint-fuente-a']},
+  {block_id:'direccion-ugd',kind:'profile',title:'Dirección de la UGD',status:ok,placeholder:'Dirección institucional de la unidad.',items:[{name:S+'Nombre Ficticio Apellido Apellido',role:S+'Directora de la Unidad de Gestión Descentralizada (cargo ficticio)',text:S+'Responsabilidades ficticias de la dirección, redactadas solo para comprobar la longitud del bloque en escritorio y en móvil.',photo_id:'sint-retrato',contact:[{type:'email',label:'Correo institucional',value:'direccion@example.org'}]}],reference_date:'2025-01-01',source_ids:['sint-fuente-a']},
   {block_id:'estructura',kind:'list',title:'Estructura',status:'collecting',placeholder:'Organización de la unidad y su coordinación.'},
   {block_id:'autoridades',kind:'people',title:'Autoridades',status:ok,placeholder:'Autoridades.',items:[{name:S+'Persona ficticia',role:S+'Cargo ficticio',since:'2025-01-01'}],source_ids:['sint-fuente-a']},
   {block_id:'fundamento-legal',kind:'legal',title:'Fundamento legal',status:'outdated',placeholder:'Normas.',items:[{title:S+'Norma ficticia',issuer:S+'Emisor ficticio',number:'0000',date:'2020-01-01',url:'https://example.org/sintetico/norma',validity:'unknown'}],source_ids:['sint-fuente-a']}]},
@@ -92,9 +115,14 @@ const investment={...head('investment-1'),datasets:[
  dataset('sint-depto-13',S+'Inversión atribuida a Lempira','management_level','2024-01-01',[{category:'sint-regional',amount:150000}],{scope:{type:'department',id:'13'}}),
  dataset('sint-gestor-largo-2024',S+'Inversión atribuida al gestor','care_level','2024-01-01',[{category:'I',amount:75000}],{scope:{type:'manager',id:'sint-gestor-largo'}}),
  dataset('sint-pendiente',S+'Conjunto no aprobado','care_level','2024-01-01',[{category:'I',amount:1}],{status:'collecting'})]};
+const photo=(photo_id,src,width,height,extra)=>({photo_id,src,width,height,credit:S+'Autoría ficticia',status:ok,authorization:{status:'granted',scope:S+'Uso en el portal'},identifiable_people:'none',...extra});
 const photos={...head('photos-1'),photos:[
- {photo_id:'sint-foto-equipo',src:'media/sintetico/equipo.png',width:800,height:600,alt:S+'Rectángulo verde con un recuadro claro en el centro',description:S+'Imagen de prueba que representa a un equipo de salud',place:'Gracias, Lempira',date:'2025-02-14',credit:S+'Autoría ficticia',status:ok,authorization:{status:'granted',scope:S+'Uso en el portal'},identifiable_people:'none',territory_ids:['1301'],manager_ids:['sint-gestor-largo'],placements:['home','teams']},
+ photo('sint-foto-portada','media/sintetico/portada.png',1600,900,{alt:S+'Paisaje abstracto de colinas al amanecer',description:S+'Imagen de prueba para la portada',place:'Lempira',date_label:'2025',placements:['home'],focus:'60% 45%',orientation:'landscape'}),
+ photo('sint-foto-ugd','media/sintetico/ugd.png',1200,900,{alt:S+'Paisaje abstracto con cielo despejado',description:S+'Imagen de prueba para «La UGD»',placements:['ugd'],orientation:'landscape'}),
+ photo('sint-foto-territorio','media/sintetico/territorio.png',1600,900,{alt:S+'Paisaje abstracto al atardecer',description:S+'Imagen de prueba para la presencia territorial',place:'Intibucá',placements:['territory'],focus:'40% 50%',orientation:'landscape'}),
+ photo('sint-foto-equipo','media/sintetico/equipo.png',1200,900,{alt:S+'Paisaje abstracto verde con colinas',description:S+'Imagen de prueba que representa a un equipo de salud',place:'Gracias, Lempira',date:'2025-02-14',territory_ids:['1301'],manager_ids:['sint-gestor-largo'],placements:['teams'],orientation:'landscape'}),
  {photo_id:'sint-foto-sin-lugar',src:'media/sintetico/sin-lugar.png',width:800,height:600,alt:S+'Rectángulo azul con un recuadro claro en el centro',description:S+'Imagen de prueba sin lugar ni fecha',credit:S+'Autoría ficticia',status:ok,authorization:{status:'granted'},identifiable_people:'none',placements:['teams']},
+ photo('sint-retrato','media/sintetico/retrato.png',640,800,{alt:S+'Retrato de prueba: figura abstracta en tonos grises',description:S+'Retrato ficticio de la dirección',orientation:'portrait',focus:'50% 30%'}),
  {photo_id:'sint-foto-sin-autorizacion',src:'media/sintetico/no-existe.png',width:800,height:600,alt:S+'Imagen sin autorización',description:S+'No debe publicarse',credit:S+'Autoría ficticia',status:'collecting',authorization:{status:'pending'},identifiable_people:'unknown',placements:['teams']}]};
 
 // Período territorial ficticio añadido al archivo histórico solo en pruebas.
@@ -109,6 +137,7 @@ await mkdir(new URL('media/sintetico/',here),{recursive:true});
 for(const [name,value] of Object.entries({categories,sources,institution,managers,population,investment,photos}))
  await writeFile(new URL('content/'+name+'.json',here),JSON.stringify(value,null,1)+'\n');
 await writeFile(new URL('archive-extra.json',here),JSON.stringify(archiveExtra,null,1)+'\n');
-await writeFile(new URL('media/sintetico/equipo.png',here),png(800,600,[90,150,120]));
-await writeFile(new URL('media/sintetico/sin-lugar.png',here),png(800,600,[80,120,170]));
+for(const [file,w,h,palette] of [['portada',1600,900,'dawn'],['ugd',1200,900,'noon'],['territorio',1600,900,'dusk'],['equipo',1200,900,'green'],['retrato',640,800,'portrait']])
+ await writeFile(new URL(`media/sintetico/${file}.png`,here),png(w,h,palettes[palette]));
+await writeFile(new URL('media/sintetico/sin-lugar.png',here),png(800,600,[[80,120,170]],'stripes'));
 console.log('Ejemplos sintéticos generados en tests/fixtures/synthetic/');

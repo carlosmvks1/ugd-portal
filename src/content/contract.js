@@ -44,23 +44,39 @@ const channel=object({type:choice(...channelTypes),label:id,value:id,note:nullab
 
 // Bloque institucional genérico. «kind» decide qué campos de cada elemento
 // son obligatorios (ver itemRules); el resto de la estructura es común.
-export const blockKinds=['text','list','people','legal','channels'];
+// «profile»: dirección institucional (una persona: retrato opcional por photo_id,
+// nombre, cargo, responsabilidades validadas y contacto institucional).
+export const blockKinds=['text','list','people','legal','channels','profile'];
 const item=object({
  title:nullable(text),text:nullable(text),name:nullable(text),role:nullable(text),unit:nullable(text),
  since:nullable(date),issuer:nullable(text),number:nullable(text),date:nullable(date),url:nullable(link),
  validity:nullable(choice('current','historical','unknown')),
- type:nullable(choice(...channelTypes)),label:nullable(text),value:nullable(text),note:nullable(text)
-},['title','text','name','role','unit','since','issuer','number','date','url','validity','type','label','value','note']);
-export const itemRules={text:[],list:['title'],people:['name','role'],legal:['title','issuer'],channels:['type','label','value']};
+ type:nullable(choice(...channelTypes)),label:nullable(text),value:nullable(text),note:nullable(text),
+ photo_id:nullable(key),contact:list(channel)
+},['title','text','name','role','unit','since','issuer','number','date','url','validity','type','label','value','note','photo_id','contact']);
+export const itemRules={text:[],list:['title'],people:['name','role'],legal:['title','issuer'],channels:['type','label','value'],profile:['name','role']};
 const block=object({
  block_id:key,kind:choice(...blockKinds),title:id,status:editorial,placeholder:id,
  paragraphs:list(text),items:list(item),source_ids:list(key),reference_date:nullable(date),note:nullable(text)
 },['paragraphs','items','source_ids','reference_date','note']);
 const section=object({blocks:list(block)});
 export const institutionSections=['ugd','decentralization','contact'];
+// «home» es opcional: mensaje breve de portada (bloque «mensaje»). Sin versión
+// aprobada, la portada usa el texto propuesto de index.html.
+export const optionalSections=['home'];
+// Identidad institucional (logotipo SESAL/UGD). Solo se muestra aprobada y con
+// autorización de uso; si falta, la cabecera usa el nombre en texto.
+const brand=object({
+ status:editorial,logo_src:{type:'string',pattern:'^media/[a-z0-9][a-z0-9/_-]*\\.(svg|png|webp)$'},
+ logo_alt:id,logo_width:positive,logo_height:positive,
+ authorization:object({status:choice('granted','pending','denied'),scope:nullable(text)},['scope']),note:nullable(text)
+},['note']);
 export const institutionSchema=header('institution-1',{
- sections:object(Object.fromEntries(institutionSections.map(s=>[s,section])))
+ brand,
+ sections:object(Object.fromEntries([...institutionSections,...optionalSections].map(s=>[s,section])),optionalSections)
 });
+// La cabecera es opcional en el archivo (los conjuntos anteriores no la tienen).
+institutionSchema.required=institutionSchema.required.filter(k=>k!=='brand');
 
 const population=object({
  value:nullable(count),period,snapshot_id:nullable(id),care_level:nullable(key),
@@ -96,7 +112,10 @@ export const investmentSchema=header('investment-1',{
  },['reported_total','notes']))
 });
 
-export const photoPlacements=['home','teams'];
+// Lugares narrativos de la página. Cada fotografía ocupa como máximo uno; los
+// lugares de una sola imagen (todos salvo «teams») admiten una publicada.
+export const photoPlacements=['home','ugd','decentralization','territory','teams'];
+export const singlePlacements=['home','ugd','decentralization','territory'];
 export const photosSchema=header('photos-1',{
  photos:list(object({
   photo_id:key,src:{type:'string',pattern:'^media/[a-z0-9][a-z0-9/_-]*\\.(jpg|jpeg|png|webp)$'},
@@ -104,8 +123,11 @@ export const photosSchema=header('photos-1',{
   credit:id,status:editorial,
   authorization:object({status:choice('granted','pending','denied'),scope:nullable(text)},['scope']),
   identifiable_people:choice('none','consented','unknown'),
-  territory_ids:list(id),manager_ids:list(key),placements:list(choice(...photoPlacements))
- },['place','date','date_label','territory_ids','manager_ids','placements']))
+  territory_ids:list(id),manager_ids:list(key),placements:list(choice(...photoPlacements)),
+  // Punto de interés para recortes adaptables (CSS object-position), p. ej. «60% 35%».
+  focus:{type:'string',pattern:'^(100|[1-9]?\\d)% (100|[1-9]?\\d)%$'},
+  orientation:choice('landscape','portrait','square')
+ },['place','date','date_label','territory_ids','manager_ids','placements','focus','orientation']))
 });
 
 export const contentSchemas={
