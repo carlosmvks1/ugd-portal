@@ -73,7 +73,7 @@ Combinación aprobada (14 nov. 2026): A «sutil» + C «territorial» + de B sol
 | Ficha del territorio al cambiar de selección | Sus bloques suben 6 px desde opacidad 0,4 (escalonado máx. 60 ms) | 200 ms |
 | Hoja de detalle en móvil (primera selección) | Desplazamiento de 16 px | 240 ms |
 | Mapa al bajar o subir de nivel | Acercamiento o alejamiento desde el territorio pulsado | 320 ms |
-| Territorio seleccionado | Trazado del contorno dorado | 480 ms |
+| Territorio seleccionado | El contorno pasa de la línea blanca al dorado y crece de grosor | 480 ms |
 | Municipios de un gestor | Relleno desde el tono vacío; escalonado total ≤ 240 ms y simultáneo con más de 24 municipios (total ≤ 600 ms) | 360 ms |
 | Cabecera de la ficha del gestor | Entrada desde opacidad 0,4 | 240 ms |
 | Portada (solo si se carga arriba) | Hasta cuatro elementos suben desde opacidad 0,4, escalonado 60 ms | 360 ms |

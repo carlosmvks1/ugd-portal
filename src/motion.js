@@ -57,7 +57,10 @@ function onMap(){
  // trazados a la vez añadía ~25 ms a la selección (docs/visual-system.md §6).
  const pressed=map.querySelector('[aria-pressed="true"]');
  if(!map.querySelector('[data-code]'))return;
- if(pressed&&!pressed.dataset.mTraced){pressed.dataset.mTraced='1';pressed.setAttribute('pathLength','1000');animate(pressed,[{strokeDashoffset:1000},{strokeDashoffset:0}],{duration:DURATION.trace});}
+ // El contorno dorado crece desde la línea blanca normal. (Un trazado con
+ // guiones no sirve aquí: con vector-effect:non-scaling-stroke el contorno
+ // quedaba punteado.)
+ if(pressed&&!pressed.dataset.mTraced){pressed.dataset.mTraced='1';animate(pressed,[{strokeWidth:'1.2px',stroke:'#FFFFFF'},{strokeWidth:'3.5px',stroke:'#AD8411'}],{duration:DURATION.trace});}
  if(pendingZoom&&enabled()){
   // El acercamiento sustituye al fundido genérico del mapa (map-enter): un solo efecto.
   map.classList.remove('map-enter');map.getAnimations().forEach(a=>{if(a.id==='m-zoom')a.cancel();});

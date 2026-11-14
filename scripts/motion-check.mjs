@@ -40,7 +40,10 @@ for(const [label,opts] of Object.entries(sizes)){
  // Interacción rápida: cinco selecciones seguidas; queda la última.
  await page.goto(base+'#presencia');await page.waitForSelector('#map [data-code="04"]');
  for(const code of ['04','10','12','16','13']){await page.locator(`#map [data-code="${code}"]`).click({timeout:2000});if(code!=='13')await page.locator('#home').click();}
- await page.waitForTimeout(500);const rapid=await page.locator('#detail h2').innerText();
+ await page.waitForTimeout(700);const rapid=await page.locator('#detail h2').innerText();
+ // El contorno seleccionado termina continuo (sin guiones) y dorado.
+ await page.locator('#map [data-code="1301"]').click();await page.waitForTimeout(700);
+ const outline=await page.evaluate(()=>{const cs=getComputedStyle(document.querySelector('#map [aria-pressed="true"]'));return cs.strokeDasharray+' '+cs.stroke;});
  // Teclado: Enter sobre un territorio lleva el foco al título del detalle.
  await page.locator('#home').click();await page.waitForSelector('#map [data-code="10"]');await page.locator('#map [data-code="10"]').focus();await page.keyboard.press('Enter');await page.waitForTimeout(200);
  const focus=await page.evaluate(()=>document.activeElement?.closest('#detail')?document.activeElement.tagName:'(fuera)');
@@ -52,14 +55,14 @@ for(const [label,opts] of Object.entries(sizes)){
  await r.goto(base+'#presencia');await r.waitForSelector('#map [data-code="13"]');await r.locator('#map [data-code="13"]').click();await r.waitForTimeout(100);
  const reduced=await r.evaluate(()=>({hasMotion:document.documentElement.classList.contains('has-motion'),running:document.getAnimations().filter(a=>a.playState==='running').length,pending:document.querySelectorAll('.m-photo-pending').length}));
  await rctx.close();
- const row={label,errors:errors.length,heroOpacity,detailOpacity,...photoState,linked:linkedSpan.count,linkedEndMs:Math.round(linkedSpan.end),gestor:new URL(gestorUrl).searchParams.get('gestor'),back1,back2,fwd,rapid,focus,idle,...Object.fromEntries(Object.entries(reduced).map(([k,v])=>['reduce.'+k,v]))};
+ const row={label,errors:errors.length,heroOpacity,detailOpacity,...photoState,linked:linkedSpan.count,linkedEndMs:Math.round(linkedSpan.end),gestor:new URL(gestorUrl).searchParams.get('gestor'),back1,back2,fwd,rapid,outline,focus,idle,...Object.fromEntries(Object.entries(reduced).map(([k,v])=>['reduce.'+k,v]))};
  results.push(row);console.log(JSON.stringify(row));
 }
 await browser.close();server?.close();
 for(const r of results){
  assert.equal(r.errors,0);assert.ok(r.heroOpacity>=.4,'portada legible');assert.ok(r.detailOpacity>=.4,'detalle legible');
  assert.equal(r.pendingVisible,0);assert.equal(r.captionsClipped,0);assert.ok(r.linkedEndMs<=650,'resaltado acotado');
- assert.equal(r.back1,'1301');assert.equal(r.back2,'13');assert.equal(r.fwd,'1301');assert.equal(r.rapid,'Lempira');assert.equal(r.focus,'H2');assert.equal(r.idle,0);
+ assert.equal(r.back1,'1301');assert.equal(r.back2,'13');assert.equal(r.fwd,'1301');assert.equal(r.rapid,'Lempira');assert.equal(r.outline,'none rgb(173, 132, 17)');assert.equal(r.focus,'H2');assert.equal(r.idle,0);
  assert.equal(r['reduce.hasMotion'],false);assert.equal(r['reduce.running'],0);assert.equal(r['reduce.pending'],0);
 }
 console.log('Movimiento: legibilidad inmediata, fotografías, resaltado acotado, atrás/adelante, selección rápida, teclado, reposo y movimiento reducido: OK');
