@@ -51,3 +51,17 @@ export function publicFields(value,schema){
  return value;
 }
 export const publicArchive=data=>publicFields(data,explorerSchema);
+// Proyección de alcance del sitio público (PRODUCT.md §4): los convenios
+// quedan fuera. El archivo conserva sus campos por contrato (la administración
+// experimental los usa vía publicArchive), pero el artefacto público y sus
+// descargas no llevan conteos, identificadores ni observaciones de convenios.
+const agreementIssue=i=>/convenio/i.test(i.detail||'');
+export function siteArchive(data){
+ const a=publicArchive(data);
+ return {...a,
+  agreements:[],
+  // Las claves se conservan (el contrato las exige) con valor nulo: «sin dato publicado».
+  snapshots:a.snapshots.map(s=>({...s,indicators:Object.fromEntries(Object.entries(s.indicators||{}).map(([k,v])=>[k,k.startsWith('agreements')?null:v]))})),
+  coverage:a.coverage.map(r=>({...r,agreement_ids:[]})),
+  data_quality_issues:a.data_quality_issues.filter(i=>!agreementIssue(i))};
+}

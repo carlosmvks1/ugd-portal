@@ -32,6 +32,8 @@ Textos, gestores, vínculos territoriales, población, inversión, fotografías 
 - [Producto: propósito, estructura y alcance](docs/PRODUCT.md)
 - [Gobernanza de contenidos](docs/content-governance.md)
 - [Guía para incorporar contenido](docs/content-guide.md)
+- [Registro de cierre y contenido pendiente](docs/cierre.md) · [nota de continuidad](docs/CONTINUIDAD.md)
+- [Propuestas visuales (pendientes de elección)](docs/propuestas-visuales.md)
 - [Arquitectura](docs/architecture.md)
 - [Modelo de datos y publicación de cortes](docs/data-model.md)
 - [Preview y migración a SESAL](docs/deployment.md)

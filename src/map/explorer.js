@@ -2,12 +2,14 @@ import {localUrl} from '../config.js';
 import {labels,normalize,options,sanitizeState,readState,stateUrl,territoryModel,visibleTerritories,exportRows,csv} from './model.js';
 import {geometryPath,geometryBounds} from './geometry.js';
 import {snapshotNotice,verificationLabels,latestSnapshot} from './snapshots.js';
-import {publicArchive} from './contract.js';
+import {siteArchive} from './contract.js';
 import {trackLayout,writeHistory} from '../navigation.js';
 import {emptyContent,linksForTerritory,highlightCodes,managersInPeriod,managerById,careLabel,categoryLabel,photosFor,investmentFor,populationPeriod} from '../content/model.js';
 import {figure} from '../content/format.js';
 import {datasetView} from '../content/investment-view.js';
 const $=s=>document.querySelector(s);
+// Paleta del mapa: misma que las variables --map-* de styles.css (leyenda).
+const palette={reported:'#2F5E9E',low:'#A9BFDF',mid:'#5F84BE',empty:'#E6E0D2',link:'#13294F'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>n==null?'Sin dato':new Intl.NumberFormat('es-HN').format(n);
 const safeLink=url=>{try{const u=new URL(url);return ['https:','http:'].includes(u.protocol)?esc(u.href):'';}catch{return '';}};
@@ -39,15 +41,15 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
   $('#layer').value=state.layer;
  }
  function color(m){
-  if(state.gestor)return highlight().has(m.territory.official_code)?'#006571':'#dce6eb';
+  if(state.gestor)return highlight().has(m.territory.official_code)?palette.link:palette.empty;
   if(m.status==='unknown')return 'url(#unknown)';
-  if(state.layer==='proportion')return m.proportion==null?'url(#unknown)':m.proportion===0?'#dce6eb':m.proportion<.25?'#a4d4d8':m.proportion<.6?'#419ea8':'#006571';
+  if(state.layer==='proportion')return m.proportion==null?'url(#unknown)':m.proportion===0?palette.empty:m.proportion<.25?palette.low:m.proportion<.6?palette.mid:palette.reported;
   if(state.layer==='population'){
    if(m.population==null)return 'url(#unknown)';
    const max=Math.max(1,...visibleTerritories(data,state).map(t=>territoryModel(data,state,t).population??0));
-   return m.population/max<.33?'#a4d4d8':m.population/max<.66?'#419ea8':'#006571';
+   return m.population/max<.33?palette.low:m.population/max<.66?palette.mid:palette.reported;
   }
-  return {covered:'#006571',not_covered:'#dce6eb'}[m.status];
+  return {covered:palette.reported,not_covered:palette.empty}[m.status];
  }
  const highlight=()=>highlightCodes(content,data,state,state.gestor);
  const profileUrl=id=>{const u=stateUrl({...visibleState(),gestor:id},location.href);u.hash='ficha-gestor';return u.pathname.split('/').pop()+u.search+u.hash;};
@@ -77,7 +79,10 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
  }
  function hidePreview(){$('#tooltip').hidden=true;$('#map').querySelectorAll('[aria-describedby]').forEach(el=>el.removeAttribute('aria-describedby'));}
  function bindSelection(root){root.querySelectorAll('[data-territory]').forEach(el=>el.onclick=e=>{select(el.dataset.territory);if(e.detail===0){const heading=$('#detail h2');heading?.setAttribute('tabindex','-1');heading?.focus();}});}
- function select(code){expanded=false;state.territory=code;update(true);}
+ function select(code){expanded=false;$('#detail').classList.remove('collapsed');state.territory=code;update(true);}
+ // En teléfono la ficha del territorio es una hoja inferior: al abrir la ficha
+ // de un gestor se pliega a una barra con el nombre para no tapar la ficha.
+ function syncSheet(){$('#detail').classList.toggle('collapsed',location.hash==='#ficha-gestor');}
  function atlasMeta(){
   const selected=find(state.territory),department=selected?.type==='municipality'?find(selected.parent_id):selected;
   const m=selected?model(selected.official_code):null,s=snapshot(),source=s?data.sources.find(x=>x.source_id===s.source_id):null;
@@ -94,7 +99,7 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
 
  function detail(){
   const t=find(state.territory);$('#detail').classList.toggle('selected',!!t);$('#detail').classList.toggle('expanded',expanded);
-  if(!t){$('#detail').innerHTML='<div class="detail-empty"><span aria-hidden="true">HN</span><h2>Elija un territorio</h2><p>Seleccione un departamento en el mapa o en la lista para ver sus datos.</p></div>';return;}
+  if(!t){$('#detail').innerHTML='<div class="detail-empty"><h2>Elija un territorio</h2><p>Seleccione un departamento en el mapa o en la lista para ver sus gestores, población y fuentes.</p></div>';return;}
   const m=model(t.official_code);
   const sources=m.source_ids.map(id=>data.sources.find(s=>s.source_id===id)).filter(Boolean);
   const explicit=m.rows.filter(r=>r.coverage_status!=='unknown');
@@ -123,13 +128,13 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
   </div>
   <p class="detail-status"><span class="detail-status-dot status-${esc(m.status)}" aria-hidden="true"></span>${esc(labels[m.status])}</p>
   <p class="detail-verification">${esc(snapshotNotice(snapshot()))}${recordNotice}</p>
+  ${managersSection(t,m)}
   <div class="detail-metrics">
-    <div><span>Municipios</span><strong>${coverageText}</strong><small>${m.aggregate?'reportados / total':'No aplica'}</small></div>
-    <div><span>Proporción</span><strong>${coveragePercent}</strong><small>${m.aggregate?'cobertura municipal':'No aplica'}</small></div>
+    ${m.aggregate?`<div><span>Municipios</span><strong>${coverageText}</strong><small>reportados / total</small></div>
+    <div><span>Proporción</span><strong>${coveragePercent}</strong><small>cobertura municipal</small></div>`:''}
     <div><span>Población</span><strong>${populationText}</strong><small>reportada · ${esc(definition)}</small></div>
   </div>
   ${progress==null?'':`<div class="coverage-progress" aria-label="Proporción municipal ${progress.toFixed(1)}%"><span style="width:${progress.toFixed(1)}%"></span></div>`}
-  ${managersSection(t,m)}
   <button id="expand" aria-expanded="${expanded}">${expanded?'Reducir ficha':'Ver ficha completa'}</button>
   <div class="panel-content">
     <div class="provenance-rail" aria-label="Procedencia del dato">
@@ -162,6 +167,10 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
   $('#breadcrumbs').innerHTML=`<button data-territory="">Honduras</button>${d?` › <button data-territory="${esc(d.official_code)}" ${t===d?'aria-current="location"':''}>${esc(d.name)}</button>`:''}${t?.type==='municipality'?` › <span aria-current="location">${esc(t.name)}</span>`:''}`;bindSelection($('#breadcrumbs'));
  }
  function legend(){
+  legendBody();
+  if(find(state.territory))$('#legend').insertAdjacentHTML('beforeend','<span><i class="legend-swatch legend-selected"></i>Territorio seleccionado</span>');
+ }
+ function legendBody(){
   const banner=$('#gestor-banner'),manager=managerById(content,state.gestor);
   if(manager){
    const count=[...highlight()].filter(code=>find(code)?.type==='municipality').length;
@@ -202,7 +211,7 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
    const geo=await getGeometry(parent?'municipios-'+parent+'.geojson':'departamentos.geojson');if(token!==generation)return;
    const features=geo.features.filter(f=>find(f.properties.territorio_id));
    mapEl.setAttribute('viewBox',geometryBounds(features));
-   mapEl.innerHTML='<defs><pattern id="unknown" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(.005)"><rect width="8" height="8" fill="#edf0f2"/><path d="M0 8L8 0" stroke="#9aabb4"/></pattern></defs>'+features.map(f=>{const code=f.properties.territorio_id,m=model(code);return `<path tabindex="0" role="button" aria-pressed="${code===state.territory}" aria-label="${esc(m.territory.name+' · '+labels[m.status])}" data-code="${esc(code)}" fill="${color(m)}" fill-rule="evenodd" d="${geometryPath(f.geometry)}"><title>${esc(m.territory.name)}</title></path>`;}).join('');
+   mapEl.innerHTML='<defs><pattern id="unknown" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="scale(.005)"><rect width="8" height="8" fill="#EDF0F2"/><path d="M0 8L8 0" stroke="#9AABB4"/></pattern></defs>'+features.map(f=>{const code=f.properties.territorio_id,m=model(code);return `<path tabindex="0" role="button" aria-pressed="${code===state.territory}" aria-label="${esc(m.territory.name+' · '+labels[m.status])}" data-code="${esc(code)}" fill="${color(m)}" fill-rule="evenodd" d="${geometryPath(f.geometry)}"><title>${esc(m.territory.name)}</title></path>`;}).join('');
    mapEl.classList.remove('map-enter');void mapEl.getBoundingClientRect();mapEl.classList.add('map-enter');
    wrap.dataset.depth=nextDepth;
    await contextMap(parent,token);
@@ -235,8 +244,9 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
  $('#share').onclick=async()=>{try{await navigator.clipboard.writeText(stateUrl(visibleState(),location.href).href);$('#status').textContent='Enlace copiado · '+period();}catch{$('#status').textContent='Copie la dirección del navegador para compartir esta consulta.';}};
  for(const kind of ['csv','json'])$('#'+kind).onclick=()=>{
   const rows=exportRows(data,state);if(!rows.length)return;
-  const approved=publicArchive(data);
-  // Los conteos de convenios del corte quedan fuera de alcance (PRODUCT.md) y no se exportan.
+  const approved=siteArchive(data);
+  // Convenios fuera de alcance (PRODUCT.md): siteArchive vacía sus valores y la
+  // descarga, que no está sujeta al contrato del archivo, omite además las claves.
   const snap=approved.snapshots.find(s=>s.snapshot_id===state.snapshot),indicators=Object.fromEntries(Object.entries(snap?.indicators||{}).filter(([k])=>!k.startsWith('agreements')));
   const payload={state,period:snap&&{...snap,indicators},sources:approved.sources,data_quality_issues:approved.data_quality_issues,rows};
   const blob=new Blob([kind==='csv'?csv(rows):JSON.stringify(payload,null,2)],{type:kind==='csv'?'text/csv;charset=utf-8':'application/json'}),a=document.createElement('a'),url=URL.createObjectURL(blob);
@@ -245,9 +255,11 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
  const reread=()=>{state=sanitizeState(data,readState(location.search),content);update();};
  window.onpopstate=reread;
  // Enlaces internos (fichas, «ver en el mapa») cambian la dirección sin recargar.
- window.addEventListener('ugd:navigate',reread);
+ window.addEventListener('ugd:navigate',()=>{reread();syncSheet();});
+ window.addEventListener('popstate',syncSheet);
+ $('#detail').addEventListener('click',e=>{if($('#detail').classList.contains('collapsed')&&!e.target.closest('#close-detail')){$('#detail').classList.remove('collapsed');}});
  $('#sources').innerHTML=data.sources.map(s=>`<p><a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> · ${esc(s.publisher)} · consultada el ${esc(day(s.retrieved_at))}${s.valid_on?' · límites territoriales vigentes al '+esc(day(s.valid_on)):''}${s.license?' · '+esc(s.license):''}</p>`).join('');
  $('#issuecount').textContent=data.data_quality_issues.length+' observaciones sobre los datos';$('#issues').innerHTML=data.data_quality_issues.map(i=>`<li><strong>${esc(i.issue_id)}</strong> · ${esc(i.status)} · ${esc(i.detail)}</li>`).join('');
- $('#explorer').hidden=false;await update();
+ $('#explorer').hidden=false;await update();syncSheet();
 }
 

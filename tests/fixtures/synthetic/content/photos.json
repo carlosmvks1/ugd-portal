@@ -3,14 +3,10 @@
  "synthetic": true,
  "photos": [
   {
-   "photo_id": "sint-foto-equipo",
-   "src": "media/sintetico/equipo.png",
-   "width": 800,
-   "height": 600,
-   "alt": "[SINTÉTICO] Rectángulo verde con un recuadro claro en el centro",
-   "description": "[SINTÉTICO] Imagen de prueba que representa a un equipo de salud",
-   "place": "Gracias, Lempira",
-   "date": "2025-02-14",
+   "photo_id": "sint-foto-portada",
+   "src": "media/sintetico/portada.png",
+   "width": 1600,
+   "height": 900,
    "credit": "[SINTÉTICO] Autoría ficticia",
    "status": "approved",
    "authorization": {
@@ -18,6 +14,72 @@
     "scope": "[SINTÉTICO] Uso en el portal"
    },
    "identifiable_people": "none",
+   "alt": "[SINTÉTICO] Paisaje abstracto de colinas al amanecer",
+   "description": "[SINTÉTICO] Imagen de prueba para la portada",
+   "place": "Lempira",
+   "date_label": "2025",
+   "placements": [
+    "home"
+   ],
+   "focus": "60% 45%",
+   "orientation": "landscape"
+  },
+  {
+   "photo_id": "sint-foto-ugd",
+   "src": "media/sintetico/ugd.png",
+   "width": 1200,
+   "height": 900,
+   "credit": "[SINTÉTICO] Autoría ficticia",
+   "status": "approved",
+   "authorization": {
+    "status": "granted",
+    "scope": "[SINTÉTICO] Uso en el portal"
+   },
+   "identifiable_people": "none",
+   "alt": "[SINTÉTICO] Paisaje abstracto con cielo despejado",
+   "description": "[SINTÉTICO] Imagen de prueba para «La UGD»",
+   "placements": [
+    "ugd"
+   ],
+   "orientation": "landscape"
+  },
+  {
+   "photo_id": "sint-foto-territorio",
+   "src": "media/sintetico/territorio.png",
+   "width": 1600,
+   "height": 900,
+   "credit": "[SINTÉTICO] Autoría ficticia",
+   "status": "approved",
+   "authorization": {
+    "status": "granted",
+    "scope": "[SINTÉTICO] Uso en el portal"
+   },
+   "identifiable_people": "none",
+   "alt": "[SINTÉTICO] Paisaje abstracto al atardecer",
+   "description": "[SINTÉTICO] Imagen de prueba para la presencia territorial",
+   "place": "Intibucá",
+   "placements": [
+    "territory"
+   ],
+   "focus": "40% 50%",
+   "orientation": "landscape"
+  },
+  {
+   "photo_id": "sint-foto-equipo",
+   "src": "media/sintetico/equipo.png",
+   "width": 1200,
+   "height": 900,
+   "credit": "[SINTÉTICO] Autoría ficticia",
+   "status": "approved",
+   "authorization": {
+    "status": "granted",
+    "scope": "[SINTÉTICO] Uso en el portal"
+   },
+   "identifiable_people": "none",
+   "alt": "[SINTÉTICO] Paisaje abstracto verde con colinas",
+   "description": "[SINTÉTICO] Imagen de prueba que representa a un equipo de salud",
+   "place": "Gracias, Lempira",
+   "date": "2025-02-14",
    "territory_ids": [
     "1301"
    ],
@@ -25,9 +87,9 @@
     "sint-gestor-largo"
    ],
    "placements": [
-    "home",
     "teams"
-   ]
+   ],
+   "orientation": "landscape"
   },
   {
    "photo_id": "sint-foto-sin-lugar",
@@ -45,6 +107,23 @@
    "placements": [
     "teams"
    ]
+  },
+  {
+   "photo_id": "sint-retrato",
+   "src": "media/sintetico/retrato.png",
+   "width": 640,
+   "height": 800,
+   "credit": "[SINTÉTICO] Autoría ficticia",
+   "status": "approved",
+   "authorization": {
+    "status": "granted",
+    "scope": "[SINTÉTICO] Uso en el portal"
+   },
+   "identifiable_people": "none",
+   "alt": "[SINTÉTICO] Retrato de prueba: figura abstracta en tonos grises",
+   "description": "[SINTÉTICO] Retrato ficticio de la dirección",
+   "orientation": "portrait",
+   "focus": "50% 30%"
   },
   {
    "photo_id": "sint-foto-sin-autorizacion",

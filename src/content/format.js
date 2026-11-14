@@ -42,11 +42,15 @@ export function editorialNote(item,preview){
 }
 export const showable=(item,preview)=>isPublishable(item)||preview;
 
-export function figure(photo,{preview=false,className=''}={}){
+// Fotografía con dimensiones reservadas (width/height) y punto de interés
+// para recortes adaptables. «eager» solo para la imagen principal visible.
+export function figure(photo,{preview=false,className='',eager=false,caption=true}={}){
  const when=photo.date_label||(photo.date?day(photo.date):'');
  const meta=[photo.place,when].filter(Boolean).map(esc).join(' · ');
- return `<figure class="content-photo ${esc(className)}">
-  <img src="./${esc(photo.src)}" alt="${esc(photo.alt)}" width="${Number(photo.width)}" height="${Number(photo.height)}" loading="lazy" decoding="async">
-  <figcaption><span class="photo-description">${esc(photo.description)}</span>${meta?`<span class="photo-meta">${meta}</span>`:''}<span class="photo-credit">Crédito: ${esc(photo.credit)}</span>${preview&&!isPublishable(photo)?'<span class="preview-badge">Vista previa · no se publica</span>':''}</figcaption>
+ const focus=/^\d{1,3}% \d{1,3}%$/.test(photo.focus||'')?` style="object-position:${photo.focus}"`:'';
+ const orientation=photo.orientation||(photo.height>photo.width?'portrait':'landscape');
+ return `<figure class="content-photo is-${esc(orientation)} ${esc(className)}" data-photo="${esc(photo.photo_id)}">
+  <img src="./${esc(photo.src)}" alt="${esc(photo.alt)}" width="${Number(photo.width)}" height="${Number(photo.height)}"${focus} ${eager?'fetchpriority="high" decoding="async"':'loading="lazy" decoding="async"'}>
+  ${caption?`<figcaption><span class="photo-description">${esc(photo.description)}</span>${meta?`<span class="photo-meta">${meta}</span>`:''}<span class="photo-credit">Crédito: ${esc(photo.credit)}</span>${preview&&!isPublishable(photo)?'<span class="preview-badge">Vista previa · no se publica</span>':''}</figcaption>`:''}
  </figure>`;
 }
