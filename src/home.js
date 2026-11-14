@@ -1,96 +1,34 @@
 import {latestSnapshot,snapshotNotice} from './map/snapshots.js';
 const fmt=new Intl.NumberFormat('es-HN');
-const safeUrl=value=>{try{const u=new URL(value);return ['http:','https:'].includes(u.protocol)?u.href:'';}catch{return '';}};
 
-const reducedMotion=()=>window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
-function easeOutCubic(t){return 1-Math.pow(1-t,3);}
-
-function animateNumber(element,target,{delay=0,duration=1050}={}){
-  if(target==null){element.textContent='Sin dato';return Promise.resolve();}
-  const final=fmt.format(target);
-  element.setAttribute('aria-hidden','true');
-  if(reducedMotion()){
-    element.textContent=final;
-    return Promise.resolve();
-  }
-  element.textContent='0';
-  return new Promise(resolve=>{
-    let start=null;
-    const frame=timestamp=>{
-      if(start===null)start=timestamp;
-      const elapsed=timestamp-start;
-      if(elapsed<delay){requestAnimationFrame(frame);return;}
-      const progress=Math.min((elapsed-delay)/duration,1);
-      element.textContent=fmt.format(Math.round(target*easeOutCubic(progress)));
-      if(progress<1)requestAnimationFrame(frame);
-      else{element.textContent=final;resolve();}
-    };
-    requestAnimationFrame(frame);
-  });
-}
-
-function animatePair(element,left,right,{delay=0,duration=1050}={}){
-  if(left==null||right==null){element.textContent='Sin dato';return Promise.resolve();}
-  const final=fmt.format(left)+' / '+fmt.format(right);
-  element.setAttribute('aria-hidden','true');
-  if(reducedMotion()){
-    element.textContent=final;
-    return Promise.resolve();
-  }
-  element.textContent='0 / 0';
-  return new Promise(resolve=>{
-    let start=null;
-    const frame=timestamp=>{
-      if(start===null)start=timestamp;
-      const elapsed=timestamp-start;
-      if(elapsed<delay){requestAnimationFrame(frame);return;}
-      const progress=Math.min((elapsed-delay)/duration,1),eased=easeOutCubic(progress);
-      element.textContent=fmt.format(Math.round(left*eased))+' / '+fmt.format(Math.round(right*eased));
-      if(progress<1)requestAnimationFrame(frame);
-      else{element.textContent=final;resolve();}
-    };
-    requestAnimationFrame(frame);
-  });
-}
-
-function accessibleKpi(element,label,value){
-  const item=element.closest('.kpi-item');
-  if(item)item.setAttribute('aria-label',label+': '+value);
+// Key facts for the opening section. Each figure keeps period, source and
+// verification state; no figures are summed from possibly overlapping rows.
+export function keyFacts(data){
+ const snapshot=latestSnapshot(data.snapshots);
+ if(!snapshot)return null;
+ const i=snapshot.indicators||{};
+ const reported=new Set(data.coverage.filter(r=>r.snapshot_id===snapshot.snapshot_id&&r.coverage_status==='reported').map(r=>r.territory_id));
+ const departments=new Set(data.territories.filter(t=>reported.has(t.official_code)).map(t=>t.parent_id).filter(Boolean));
+ const fromAggregate=data.departments.filter(d=>d.snapshot_id===snapshot.snapshot_id&&d.municipalities_reported>0).map(d=>d.territory_id);
+ for(const code of fromAggregate)departments.add(code);
+ return {snapshot,population:i.population_I??null,municipalities:i.municipalities_narrative??null,municipalitiesTable:i.municipalities_table??null,departments:departments.size||null,source:data.sources.find(s=>s.source_id===snapshot.source_id)};
 }
 
 export function renderHome(data){
-  const snapshot=latestSnapshot(data.snapshots);
-  const period=document.querySelector('#home-period');
-  if(!snapshot){
-    period.textContent='No hay un consolidado territorial cargado.';
-    return;
-  }
+ const facts=keyFacts(data),line=document.querySelector('#facts-source');
+ if(!line)return;
+ if(!facts){line.textContent='Todavía no hay datos territoriales publicados.';return;}
+ const show=(id,value)=>{document.querySelector(id).textContent=value==null?'Sin dato':fmt.format(value);};
+ show('#fact-population',facts.population);
+ show('#fact-municipalities',facts.municipalities);
+ show('#fact-departments',facts.departments);
+ const note=document.querySelector('#fact-municipalities-note');
+ note.textContent=facts.municipalities!=null&&facts.municipalitiesTable!=null&&facts.municipalities!==facts.municipalitiesTable
+  ?'La fuente dice '+fmt.format(facts.municipalities)+' en el texto y '+fmt.format(facts.municipalitiesTable)+' en su tabla.':'';
+ line.textContent='Datos de '+facts.snapshot.year+(facts.source?' · Fuente: '+facts.source.title:'')+' · '+snapshotNotice(facts.snapshot)+'.';
+}
 
-  const i=snapshot.indicators||{};
-  const snapshotBadge=document.querySelector('#kpi-snapshot-year');
-  if(snapshotBadge)snapshotBadge.textContent=String(snapshot.year);
-  const agreements=document.querySelector('#kpi-agreements');
-  const levels=document.querySelector('#kpi-levels');
-  const municipalities=document.querySelector('#kpi-municipalities');
-  const population=document.querySelector('#kpi-population');
-
-  accessibleKpi(agreements,'Convenios',i.agreements_total==null?'Sin dato':fmt.format(i.agreements_total));
-  accessibleKpi(levels,'Convenios por nivel I y II',(i.agreements_I==null||i.agreements_II==null)?'Sin dato':fmt.format(i.agreements_I)+' y '+fmt.format(i.agreements_II));
-  accessibleKpi(municipalities,'Municipios',i.municipalities_narrative==null?'Sin dato':fmt.format(i.municipalities_narrative));
-  accessibleKpi(population,'Población reportada en primer nivel',i.population_I==null?'Sin dato':fmt.format(i.population_I));
-
-  animateNumber(agreements,i.agreements_total,{delay:0});
-  animatePair(levels,i.agreements_I,i.agreements_II,{delay:80});
-  animateNumber(municipalities,i.municipalities_narrative,{delay:160});
-  animateNumber(population,i.population_I,{delay:240,duration:1150});
-
-  const municipalityNote=document.querySelector('#kpi-municipalities-note');
-  if(i.municipalities_narrative!=null&&i.municipalities_table!=null&&i.municipalities_narrative!==i.municipalities_table){
-    municipalityNote.textContent=fmt.format(i.municipalities_narrative)+' en el texto / '+fmt.format(i.municipalities_table)+' en la tabla de la fuente. Discrepancia pendiente de resolver.';
-  }else municipalityNote.textContent='Municipios reportados en el consolidado';
-
-  const source=data.sources.find(s=>s.source_id===snapshot.source_id);
-  const sourceText=source&&safeUrl(source.url)?' · Fuente: '+source.title:'';
-  period.textContent='Datos '+snapshot.year+sourceText+' · '+snapshotNotice(snapshot)+'.';
+export function homeUnavailable(message){
+ const line=document.querySelector('#facts-source');
+ if(line)line.textContent=message;
 }

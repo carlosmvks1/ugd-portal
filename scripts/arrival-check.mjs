@@ -8,7 +8,7 @@ const phase=process.env.ARRIVAL_PHASE||'after';
 const out=resolve(process.env.SCREENSHOT_DIR||'work/arrival',phase);
 await mkdir(out,{recursive:true});
 const results=[];
-const destinations=['institucion','descentralizacion','documentos','cobertura'];
+const destinations=['la-ugd','descentralizacion','contacto','presencia'];
 for(const viewport of [{width:1280,height:720},{width:390,height:844}]){
  const page=await browser.newPage({viewport});
  let gate=null;
@@ -39,16 +39,16 @@ for(const viewport of [{width:1280,height:720},{width:390,height:844}]){
   await ready();
  }
  for(const destination of destinations){
-  await page.goto(base);await page.locator(`main a[href$="#${destination}"]`).click();await ready();
+  await page.goto(base);await ready();await navigate(destination);
   await record(destination,'home',phase==='before'?null:m=>{assert(m.headingTop>=m.headerBottom&&m.headingBottom+30<viewport.height);assert(m.focus);});
   if(phase==='before')continue;
-  await page.goto(base+'portal.html#'+destination);await ready();
+  await page.goto(base+'#'+destination);await ready();
   await record(destination,'direct',m=>{assert(m.headingTop>=m.headerBottom&&m.headingBottom+30<viewport.height);assert.equal(m.focus,'');});
   const normalized=page.url();
   await page.reload();await ready();
   await record(destination,'reload',m=>{assert(m.headingTop>=m.headerBottom&&m.headingBottom+30<viewport.height);assert.equal(m.focus,'');assert.equal(page.url(),normalized);});
   const original=(await metrics()).scrollY;
-  await navigate(destination==='cobertura'?'institucion':'cobertura');
+  await navigate(destination==='presencia'?'la-ugd':'presencia');
   await page.goBack();await ready();
   await record(destination,'back',m=>{assert.equal(page.url(),normalized);assert(Math.abs(m.scrollY-original)<2);assert(m.headingTop>=m.headerBottom&&m.headingBottom+30<viewport.height);});
   await page.goBack();await ready(); // Native history may now return to the earlier direct entry.
@@ -56,36 +56,38 @@ for(const viewport of [{width:1280,height:720},{width:390,height:844}]){
   await record(destination,'forward',m=>{assert.equal(page.url(),normalized);assert(Math.abs(m.scrollY-original)<2);assert(m.headingTop>=m.headerBottom&&m.headingBottom+30<viewport.height);});
  }
  if(phase!=='before'){
-  await page.goto(base+'portal.html#institucion');await ready();
+  await page.goto(base+'#la-ugd');await ready();
   const urls=[page.url()];
   for(const id of destinations.slice(1)){await navigate(id);urls.push(page.url());}
   for(let i=2;i>=0;i--){await page.goBack();await ready();await record(destinations[i],'sequence-back',()=>assert.equal(page.url(),urls[i]));}
   for(let i=1;i<4;i++){await page.goForward();await ready();await record(destinations[i],'sequence-forward',()=>assert.equal(page.url(),urls[i]));}
-  await navigate('cobertura');await navigate('cobertura');await page.goBack();await ready();
-  await record('documentos','repeat-no-duplicate',()=>assert.equal(page.url(),urls[2]));
-  await page.goForward();await ready();await record('cobertura','repeat-forward',()=>assert.equal(page.url(),urls[3]));
+  await navigate('presencia');await navigate('presencia');await page.goBack();await ready();
+  await record('contacto','repeat-no-duplicate',()=>assert.equal(page.url(),urls[2]));
+  await page.goForward();await ready();await record('presencia','repeat-forward',()=>assert.equal(page.url(),urls[3]));
   // Shared state and an actively selected territory, with a non-anchor saved position.
   for(const source of ['selection','shared']){
-   await page.goto(base+'portal.html'+(source==='shared'?'?territory=13#cobertura':'#cobertura'));await ready();
+   await page.goto(base+(source==='shared'?'?territory=13#presencia':'#presencia'));await ready();
    if(source==='selection'){await page.locator('#map [data-code="13"]').click();await ready();}
    await page.evaluate(()=>scrollTo({top:350,behavior:'instant'}));
    await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
    const selectedURL=page.url(),selectedY=await page.evaluate(()=>scrollY);
-   await navigate('documentos');const next=page.url();
+   await navigate('contacto');const next=page.url();
    await page.goBack();await ready();
-   await record('cobertura',source+'-back',m=>{assert.equal(page.url(),selectedURL);assert.equal(new URL(page.url()).searchParams.get('territory'),'13');assert(Math.abs(m.scrollY-selectedY)<2);});
+   await record('presencia',source+'-back',m=>{assert.equal(page.url(),selectedURL);assert.equal(new URL(page.url()).searchParams.get('territory'),'13');assert(Math.abs(m.scrollY-selectedY)<2);});
    await page.goForward();await ready();
-   await record('documentos',source+'-forward',()=>{assert.equal(page.url(),next);assert.equal(new URL(page.url()).searchParams.get('territory'),'13');});
+   await record('contacto',source+'-forward',()=>{assert.equal(page.url(),next);assert.equal(new URL(page.url()).searchParams.get('territory'),'13');});
   }
   for(const action of ['navigate','wheel','rapid','keyboard','municipal-navigate','municipal-wheel']){
    let release,seen;
    const promise=new Promise(r=>release=r),requested=new Promise(r=>seen=r);
    const resource=action.startsWith('municipal')?'municipios-13.geojson':action==='keyboard'?'archive.json':'departamentos.geojson';
    gate={resource,promise,seen};
-   await page.goto(base+'portal.html'+(action.startsWith('municipal')?'?territory=13':'')+'#institucion',{waitUntil:'domcontentloaded'});await requested;
+   // Clean URLs mean the next address may differ only by hash; force a real load.
+   await page.goto('about:blank');
+   await page.goto(base+(action.startsWith('municipal')?'?territory=13':'')+'#la-ugd',{waitUntil:'domcontentloaded'});await requested;
    const beforeURL=page.url();
    if(action.endsWith('navigate')||action==='rapid'){
-    for(const id of action==='rapid'?['descentralizacion','documentos','cobertura','documentos']:['documentos']){
+    for(const id of action==='rapid'?['descentralizacion','contacto','presencia','contacto']:['contacto']){
      if(viewport.width<850)await page.locator('#nav-toggle').click();
      await page.locator(`#site-nav a[href="#${id}"]`).click();
     }
@@ -98,12 +100,12 @@ for(const viewport of [{width:1280,height:720},{width:390,height:844}]){
    await page.evaluate(()=>{window.arrivalScrollCalls=[];const original=window.scrollTo;window.scrollTo=(...args)=>{window.arrivalScrollCalls.push(args);return original.apply(window,args);};});
    gate=null;release();await ready();
    await record(new URL(page.url()).hash.slice(1),'delayed-'+action,async m=>{
-    if(action.endsWith('navigate')||action==='rapid'){assert.equal(new URL(page.url()).hash,'#documentos');assert.equal(m.focus,'documents-title');assert(m.headingTop>=m.headerBottom&&m.headingBottom<viewport.height);}
-    else{assert.equal(new URL(page.url()).hash,new URL(beforeURL).hash);assert.equal(new URL(page.url()).search,(action.startsWith('municipal')?'?territory=13&':'?')+'year=2024&snapshot=2024-v1&layer=status');assert.equal(m.focus,prior.focus);assert.deepEqual(await page.evaluate(()=>window.arrivalScrollCalls),[]);}
+    if(action.endsWith('navigate')||action==='rapid'){assert.equal(new URL(page.url()).hash,'#contacto');assert.equal(m.focus,'contact-title');assert(m.headingTop>=m.headerBottom&&m.headingBottom<viewport.height);}
+    else{assert.equal(new URL(page.url()).hash,new URL(beforeURL).hash);assert.equal(new URL(page.url()).search,(action.startsWith('municipal')?'?territory=13':''));assert.equal(m.focus,prior.focus);assert.deepEqual(await page.evaluate(()=>window.arrivalScrollCalls),[]);}
    },{resource,releasedAfterInteraction:true,beforeRelease:prior});
   }
-  await page.goto(base+'portal.html#institucion');await ready();await navigate('documentos',true);
-  await record('documentos','keyboard-menu',async m=>{assert.equal(m.focus,'documents-title');assert.equal(await page.locator('#documents-title').getAttribute('tabindex'),'-1');assert.equal(await page.locator('#nav-toggle').getAttribute('aria-expanded'),'false');});
+  await page.goto(base+'#la-ugd');await ready();await navigate('contacto',true);
+  await record('contacto','keyboard-menu',async m=>{assert.equal(m.focus,'contact-title');assert.equal(await page.locator('#contact-title').getAttribute('tabindex'),'-1');assert.equal(await page.locator('#nav-toggle').getAttribute('aria-expanded'),'false');});
   await page.emulateMedia({reducedMotion:'reduce'});await navigate('descentralizacion');
   await record('descentralizacion','reduced-motion');
   await page.emulateMedia({reducedMotion:'no-preference'});

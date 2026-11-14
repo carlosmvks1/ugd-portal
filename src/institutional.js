@@ -1,35 +1,18 @@
-import {normalize} from './map/model.js';
-import {latestSnapshot,snapshotNotice,verificationLabels} from './map/snapshots.js';
+// Gestores registered in the source, shown inside "Presencia territorial".
+// Territorial links come only from coverage.manager_id, never from name similarity.
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const safeUrl=value=>{try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)?esc(u.href):'';}catch{return '';}};
 export function institutionalRecords(data){
  return {
-  documents:data.sources.map(source=>({source,years:[...new Set(data.snapshots.filter(s=>s.source_id===source.source_id).map(s=>String(s.year)).concat(source.valid_on?[source.valid_on.slice(0,4)]:[]))],type:source.valid_on?'Cartografía':'Informe institucional'})),
-  managers:data.managers.map(manager=>({manager,territories:data.territories.filter(t=>data.coverage.some(r=>r.manager_id===manager.manager_id&&r.territory_id===t.official_code)),agreements:data.agreements.filter(a=>a.manager_id===manager.manager_id)}))
+  managers:data.managers.map(manager=>({manager,territories:data.territories.filter(t=>data.coverage.some(r=>r.manager_id===manager.manager_id&&r.territory_id===t.official_code))}))
  };
 }
-export function renderInstitutional(data){
- const root=document.querySelector('#institutional-records');
- const records=institutionalRecords(data),snapshot=latestSnapshot(data.snapshots);
- const sourceLink=id=>{const s=data.sources.find(s=>s.source_id===id),href=safeUrl(s?.url);return href?`<a href="${href}" target="_blank" rel="noopener noreferrer">${esc(s.title)} ↗</a>`:'Fuente no disponible';};
- root.innerHTML=` <p id="institutional-notice">Registros históricos del archivo territorial · ${snapshot?`Período de referencia: ${esc(snapshot.year)} · ${esc(snapshot.period_start)} a ${esc(snapshot.period_end)} · ${esc(snapshotNotice(snapshot))}`:'Período de referencia no disponible · Estado del archivo y verificación no disponibles'}. No acreditan vigencia actual.</p>
- <div class="institution-search"><label for="institution-search">Buscar en documentos, gestores y convenios</label><input id="institution-search" type="search" placeholder="Nombre, título o identificador" autocomplete="off"><p id="institution-count" role="status" aria-live="polite"></p></div>
- <section id="documentos" aria-labelledby="documents-title"><div class="section-heading"><div><p class="eyebrow">Evidencia y consulta</p><h2 id="documents-title">Biblioteca documental</h2></div><p>Enlaces a las fuentes originales. Su presencia en esta biblioteca no certifica vigencia normativa ni aprobación institucional.</p></div>
- <div class="library-filters"><label>Período de referencia<select id="document-year"><option value="">Todos</option>${[...new Set(records.documents.flatMap(d=>d.years))].sort().reverse().map(y=>`<option>${esc(y)}</option>`).join('')}</select></label><label>Tipo de fuente<select id="document-type"><option value="">Todos</option><option>Informe institucional</option><option>Cartografía</option></select></label></div><div id="document-list" class="record-grid"></div></section>
- <section id="gestores" aria-labelledby="managers-title"><div class="section-heading"><div><p class="eyebrow">Directorio de registros</p><h2 id="managers-title">Gestores</h2></div><p>Se conservan las etiquetas de la fuente. Estos registros históricos no acreditan identidad jurídica, relaciones territoriales ni vigencia actual sin verificación adicional.</p></div><div id="manager-list" class="record-grid"></div></section>
- <section id="convenios" aria-labelledby="agreements-title"><div class="section-heading"><div><p class="eyebrow">Instrumentos de gestión</p><h2 id="agreements-title">Convenios</h2></div><p>Las cifras agregadas se presentan separadas del padrón de convenios individuales.</p></div>
- <div class="agreement-summary"><h3>Resumen reportado · ${esc(snapshot?.year??'Sin período')}</h3><p>${esc(snapshot?.indicators?.agreements_total??'Sin dato')} convenios · Nivel I: ${esc(snapshot?.indicators?.agreements_I??'Sin dato')} · Nivel II: ${esc(snapshot?.indicators?.agreements_II??'Sin dato')}</p><p>${esc(snapshotNotice(snapshot))}</p>${sourceLink(snapshot?.source_id)}</div><div id="agreement-list" class="record-grid"></div></section>`;
- function update(){
-  const q=normalize(root.querySelector('#institution-search').value),year=root.querySelector('#document-year').value,type=root.querySelector('#document-type').value;
-  const docs=records.documents.filter(d=>(!year||d.years.includes(year))&&(!type||d.type===type)&&normalize([d.source.title,d.source.publisher,d.type].join(' ')).includes(q));
-  const managers=records.managers.filter(r=>normalize([r.manager.source_label,r.manager.legal_name,r.manager.manager_id].join(' ')).includes(q));
-  const agreements=data.agreements.filter(a=>normalize([a.agreement_id,a.manager_id,a.status].join(' ')).includes(q));
-  root.querySelector('#document-list').innerHTML=docs.map(({source:s,years,type})=>`<article class="institution-card"><span class="record-type">${esc(type)} · ${esc(years.join(', ')||'Sin período exacto')}</span><h3>${esc(s.title)}</h3><p>${esc(s.publisher)}</p><dl><dt>Consulta de la fuente</dt><dd>${esc(s.retrieved_at)}</dd>${s.valid_on?`<dt>Validez histórica cartográfica</dt><dd>${esc(s.valid_on)}</dd>`:''}${s.pages?`<dt>Páginas de referencia</dt><dd>${esc(s.pages.join(', '))}</dd>`:''}${s.license?`<dt>Licencia declarada</dt><dd>${esc(s.license)}</dd>`:''}</dl>${sourceLink(s.source_id)}</article>`).join('')||'<p class="empty-records">No hay fuentes que coincidan con la consulta.</p>';
-  root.querySelector('#manager-list').innerHTML=managers.map(({manager:m,territories,agreements})=>`<details class="institution-card" id="gestor-${esc(m.manager_id)}"><summary><span class="record-type">${esc(m.manager_id)}</span><strong>${esc(m.legal_name||m.source_label)}</strong><span>${esc(verificationLabels[m.verification_status]||'Verificación no disponible')}</span></summary><p>Etiqueta original: ${esc(m.source_label)}</p><p>Identidad jurídica: ${esc(m.legal_name||'Sin confirmar')}</p><p>${esc(m.note)}</p><h3 class="institution-card-subheading">Relaciones documentadas</h3>${territories.length?territories.map(t=>`<a href="?territory=${encodeURIComponent(t.official_code)}&year=${encodeURIComponent(snapshot?.year??'')}#cobertura">${esc(t.name)} · ${esc(t.official_code)}</a>`).join('<br>'):'<p>No hay vínculos territoriales confirmados en el archivo.</p>'}<p>${agreements.length} convenios individuales vinculados.</p>${sourceLink(m.source_id)}</details>`).join('')||'<p class="empty-records">No hay gestores que coincidan con la consulta.</p>';
-  root.querySelector('#agreement-list').innerHTML=agreements.map(a=>`<article class="institution-card"><h3>${esc(a.agreement_id)}</h3><dl><dt>Gestor</dt><dd>${esc(data.managers.find(m=>m.manager_id===a.manager_id)?.legal_name||data.managers.find(m=>m.manager_id===a.manager_id)?.source_label||a.manager_id)}</dd><dt>Vigencia registrada</dt><dd>${esc(a.valid_from)} — ${esc(a.valid_to||'Sin fecha final')}</dd><dt>Estado registrado</dt><dd>${esc(a.status)}</dd><dt>Verificación</dt><dd>${esc(verificationLabels[a.verification_status])}</dd></dl>${sourceLink(a.source_id)}${safeUrl(a.document_url)?`<p><a href="${safeUrl(a.document_url)}" target="_blank" rel="noopener noreferrer">Consultar documento ↗</a></p>`:''}</article>`).join('')||`<p class="empty-records">${data.agreements.length?'No hay convenios que coincidan con la consulta.':'No hay un padrón de convenios individuales publicado. El resumen de la fuente no permite identificar vigencias, gestores o documentos de cada convenio.'}</p>`;
-  root.querySelector('#institution-count').textContent=`${docs.length} fuentes · ${managers.length} registros de gestores · ${agreements.length} convenios individuales. Los filtros de período y tipo se aplican a la biblioteca.`;
- }
- root.querySelector('#institution-search').oninput=update;
- for(const id of ['document-year','document-type'])root.querySelector('#'+id).onchange=update;
- update();
+export function renderManagers(data){
+ const root=document.querySelector('#manager-list');
+ if(!root)return;
+ const {managers}=institutionalRecords(data);
+ const source=data.sources.find(s=>s.source_id===managers[0]?.manager.source_id);
+ const linked=managers.some(r=>r.territories.length);
+ document.querySelector('#managers-summary').textContent=managers.length+' nombres según '+(source?.title||'la fuente');
+ root.innerHTML=`<p class="manager-note">Nombres tal como aparecen en la fuente.${linked?'':' La UGD todavía no ha confirmado qué gestor trabaja en cada territorio; ese vínculo se mostrará en el mapa cuando esté disponible.'}</p>
+ <ul>${managers.map(({manager:m,territories})=>`<li id="gestor-${esc(m.manager_id)}"><strong>${esc(m.legal_name||m.source_label)}</strong>${territories.length?`<span>${territories.map(t=>esc(t.name)).join(', ')}</span>`:''}</li>`).join('')}</ul>`;
 }

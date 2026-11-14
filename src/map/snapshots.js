@@ -9,6 +9,6 @@ export function latestSnapshot(snapshots,year=''){
 export const verificationLabels={official_verified:'Verificado oficialmente',official_unverified:'Pendiente de verificación oficial',pending_UGD:'Pendiente de validación UGD'};
 export function snapshotNotice(snapshot){
  if(!snapshot)return '';
- const status={provisional:'Archivo provisional',approved:'Archivo aprobado',archived:'Archivo histórico archivado'}[snapshot.status]||'Estado no disponible';
+ const status={provisional:'Datos provisionales',approved:'Datos aprobados',archived:'Datos históricos'}[snapshot.status]||'Estado no disponible';
  return status+' · '+(verificationLabels[snapshot.verification_status]||'Verificación no disponible');
 }
