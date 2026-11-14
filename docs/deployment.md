@@ -6,9 +6,8 @@ El workflow de CI valida y produce un artefacto dist; no publica ningún sitio.
 Los artefactos heredan el acceso del repositorio. Revisar permisos de colaboradores.
 
 ## GitHub Pages opcional
-Mantener este repositorio privado. Pages desde repositorios privados requiere un plan compatible.
-Un sitio Pages puede ser público aunque su repositorio sea privado: revisar acceso y aprobación institucional antes de habilitarlo.
-En Free, una alternativa futura es un repositorio de demo separado con solo dist aprobado; nunca copiar el historial de trabajo.
+El repositorio es público: su código, datos e historial son visibles con independencia de que el sitio esté publicado. Incorporar solo material con autorización de publicación.
+Un sitio Pages es público: revisar aprobación institucional del contenido antes de desplegarlo.
 Configurar Pages con GitHub Actions y un environment protegido cuando se autorice publicar.
 No se incluye workflow de despliegue activo.
 

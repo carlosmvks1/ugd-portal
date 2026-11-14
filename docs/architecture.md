@@ -4,7 +4,7 @@
 
 Arquitectura observada en main tras el PR #15, commit `a2156c2129f1aeff2a5e2080334d884a09c273be`. Auditoría de archivos, no certificación de seguridad ni ejecución de pruebas de aplicación.
 
-[AGENTS.md](../AGENTS.md) establece el flujo de trabajo; [PRODUCT.md](PRODUCT.md), el alcance y las hipótesis; [sistema visual](visual-system.md), las reglas de interfaz y accesibilidad. El encargo es un portal institucional público con dominio propio. Funcionalidades específicas requieren validación; la administración privada está fuera de alcance.
+[AGENTS.md](../AGENTS.md) establece el flujo de trabajo; [PRODUCT.md](PRODUCT.md), el alcance y las hipótesis; [sistema visual](visual-system.md), las reglas de interfaz y accesibilidad. El encargo es un portal institucional público con dominio propio. Funcionalidades específicas requieren validación; la administración privada, la biblioteca documental, los convenios y el observatorio están fuera de alcance aunque su código siga descrito aquí.
 
 Este documento separa **implementado**, **reglas obligatorias**, **mejoras propuestas** y **decisiones pendientes**. Ninguna propuesta autoriza refactorizar, migrar, eliminar módulos o desplegar.
 

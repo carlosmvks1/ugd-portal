@@ -1,5 +1,7 @@
 # Observatorio y seguimiento · tercera etapa
 
+> **Estado:** documento histórico del prototipo. El observatorio, los indicadores de convenios y el seguimiento interno quedan **fuera del alcance** según [PRODUCT.md](PRODUCT.md); su acceso público se retira en el paso 4 del plan. Se conservan como regla sus cautelas: no atribuir causalidad, no comparar períodos sin metodología equivalente y no convertir ausencia en cero.
+
 El módulo público añade seis indicadores nacionales: convenios totales, convenios I/II, municipios según tabla, municipios según texto y población de nivel I. Sus valores proceden de `snapshot.indicators`; no se suman poblaciones municipales, convenios o niveles que podrían solaparse. La discrepancia narrativa/tabla sigue visible.
 
 ## Comparabilidad
