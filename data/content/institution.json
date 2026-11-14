@@ -1,10 +1,16 @@
 {
   "schema_version": "institution-1",
   "sections": {
+    "home": {
+      "blocks": [
+        {"block_id": "mensaje", "kind": "text", "title": "Mensaje de portada", "status": "proposed", "placeholder": "Mensaje breve de portada aprobado por la UGD.", "paragraphs": ["Conozca qué hace la UGD, en qué territorios tiene presencia y cómo se distribuyen la población y la inversión vinculadas a su trabajo."], "note": "Propuesta del equipo del portal; requiere validación de la UGD."}
+      ]
+    },
     "ugd": {
       "blocks": [
         {"block_id": "presentacion", "kind": "text", "title": "Qué es la UGD", "status": "collecting", "placeholder": "Presentación institucional de la unidad dentro de la Secretaría de Salud."},
         {"block_id": "funciones", "kind": "list", "title": "Funciones", "status": "collecting", "placeholder": "Lo que la UGD hace en el modelo de gestión descentralizada."},
+        {"block_id": "direccion-ugd", "kind": "profile", "title": "Dirección de la UGD", "status": "collecting", "placeholder": "Nombre, cargo oficial y responsabilidades de la dirección, con retrato institucional y contacto cuando estén autorizados."},
         {"block_id": "estructura", "kind": "list", "title": "Estructura", "status": "collecting", "placeholder": "Organización de la unidad y su coordinación."},
         {"block_id": "autoridades", "kind": "people", "title": "Autoridades", "status": "collecting", "placeholder": "Autoridades de la unidad, con cargo y fecha de referencia."},
         {"block_id": "fundamento-legal", "kind": "legal", "title": "Fundamento legal", "status": "collecting", "placeholder": "Normas que respaldan el trabajo de la UGD."}

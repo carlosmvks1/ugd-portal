@@ -23,6 +23,7 @@ const retry=document.querySelector('#retry');
 const load=async url=>{const r=await fetch(url);if(!r.ok)throw Error('Recurso no disponible');return r.json();};
 function unavailable(message){
  status.textContent=message;
+ status.classList.add('is-error');
  homeUnavailable(message);
 }
 if(new URLSearchParams(location.search).has('gestor')||location.hash==='#ficha-gestor')document.querySelector('#gestores')?.setAttribute('aria-busy','true');
@@ -45,6 +46,7 @@ async function init(){
  loading=true;
  retry.disabled=true;
  retry.hidden=true;
+ status.classList.remove('is-error');
  try{
   config??=await loadConfig();
   const catalog=await load(localUrl(config.catalog,config.dataRoot));

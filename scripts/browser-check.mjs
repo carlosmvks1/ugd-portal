@@ -78,6 +78,14 @@ try{
  assert.equal(await page.locator('#fact-municipalities').innerText(),'89');
  assert.match(await page.locator('#fact-municipalities-note').innerText(),/89.*93/);
  assert.match(await page.locator('#facts-source').innerText(),/2024.*Fuente.*provisionales.*Pendiente de verificación oficial/);
+ // Sin fotografías autorizadas: portada tipográfica y ningún marco vacío ni degradado.
+ assert.equal(await page.locator('#inicio.has-photo, .chapter-head.has-media, main figure').count(),0,'Sin fotografías publicadas');
+ assert.equal(await page.locator('[data-slot="home"]').evaluate(el=>el.childElementCount),0,'Portada sin imagen de relleno');
+ for(const slot of ['ugd','decentralization','territory'])assert(await page.locator(`[data-slot="${slot}"]`).isHidden(),'Lugar sin foto oculto: '+slot);
+ assert.match(await page.locator('#hero-lead').innerText(),/Conozca qué hace la UGD/,'Mensaje propuesto mientras no haya uno aprobado');
+ assert.match(await page.locator('[data-block="direccion-ugd"]').innerText(),/En preparación[\s\S]*Dirección de la UGD/i);
+ assert.equal(await page.locator('[data-block="direccion-ugd"] img').count(),0);
+ assert.match(await page.locator('#equipos').innerText(),/En preparación/i);
  if(process.env.SCREENSHOT_DIR){
   await mkdir(process.env.SCREENSHOT_DIR,{recursive:true});
   await page.screenshot({path:resolve(process.env.SCREENSHOT_DIR,'portal-desktop.png'),fullPage:true});

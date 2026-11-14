@@ -44,8 +44,11 @@ try{
  const profile=page.locator('#ficha-gestor');
  assert.match(await page.locator('#ficha-gestor-title').innerText(),new RegExp(longName));
  const text=await profile.textContent();
- for(const expected of [/\[SINTÉTICO\] Asociación/,/Descripción/,/Ámbito de trabajo/,/Territorios vinculados/,/Año 2025/,/Año 2024/,/Población reportada/,/52,340/,/Sin dato/,/Inversión atribuida a este gestor/,/Fotografías/,/Contacto institucional/,/gestor@example\.org/,/Equivalencia declarada por la UGD/,/Fuentes/])assert.match(text,expected);
- assert(text.indexOf('Año 2025')<text.indexOf('Año 2024'),'Períodos del más reciente al más antiguo, sin mezclarse');
+ for(const expected of [/\[SINTÉTICO\] Asociación/,/Descripción/,/Ámbito de trabajo/,/Territorios vinculados/,/Año 2025/,/Año 2024/,/Población reportada/,/52,340/,/Sin dato/,/Inversión atribuida a este gestor/,/Crédito: \[SINTÉTICO\] Autoría ficticia/,/Contacto institucional/,/gestor@example\.org/,/Equivalencia declarada por la UGD/,/Fuentes/])assert.match(text,expected);
+ const groupHeads=await profile.locator('.territory-group-head').allInnerTexts();
+ assert(groupHeads[0].includes('Año 2025')&&groupHeads[1].includes('Año 2024'),'Períodos del más reciente al más antiguo, sin mezclarse');
+ // Una sola fotografía del gestor: encabeza la ficha y no se repite en una galería.
+ assert.equal(await profile.locator('.profile-banner img').count(),1);assert.equal(await profile.locator('.profile-photos').count(),0);
  assert.equal(await profile.locator('.territory-group').count(),2);
  assert.equal(await profile.locator('img[alt]').count(),1);
  assert(await page.evaluate(()=>{const r=document.querySelector('#ficha-gestor-title').getBoundingClientRect();return r.top>=0&&r.top<innerHeight;}),'La ficha queda a la vista');
@@ -148,6 +151,21 @@ try{
  assert.equal(await page.locator('[data-content="investment"] [data-dimension="care_level"] .dataset').getAttribute('data-state'),'partial');
  assert(!(await page.locator('#inversion').innerText()).includes('Conjunto no aprobado'));
  assert.equal(await page.locator('figure.hero-photo img').count(),1);
+ // Lugares narrativos: con fotografía se muestran; sin ella no se reserva espacio.
+ assert(await page.locator('#inicio').evaluate(el=>el.classList.contains('has-photo')),'Portada con fotografía');
+ assert.equal(await page.locator('[data-chapter="ugd"].has-media img').count(),1);
+ assert.equal(await page.locator('[data-chapter="territory"].has-media img').count(),1);
+ assert.equal(await page.locator('[data-chapter="decentralization"]').evaluate(el=>el.classList.contains('has-media')),false);
+ assert(await page.locator('[data-slot="decentralization"]').isHidden(),'Sin fotografía no queda un hueco');
+ assert.equal(new Set(await page.locator('main figure[data-photo]').evaluateAll(f=>f.map(x=>x.dataset.photo))).size,await page.locator('main figure[data-photo]').count(),'Ninguna fotografía se repite');
+ // Dirección institucional y mensaje de portada desde contenido estructurado.
+ const direction=page.locator('[data-block="direccion-ugd"]');
+ assert.match(await direction.innerText(),/Nombre Ficticio Apellido Apellido/);assert.match(await direction.innerText(),/cargo ficticio/);
+ assert.equal(await direction.locator('img[alt]').count(),1,'Retrato con texto alternativo');
+ assert.match(await direction.innerText(),/direccion@example\.org/);
+ const blocks=await page.locator('[data-content="ugd"] > article').evaluateAll(a=>a.map(x=>x.dataset.block));
+ assert.equal(blocks.indexOf('direccion-ugd'),blocks.indexOf('funciones')+1,'Dirección después de las funciones');
+ assert.match(await page.locator('#hero-lead').innerText(),/Mensaje ficticio de portada/);
  assert.equal(await page.locator('[data-content="teams"] figure').count(),2);
  for(const alt of await page.locator('figure img').evaluateAll(list=>list.map(i=>i.alt)))assert(alt.length>5,'Texto alternativo');
  assert.match(await page.locator('[data-content="teams"]').innerText(),/Crédito:/);

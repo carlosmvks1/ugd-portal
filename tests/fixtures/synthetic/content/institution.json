@@ -2,6 +2,20 @@
  "schema_version": "institution-1",
  "synthetic": true,
  "sections": {
+  "home": {
+   "blocks": [
+    {
+     "block_id": "mensaje",
+     "kind": "text",
+     "title": "Mensaje de portada",
+     "status": "approved",
+     "placeholder": "Mensaje breve de portada.",
+     "paragraphs": [
+      "[SINTÉTICO] Mensaje ficticio de portada: qué hace la UGD y qué puede consultar aquí."
+     ]
+    }
+   ]
+  },
   "ugd": {
    "blocks": [
     {
@@ -34,6 +48,32 @@
        "title": "[SINTÉTICO] Función ficticia dos"
       }
      ],
+     "source_ids": [
+      "sint-fuente-a"
+     ]
+    },
+    {
+     "block_id": "direccion-ugd",
+     "kind": "profile",
+     "title": "Dirección de la UGD",
+     "status": "approved",
+     "placeholder": "Dirección institucional de la unidad.",
+     "items": [
+      {
+       "name": "[SINTÉTICO] Nombre Ficticio Apellido Apellido",
+       "role": "[SINTÉTICO] Directora de la Unidad de Gestión Descentralizada (cargo ficticio)",
+       "text": "[SINTÉTICO] Responsabilidades ficticias de la dirección, redactadas solo para comprobar la longitud del bloque en escritorio y en móvil.",
+       "photo_id": "sint-retrato",
+       "contact": [
+        {
+         "type": "email",
+         "label": "Correo institucional",
+         "value": "direccion@example.org"
+        }
+       ]
+      }
+     ],
+     "reference_date": "2025-01-01",
      "source_ids": [
       "sint-fuente-a"
      ]

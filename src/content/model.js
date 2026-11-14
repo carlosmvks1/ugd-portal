@@ -1,7 +1,7 @@
 // Lógica pura del contenido institucional: proyección pública, validación de
 // relaciones y consultas gestor ↔ territorio. Sin DOM; se usa en navegador,
 // validate, build y pruebas.
-import {isPublishable,publishableStates,itemRules,investmentDimensions} from './contract.js';
+import {isPublishable,publishableStates,itemRules,investmentDimensions,singlePlacements} from './contract.js';
 
 export const editorialLabels={proposed:'Propuesto',collecting:'En recopilación',pending_verification:'Pendiente de verificación',
  verified:'Verificado documentalmente',approved:'Aprobado para publicación',published:'Publicado',outdated:'Desactualizado',withdrawn:'Retirado'};
@@ -30,6 +30,8 @@ export function publicContent(bundle){
  c.population.periods=c.population.periods.filter(isPublishable);
  c.investment.datasets=c.investment.datasets.filter(d=>isPublishable(d)&&(d.scope.type!=='manager'||managers.has(d.scope.id)));
  c.photos.photos=c.photos.photos.filter(photoPublishable).map(p=>({...p,manager_ids:(p.manager_ids||[]).filter(id=>managers.has(id))}));
+ // Logotipo: solo aprobado y con autorización de uso.
+ if(c.institution.brand&&!(isPublishable(c.institution.brand)&&c.institution.brand.authorization?.status==='granted'))delete c.institution.brand;
  return c;
 }
 
@@ -66,8 +68,21 @@ export function contentErrors(bundle,archive,{allowSynthetic=false}={}){
    for(const [i,it] of (b.items||[]).entries())for(const field of itemRules[b.kind])if(it[field]==null||it[field]==='')fail(`${where}.items[${i}]: falta ${field} (tipo ${b.kind})`);
    if(b.kind==='channels')for(const it of b.items||[])if(it.type==='email'&&!/^[^\s@]+@[^\s@]+$/.test(it.value))fail(`${where}: correo inválido ${it.value}`);
    if(isPublishable(b)&&!(b.paragraphs?.length||b.items?.length))fail(`${where}: bloque aprobado sin contenido`);
+   if(b.kind==='profile'){
+    if((b.items||[]).length>1)fail(`${where}: el bloque de dirección admite una sola persona`);
+    for(const it of b.items||[]){
+     for(const c of it.contact||[])if(c.type==='email'&&!/^[^\s@]+@[^\s@]+$/.test(c.value))fail(`${where}: correo inválido ${c.value}`);
+     if(it.photo_id==null)continue;
+     const photo=bundle.photos.photos.find(p=>p.photo_id===it.photo_id);
+     if(!photo)fail(`${where}: retrato inexistente ${it.photo_id}`);
+     // El retrato es adicional a las fotografías de los equipos: no ocupa lugares narrativos.
+     else if(photo.placements?.length)fail(`${where}: el retrato ${it.photo_id} no debe tener «placements»`);
+    }
+   }
   }
  }
+ const brand=bundle.institution.brand;
+ if(brand&&isPublishable(brand)&&brand.authorization.status!=='granted')fail('institution.brand: logotipo aprobado sin autorización de uso');
 
  const managers=unique(bundle.managers.managers,'manager_id','gestores');
  for(const m of bundle.managers.managers){
@@ -117,6 +132,12 @@ export function contentErrors(bundle,archive,{allowSynthetic=false}={}){
   for(const id of p.territory_ids||[])territory(id,where);
   for(const id of p.manager_ids||[])if(!managers.has(id))fail(`${where}: gestor inexistente ${id}`);
   if(p.alt.trim()===p.description.trim())fail(`${where}: el texto alternativo debe describir la imagen, no repetir la descripción`);
+  if((p.placements||[]).length>1)fail(`${where}: una fotografía ocupa un solo lugar de la página (placements), para no repetir imágenes`);
+ }
+ // Lugares de una sola imagen: como máximo una fotografía publicable en cada uno.
+ for(const place of singlePlacements){
+  const used=bundle.photos.photos.filter(p=>photoPublishable(p)&&p.placements?.includes(place));
+  if(used.length>1)fail(`photos: el lugar «${place}» admite una fotografía; hay ${used.length} publicables (${used.map(p=>p.photo_id).join(', ')})`);
  }
  return errors;
 }

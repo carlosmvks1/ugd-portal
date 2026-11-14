@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Opción 3 · Presencia y datos</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/base.css">
+<style>
+:root{--azul:#224F9D;--azul-osc:#183A78;--tinta:#111827;--tinta2:#4B5563;--linea:#E2E6EE;--fondo:#F3F5F9;--oro:#AD8411;
+ font-family:"IBM Plex Sans",system-ui,sans-serif;color:var(--tinta);line-height:1.55;font-size:16px;font-variant-numeric:tabular-nums}
+body{background:var(--fondo)}
+a{color:var(--azul)}
+h1,h2,h3{line-height:1.15;margin:0 0 .5em;letter-spacing:-.01em;font-weight:600}
+.shell{width:min(100% - 32px,1400px);margin-inline:auto}
+.top{background:#fff;border-bottom:1px solid var(--linea)}
+.top .shell{display:flex;align-items:center;gap:1.4rem;min-height:60px}
+.logo-slot{width:104px;height:34px;border:1px dashed #9AA8C0;border-radius:3px;display:grid;place-items:center;font-size:.52rem;color:#6B7A93;text-align:center;line-height:1.1}
+.marca{display:flex;align-items:center;gap:.8rem;text-decoration:none;color:var(--tinta)}
+.marca b{display:grid;place-items:center;width:38px;height:38px;background:var(--azul);color:#fff;border-radius:6px;font-size:.85rem}
+.marca strong{font-size:.95rem;display:block}.marca small{font-size:.75rem;color:var(--tinta2)}
+nav.main{margin-left:auto;display:flex;gap:.3rem}
+nav.main a{padding:.45rem .8rem;border-radius:6px;font-size:.9rem;font-weight:500;color:var(--tinta);text-decoration:none}
+nav.main a[aria-current]{background:#E8EEF8;color:var(--azul-osc)}
+.menu-btn{display:none;margin-left:auto;font:inherit;border:1px solid var(--linea);background:#fff;border-radius:6px;padding:.45rem .7rem}
+.intro{background:var(--azul-osc);color:#fff}
+.intro .shell{display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;padding:2.2rem 0;align-items:center}
+.intro h1{font-size:clamp(1.7rem,2.8vw,2.4rem);margin:0 0 .4rem}
+.intro p{margin:0;color:#D5DEEE;max-width:60ch}
+.intro .links{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:flex-end}
+.intro .links a{color:#fff;border:1px solid rgba(255,255,255,.35);padding:.45rem .8rem;border-radius:99px;text-decoration:none;font-size:.88rem}
+.explorer{display:grid;grid-template-columns:300px 1fr 380px;background:#fff;border:1px solid var(--linea);border-radius:10px;overflow:hidden;margin:1.4rem 0}
+.panel{padding:1.2rem;border-right:1px solid var(--linea)}
+.panel:last-child{border-right:0;border-left:1px solid var(--linea)}
+.panel h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--tinta2);font-weight:600;margin:0 0 .8rem}
+.field{display:grid;gap:.25rem;margin-bottom:.9rem;font-size:.8rem;color:var(--tinta2)}
+.field select,.field input{font:inherit;font-size:.92rem;padding:.55rem .7rem;border:1px solid #C9D1DE;border-radius:6px;background:#fff;color:var(--tinta)}
+.seg{display:flex;border:1px solid #C9D1DE;border-radius:6px;overflow:hidden;margin-bottom:1rem}
+.seg span{flex:1;text-align:center;padding:.45rem;font-size:.85rem}
+.seg span.on{background:var(--azul);color:#fff}
+.list{list-style:none;padding:0;margin:0;font-size:.9rem;max-height:360px;overflow:auto;border-top:1px solid var(--linea)}
+.list li{display:flex;justify-content:space-between;gap:.6rem;padding:.55rem .2rem;border-bottom:1px solid var(--linea)}
+.list li.on{background:#FFF6DC;font-weight:600}
+.list small{color:var(--tinta2)}
+.mapwrap{padding:1rem;display:grid;align-content:center;position:relative;background:#FBFCFE}
+.mapa{width:100%;height:auto;display:block;max-height:600px;margin-inline:auto}
+.mapa .m{fill:#E1E6EE;stroke:#fff;stroke-width:.5}.mapa .m.r{fill:#8FA9D6}.mapa .m.h{fill:var(--azul)}.mapa .m.s{fill:var(--oro)}
+.mapa .d{fill:none;stroke:#fff;stroke-width:1.5}
+.legend{display:flex;flex-wrap:wrap;gap:1rem;font-size:.8rem;color:var(--tinta2);margin-top:.6rem}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:.3rem;vertical-align:-1px}
+.kpis{display:grid;gap:.8rem}
+.kpi{border:1px solid var(--linea);border-radius:8px;padding:.9rem 1rem}
+.kpi b{font-size:1.9rem;font-weight:600;display:block;color:var(--azul-osc);line-height:1.1}
+.kpi span{font-size:.88rem;display:block}
+.kpi small{font-size:.75rem;color:var(--tinta2);display:block;margin-top:.3rem}
+.st{display:inline-block;font-size:.68rem;font-weight:600;padding:.08rem .45rem;border-radius:4px;background:#FFF1C9;color:#5E4706;margin-top:.35rem}
+.st.p{background:#EDF0F5;color:#4B5563}
+.below{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.4rem;margin-bottom:2rem}
+.box{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:1.4rem}
+.box h2{font-size:1.15rem}
+.box ol{padding-left:1.1rem;margin:0}.box li{margin-bottom:.5rem}.box li b{display:block;font-weight:600}.box li span{color:var(--tinta2);font-size:.9rem}
+.box .ph{border-radius:6px;margin-bottom:1rem}
+footer{background:#fff;border-top:1px solid var(--linea);padding:2rem 0;font-size:.88rem;color:var(--tinta2)}
+footer .shell{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+/* Detalle */
+.det h3{font-size:1.6rem;margin:.2rem 0}
+.det .k{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--tinta2)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:1rem 0}
+.gl{display:block;border:1px solid var(--linea);border-left:4px solid var(--azul);border-radius:6px;padding:.8rem .9rem;text-decoration:none;color:var(--tinta);margin-top:.5rem}
+.gl strong{color:var(--azul);display:block}
+.gl span{font-size:.82rem;color:var(--tinta2)}
+.src{font-size:.78rem;color:var(--tinta2);border-top:1px solid var(--linea);padding-top:.7rem;margin-top:1rem}
+.tabs{display:none}
+.more-f{display:none}
+/* Ficha */
+.sheet-head{background:#fff;border-bottom:1px solid var(--linea)}
+.sheet-head .shell{padding:1.6rem 0}
+.sheet-head h1{font-size:clamp(1.6rem,2.6vw,2.2rem);max-width:30ch}
+.crumb{font-size:.82rem;color:var(--tinta2)}.crumb a{color:var(--tinta2)}
+.kpirow{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.4rem 0}
+.kpirow .kpi{background:#fff}
+.sheet{display:grid;grid-template-columns:1.3fr 1fr;gap:1.4rem;margin-bottom:2rem}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{text-align:left;padding:.55rem .4rem;border-bottom:1px solid var(--linea)}th{font-size:.75rem;color:var(--tinta2);text-transform:uppercase;letter-spacing:.05em;font-weight:600}th.n,td.n{text-align:right}
+.photos{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
+.empty{color:var(--tinta2);background:#F8F9FB;border:1px dashed #C9D1DE;border-radius:8px;padding:1rem}
+@media (max-width:1100px){.explorer{grid-template-columns:260px 1fr}.explorer .panel:last-child{grid-column:1/-1;border-left:0;border-top:1px solid var(--linea)}}
+@media (max-width:760px){
+ nav.main,.logo-slot{display:none}.menu-btn{display:block}
+ .intro .shell{grid-template-columns:1fr;gap:1rem;padding:1.4rem 0}.intro .links{justify-content:flex-start}
+ .explorer{grid-template-columns:1fr;margin:1rem 0}.panel{border-right:0;border-bottom:1px solid var(--linea)}.explorer .panel:last-child{border-top:0}
+ .tabs{display:flex;border-bottom:1px solid var(--linea)}.tabs span{flex:1;text-align:center;padding:.7rem;font-weight:600;font-size:.9rem}.tabs span.on{box-shadow:inset 0 -3px var(--azul);color:var(--azul)}
+ .hide-m,.f-x{display:none}
+ .more-f{display:block;width:100%;font:inherit;font-size:.9rem;text-align:left;padding:.55rem .7rem;border:1px solid #C9D1DE;border-radius:6px;background:#F8F9FB}
+ .below,.sheet,.kpirow{grid-template-columns:1fr}
+ .mapa{max-height:380px}
+ .photos{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+import {contenido as C,foto,mapa,vista,aviso} from './shared/contenido.js';
+import M from './shared/mapa.js';
+const v=vista();
+const header=cur=>`${aviso}<header class="top"><div class="shell"><span class="logo-slot">Logotipo SESAL<br>(pendiente)</span><a class="marca" href="?vista=portada"><b>UGD</b><span><strong>${C.ugd.nombre}</strong><small>${C.ugd.institucion}</small></span></a>
+<nav class="main" aria-label="Principal">${['Territorio','Gestores','Cifras','La UGD','Descentralización','Contacto'].map(n=>`<a href="#"${n===cur?' aria-current="page"':''}>${n}</a>`).join('')}</nav><button class="menu-btn" type="button">Menú</button></div></header>`;
+const footer=`<footer><div class="shell"><span>${C.ugd.nombre} · ${C.ugd.institucion}</span><span>Cada cifra indica fuente, período y verificación. Población e inversión describen alcance, no resultados.</span></div></footer>`;
+const filtros=(sel)=>`<div class="panel"><h2>Consultar</h2><div class="seg" role="group" aria-label="Unidad"><span${sel?'':' class="on"'}>Departamentos</span><span${sel?' class="on"':''}>Municipios</span></div>
+<label class="field">Buscar<input value="${sel?'Lepaera':''}" placeholder="Municipio o departamento"></label><button class="more-f" type="button">Filtros · 2024 · primer nivel</button><label class="field f-x">Período<select><option>2024 · provisional</option></select></label><label class="field f-x">Nivel de atención<select><option>Primer nivel</option></select></label>
+<label class="field f-x">Gestor<select><option>${sel?'Todos los gestores':'Todos los gestores'}</option></select></label>
+<ul class="list hide-m">${(sel?[['Lepaera','42 710',1],['Gracias','62 863'],['Talgua','12 154'],['Las Flores','11 298'],['Piraera','15 637'],['Erandique','17 214']]:[['Lempira','28 de 28 municipios'],['Intibucá','14 de 17'],['La Paz','13 de 19'],['Copán','10 de 23'],['Santa Bárbara','6 de 28'],['Francisco Morazán','4 de 28']]).map(r=>`<li${r[2]?' class="on"':''}><span>${r[0]}</span><small>${r[1]}</small></li>`).join('')}</ul></div>`;
+function portada(){return `${header('')}<main>
+<section class="intro"><div class="shell"><div><h1>${C.ugd.nombre}</h1><p>${C.ugd.presentacion}</p></div><div class="links">${C.tareas.map(t=>`<a href="${t.h}">${t.t}</a>`).join('')}</div></div></section>
+<div class="shell"><div class="tabs"><span class="on">Mapa</span><span>Lista</span></div><section class="explorer" aria-label="Presencia territorial">${filtros(false)}
+<div class="mapwrap">${mapa(M,{label:'Municipios con cobertura reportada en 2024'})}<p class="legend"><span><i style="background:#8FA9D6"></i>Cobertura reportada 2024 (provisional)</span><span><i style="background:#E1E6EE"></i>Sin dato en el corte</span></p></div>
+<div class="panel"><h2>Honduras · 2024</h2><div class="kpis">${C.cifras.map(c=>`<div class="kpi"><b>${c.v}</b><span>${c.l}</span><small>${c.m}</small><span class="st${c.estado==='pendiente'?' p':''}">${c.estado==='pendiente'?'Pendiente de la UGD':'Provisional'}</span></div>`).join('')}</div></div></section>
+<section class="below"><div class="box" id="ugd">${foto('Equipo de salud en comunidad',{ratio:'16/9'})}<h2>Qué es la UGD</h2><p>Texto de ejemplo: funciones, estructura, autoridades y fundamento legal, con enlace a la sección completa.</p><a href="#">Conocer la UGD →</a></div>
+<div class="box" id="modelo"><h2>Cómo funciona la descentralización</h2><ol>${C.pasos.map(p=>`<li><b>${p.t}</b><span>${p.d}</span></li>`).join('')}</ol></div>
+<div class="box" id="contacto"><h2>Gestores</h2><p>Directorio de entidades gestoras con ficha individual, territorios y población reportada.</p><a href="?vista=ficha">Abrir el directorio →</a><h2 style="margin-top:1.6rem">Contacto</h2><p>Canales institucionales pendientes de confirmación.</p></div></section></div>
+</main>${footer}`;}
+function municipio(){const m=C.municipio;return `${header('Territorio')}<main><div class="shell"><p class="crumb" style="margin-top:1rem"><a href="?vista=portada">Inicio</a> › Territorio › ${m.departamento} › ${m.nombre}</p>
+<div class="tabs"><span class="on">Mapa</span><span>Lista</span></div><section class="explorer" aria-label="Presencia territorial">${filtros(true)}
+<div class="mapwrap">${mapa(M,{focus:m.depId,selected:m.id,highlight:C.gestor.territorios.map(t=>t.id),label:'Lepaera en Lempira'})}<p class="legend"><span><i style="background:var(--oro)"></i>Seleccionado</span><span><i style="background:var(--azul)"></i>Mismo gestor</span><span><i style="background:#8FA9D6"></i>Cobertura reportada</span></p></div>
+<div class="panel det"><p class="k">Municipio · ${m.departamento}</p><h3>${m.nombre}</h3><p style="margin:0;color:var(--tinta2);font-size:.9rem">${m.periodo} · ${m.nivel}</p>
+<div class="row"><div class="kpi"><b>${m.poblacion}</b><span>Población reportada</span><small>Definición pendiente</small></div><div class="kpi"><b style="font-size:1.2rem">Provisional</b><span>Estado del dato</span><small>Pendiente de verificación oficial</small></div></div>
+<p class="k" style="margin-top:1.2rem">Gestores vinculados (1)</p>${m.gestores.map(g=>`<a class="gl" href="?vista=ficha"><strong>${g.nombre} →</strong><span>${g.tipo} · ${g.vinculo}</span></a>`).join('')}<p style="font-size:.78rem;color:var(--tinta2)">Gestor ficticio para el prototipo.</p>
+<p class="src">Fuente: ${m.fuente}<br><a href="#">Copiar enlace a esta vista</a> · <a href="#">Descargar tabla (CSV)</a></p></div></section></div></main>${footer}`;}
+function ficha(inc){const g=C.gestor;return `${header('Gestores')}<main><div class="sheet-head"><div class="shell"><p class="crumb"><a href="?vista=portada">Inicio</a> › <a href="#">Gestores</a> › Ficha</p><h1>${inc?C.incompleto.nombre:g.nombre}</h1><p style="margin:0;color:var(--tinta2)">${inc?C.incompleto.tipo:g.tipo+' · '+g.siglas}</p></div></div>
+<div class="shell">${inc?`<div class="box" style="margin:1.4rem 0 2rem"><h2>Información en preparación</h2><p class="empty">La UGD todavía no ha confirmado territorios, población ni contacto para esta entidad gestora. Los vínculos aparecerán por período y nivel de atención cuando se incorporen.</p><a href="#">← Volver al directorio</a></div>`:
+`<div class="kpirow"><div class="kpi"><b>${g.territorios.length}</b><span>municipios vinculados</span><small>${g.territoriosNota}</small></div><div class="kpi"><b>${g.poblacion.v}</b><span>población reportada</span><small>${g.poblacion.m}</small></div><div class="kpi"><b>${g.inversion.v}</b><span>inversión atribuida</span><small>${g.inversion.m}</small></div></div>
+<div class="sheet"><div class="box"><h2>Territorios vinculados · 2024 · primer nivel</h2><table><thead><tr><th>Municipio</th><th>Departamento</th><th class="n">Población 2024</th></tr></thead><tbody>${[['Lepaera','42 710'],['Talgua','12 154'],['Las Flores','11 298'],['Piraera','15 637']].map(r=>`<tr><td><a href="?vista=municipio">${r[0]}</a></td><td>Lempira</td><td class="n">${r[1]}</td></tr>`).join('')}</tbody></table><p style="font-size:.78rem;color:var(--tinta2)">Población por municipio del corte territorial; no se suma para obtener la del gestor.</p>
+${mapa(M,{focus:'13',highlight:g.territorios.map(t=>t.id),presence:false,label:'Territorios del gestor'})}<a href="?vista=municipio">Ver en el mapa nacional →</a></div>
+<div><div class="box" style="margin-bottom:1.4rem"><h2>Descripción</h2><p>${g.descripcion}</p><h2>Contacto institucional</h2>${g.contacto.map(c=>`<p style="margin:.2rem 0">${c.t}: <a href="#">${c.v}</a></p>`).join('')}</div>
+<div class="box"><h2>Fotografías</h2><div class="photos">${g.fotos.map((f,i)=>foto(`${f.c} · ${f.l}`,{tone:i?'b':'a'})).join('')}</div></div></div></div>`}</div></main>${footer}`;}
+document.getElementById('app').innerHTML=v==='municipio'?municipio():v==='ficha'?ficha(false):v==='incompleto'?ficha(true):portada();
+</script>
+</body>
+</html>

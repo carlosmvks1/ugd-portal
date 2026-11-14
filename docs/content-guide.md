@@ -6,11 +6,11 @@ Cómo incorporar, validar, previsualizar y actualizar el contenido institucional
 
 | Archivo | Contenido | Se muestra en |
 | --- | --- | --- |
-| `data/content/institution.json` | Presentación, funciones, estructura, autoridades, fundamento legal; pasos de la descentralización; canales de contacto | La UGD · Descentralización · Contacto |
+| `data/content/institution.json` | Mensaje de portada (`sections.home`); presentación, funciones, dirección de la UGD, estructura, autoridades, fundamento legal; pasos de la descentralización; canales de contacto; logotipo institucional opcional (`brand`) | Portada · La UGD · Cómo funciona · Contacto · cabecera |
 | `data/content/managers.json` | Directorio de gestores (`managers`) y vínculos gestor–territorio (`assignments`) | Directorio y fichas (`?gestor=<id>#ficha-gestor`), detalle territorial, filtro «Gestor» del mapa, tabla |
 | `data/content/population.json` | Definición y unidad de la población por período territorial | Detalle territorial (métrica «Población») |
 | `data/content/investment.json` | Conjuntos de inversión por nivel de gestión o de atención, de alcance nacional, departamental o de un gestor | Inversión · detalle de un departamento · ficha del gestor |
-| `data/content/photos.json` + `public/media/` | Fotografías con descripción, texto alternativo, crédito, autorización y contexto | Portada · Trabajo de los equipos · detalle territorial · ficha del gestor |
+| `data/content/photos.json` + `public/media/` | Fotografías con descripción, texto alternativo, crédito, autorización, contexto, lugar en la página y encuadre | Portada · La UGD · Cómo funciona · Territorio · Equipos · retrato de la dirección · detalle territorial · ficha del gestor |
 | `data/content/categories.json` | Categorías institucionales: tipos de entidad, niveles de atención, niveles de gestión, tipos de monto, definiciones de población | Etiquetas en todas las vistas |
 | `data/content/sources.json` | Fuentes citadas por el contenido (no es un repositorio documental) | Línea «Fuente:» junto a cada pieza |
 
@@ -33,7 +33,7 @@ Cada pieza (bloque, gestor, vínculo, conjunto, fotografía, fuente, categoría)
 
 1. **Recopilar** con la [plantilla](content-collection-template.md). Revisar autorización y privacidad fuera del repositorio: es público y conserva el historial.
 2. **Editar** el JSON correspondiente en una rama. Identificadores estables (letras, números, `-` o `_`; se recomiendan minúsculas), nunca derivados del nombre. Fechas `AAAA-MM-DD`. `null` significa «sin dato»; `0` solo si la fuente reporta cero.
-3. **Fotografías**: copiar el archivo a `public/media/<carpeta>/<nombre>.jpg|png|webp` (minúsculas) y registrar `src: "media/<carpeta>/<nombre>.jpg"` con `width` y `height` reales.
+3. **Fotografías**: copiar el archivo ya optimizado (menos de 1 MB) a `public/media/<carpeta>/<nombre>.jpg|png|webp` (minúsculas) y registrar `src: "media/<carpeta>/<nombre>.jpg"` con `width` y `height` reales. Ver [§ Fotografías](#fotografías) y la [ficha de necesidades](fotografias-necesidades.md).
 4. **Validar**:
    ```bash
    npm run validate:content
@@ -54,7 +54,7 @@ Cada pieza (bloque, gestor, vínculo, conjunto, fotografía, fuente, categoría)
    ```bash
    npm run preview
    ```
-7. **Comprobar** antes del PR: `npm test`, `npm run test:browser`. Registrar en el PR la evidencia de autorización (sin exponer datos personales ni comunicaciones internas).
+7. **Comprobar** antes del PR: `npm test`, `npm run test:browser` y, si cambian fotografías o textos largos, `npm run review:visual` (capturas en `work/revision/`, contraste y desbordamiento). Registrar en el PR la evidencia de autorización (sin exponer datos personales ni comunicaciones internas).
 
 ## 4. Recorridos frecuentes
 
@@ -69,6 +69,20 @@ Cada pieza (bloque, gestor, vínculo, conjunto, fotografía, fuente, categoría)
 **Agregar inversión.** Configurar primero las categorías (`management_levels` o `care_levels`) y el tipo de monto (`amount_types`) en `categories.json`. Luego un conjunto en `investment.json` con `dimension`, `period`, `currency` (ISO 4217), `amount_type`, `definition`, `source_ids`, `scope` (`national`, `department` con código, o `manager` con identificador) y `rows`. `reported_total` solo si la fuente lo reporta: el portal no suma categorías ni reparte montos entre territorios.
 
 **Nuevo período territorial.** Seguir [territorial-explorer.md](territorial-explorer.md) para incorporar el corte; después agregar en `population.json` su definición y, en `managers.json`, los vínculos con el nuevo `snapshot_id`. Los vínculos de períodos distintos nunca se combinan.
+
+## Fotografías
+
+- **Lugar en la página** (`placements`, uno por foto): `home` (portada), `ugd`, `decentralization`, `territory` (una publicada en cada uno) y `teams` (galería, varias). El validador rechaza repetir una foto en dos lugares o dos fotos publicables en el mismo lugar único.
+- **Ficha del gestor**: `manager_ids`; la primera fotografía encabeza la ficha y las demás forman su galería. **Detalle territorial**: `territory_ids`.
+- **Retrato de la dirección**: foto sin `placements`, referenciada desde el bloque `direccion-ugd` con `photo_id`.
+- **Encuadre**: `focus` (`"X% Y%"`) indica el punto que se conserva al recortar; `orientation` es opcional (se deduce del ancho y alto).
+- Si falta una fotografía, su lugar desaparece sin dejar hueco; no hace falta tocar `index.html` ni `src/`.
+
+## Dirección de la UGD y mensaje de portada
+
+- `sections.ugd.blocks[direccion-ugd]` (tipo `profile`): un elemento con `name`, `role` y, si constan, `text` (responsabilidades validadas), `photo_id` y `contact`. `reference_date` y `source_ids` opcionales. Va después de «Funciones».
+- `sections.home.blocks[mensaje]`: al aprobarse, sustituye el texto propuesto de la portada.
+- `brand` (opcional): logotipo con autorización `granted` y estado aprobado; si no, la cabecera muestra el nombre en texto.
 
 ## 5. Actualizar, corregir y retirar
 

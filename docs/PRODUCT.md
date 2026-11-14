@@ -35,7 +35,7 @@ Nombres y agrupaciones son propuesta del equipo; el contenido dependerá del mat
 | Sección | Contenido | Resultado para el visitante |
 | --- | --- | --- |
 | **Inicio** | Presentación breve, fotografía representativa y accesos principales. | Identificar la UGD y saber qué puede consultar. |
-| **Conocer la UGD** | Presentación, funciones, estructura, autoridades y fundamento legal pertinente. | Comprender su papel institucional. |
+| **Conocer la UGD** | Presentación, funciones, dirección de la UGD (retrato, nombre, cargo, responsabilidades validadas y contacto autorizado), estructura, autoridades y fundamento legal pertinente. | Comprender su papel institucional. |
 | **Descentralización en salud** | Explicación del modelo, participantes y responsabilidades. | Entender cómo funciona sin conocer previamente las siglas. |
 | **Presencia territorial** | Gestores, territorios y población, mediante mapa y listado equivalente. | Consultar qué información existe para un lugar. |
 | **Inversión** | Distribución por nivel de gestión y por nivel de atención, en los períodos que defina la UGD. | Interpretar montos y su alcance correctamente. |
@@ -82,6 +82,7 @@ El mapa sirve para **consultar la presencia territorial de la UGD**. La base mun
 - Requiere autorización de uso; no se publican pacientes identificables sin consentimiento documentado.
 - Se vinculan a un territorio o gestor solo cuando esa relación conste.
 - Texto alternativo en todas las imágenes; las fotografías ilustran, no sustituyen la información.
+- Dirección visual elegida («Salud y territorio»): al menos seis fotografías de equipos con función narrativa y un retrato de la dirección aparte, sin repetir imágenes ([ficha de necesidades](fotografias-necesidades.md), [sistema visual](visual-system.md)).
 
 ## 8. Material institucional requerido
 

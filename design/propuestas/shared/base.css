@@ -1,0 +1,15 @@
+/* Base común de los prototipos: reinicio mínimo, marcador de prototipo y
+   fotografías provisionales. Cada opción define su propio sistema visual. */
+*{box-sizing:border-box}
+body{margin:0}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid #FFBF47;outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.proto-flag{margin:0;background:repeating-linear-gradient(45deg,#FFE9A8 0 12px,#FFE19A 12px 24px);color:#4A3A05;font:600 12px/1.2 system-ui,sans-serif;text-align:center;padding:6px 8px;letter-spacing:.02em}
+.ph{position:relative;margin:0;display:grid;place-items:center;overflow:hidden;color:rgba(255,255,255,.85);width:100%}
+.ph-a{background:linear-gradient(135deg,#3B5F8F 0%,#6D8FB5 45%,#C9B98A 100%)}
+.ph-b{background:linear-gradient(160deg,#4F6B4A 0%,#8BA27A 50%,#D8C9A3 100%)}
+.ph-c{background:linear-gradient(120deg,#22324F 0%,#4B6A8E 55%,#9DB2C8 100%)}
+.ph::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 35%,rgba(255,255,255,.18),transparent 55%)}
+.ph figcaption{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;background:linear-gradient(transparent,rgba(0,0,0,.55));color:#fff;font:500 12px/1.35 system-ui,sans-serif;z-index:1}
+.ph figcaption span{display:block;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:10px;opacity:.85}

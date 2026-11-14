@@ -20,16 +20,28 @@
   <meta name="twitter:description" content="Qué hace la UGD, dónde tiene presencia y cómo se distribuyen la población y la inversión vinculadas a su trabajo.">
   <meta name="twitter:image" content="https://carlosmvks1.github.io/ugd-portal/social/ugd-preview.jpg">
   <title>UGD · Unidad de Gestión Descentralizada</title>
+  <meta name="theme-color" content="#13294F">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2313294F'/%3E%3Crect x='6' y='6' width='52' height='52' fill='none' stroke='%23E9D59A' stroke-width='3'/%3E%3Ctext x='32' y='41' font-family='Georgia,serif' font-size='22' font-weight='700' text-anchor='middle' fill='%23E9D59A'%3EUGD%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="./fonts/source-serif-4-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/source-sans-3-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="./src/styles.css">
 </head>
 <body>
 <a href="#la-ugd" class="skip">Ir al contenido</a>
 <a href="#table" class="skip skip-secondary">Ir a la lista de territorios</a>
+<div class="gov-strip">
+  <div class="shell gov-strip-inner">
+    <span>Gobierno de la República de Honduras · Secretaría de Salud</span>
+    <span>Portal institucional de la UGD</span>
+  </div>
+</div>
 <header class="site-header institutional-header">
   <div class="shell header-inner">
+    <!-- Identidad: data/content/institution.json → brand (logotipo autorizado). Sin él, nombre en texto. -->
     <a class="brand" href="#inicio" aria-label="UGD, inicio">
+      <span class="brand-logo" id="brand-logo" hidden></span>
       <span class="brand-mark" aria-hidden="true">UGD</span>
-      <span class="brand-copy">Secretaría de Salud</span>
+      <span class="brand-copy"><strong>Unidad de Gestión Descentralizada</strong><small>Secretaría de Salud de Honduras</small></span>
     </a>
     <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
       <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
@@ -38,8 +50,8 @@
     <nav id="site-nav" class="site-nav" aria-label="Secciones del portal">
       <a href="#inicio">Inicio</a>
       <a href="#la-ugd">La UGD</a>
-      <a href="#descentralizacion">Descentralización</a>
-      <a href="#presencia">Presencia territorial</a>
+      <a href="#descentralizacion">Cómo funciona</a>
+      <a href="#presencia">Territorio y gestores</a>
       <a href="#inversion">Inversión</a>
       <a href="#equipos">Equipos</a>
       <a href="#contacto">Contacto</a>
@@ -47,45 +59,54 @@
   </div>
 </header>
 <main>
-  <!-- 1. Inicio -->
+  <!-- 1. Inicio. Fotografía: photos.json (placements: home). Mensaje: institution.json → sections.home (mensaje). -->
   <section id="inicio" class="page-hero" aria-labelledby="hero-title">
-    <div class="shell hero-layout">
-      <div class="hero-text">
+    <div class="hero-stage">
+      <div class="hero-media" data-slot="home"></div>
+      <svg id="hero-map-signature" class="hero-map-signature" aria-hidden="true" focusable="false"></svg>
+      <div class="shell hero-inner">
         <p class="eyebrow">Secretaría de Salud de Honduras</p>
         <h1 id="hero-title">Unidad de Gestión Descentralizada</h1>
-        <p class="hero-lead">Conozca qué hace la UGD, en qué territorios tiene presencia y cómo se distribuyen la población y la inversión vinculadas a su trabajo.</p>
+        <p class="hero-lead" id="hero-lead">Conozca qué hace la UGD, en qué territorios tiene presencia y cómo se distribuyen la población y la inversión vinculadas a su trabajo.</p>
         <div class="hero-buttons">
-          <a class="btn btn-primary" href="#la-ugd">Conocer la UGD</a>
-          <a class="btn btn-secondary" href="#presencia">Ver presencia territorial</a>
+          <a class="btn btn-primary" href="#presencia">Buscar un municipio o gestor</a>
+          <a class="btn btn-ghost" href="#la-ugd">Conocer la UGD</a>
         </div>
       </div>
-      <figure class="photo-slot hero-photo">
-        <div class="photo-frame" role="img" aria-label="Espacio reservado para una fotografía del trabajo de la UGD">
-          <svg id="hero-map-signature" class="hero-map-signature" aria-hidden="true"></svg>
-        </div>
-        <figcaption><span class="badge-prep">En preparación</span> Fotografía principal del trabajo de la UGD.</figcaption>
-      </figure>
     </div>
-    <div class="shell">
-      <dl class="key-facts" aria-describedby="facts-source">
-        <div class="fact"><dt>Población reportada en el primer nivel de atención</dt><dd id="fact-population">—</dd></div>
-        <div class="fact"><dt>Municipios con cobertura reportada</dt><dd id="fact-municipalities">—</dd><dd id="fact-municipalities-note" class="fact-note"></dd></div>
-        <div class="fact"><dt>Departamentos con presencia reportada</dt><dd id="fact-departments">—</dd></div>
-      </dl>
-      <p id="facts-source" class="source-line">Cargando datos…</p>
+    <div class="hero-band">
+      <div class="shell hero-band-inner">
+        <dl class="key-facts" aria-describedby="facts-source">
+          <div class="fact"><dt>Población reportada en el primer nivel de atención</dt><dd id="fact-population">—</dd></div>
+          <div class="fact"><dt>Municipios con cobertura reportada</dt><dd id="fact-municipalities">—</dd><dd id="fact-municipalities-note" class="fact-note"></dd></div>
+          <div class="fact"><dt>Departamentos con presencia reportada</dt><dd id="fact-departments">—</dd></div>
+        </dl>
+        <p id="facts-source" class="source-line">Cargando datos…</p>
+        <nav class="shortcuts" aria-label="Accesos directos">
+          <p class="shortcuts-title">Ir directamente a</p>
+          <ul>
+            <li><a href="#presencia">Mapa y lista de territorios</a></li>
+            <li><a href="#gestores">Directorio de gestores</a></li>
+            <li><a href="#inversion">Inversión</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </section>
 
-  <!-- 2. Conocer la UGD -->
-  <section id="la-ugd" class="page-section" aria-labelledby="ugd-title">
+  <!-- 2. Conocer la UGD. Contenido: institution.json (sections.ugd), incluida la dirección (kind: profile). Fotografía: placements ugd. -->
+  <section id="la-ugd" class="page-section chapter" aria-labelledby="ugd-title">
     <div class="shell">
-      <div class="section-intro">
-        <p class="eyebrow">Conocer la UGD</p>
-        <h2 id="ugd-title">Quiénes somos y qué hacemos</h2>
-        <p>Identidad, funciones, estructura y fundamento legal de la Unidad de Gestión Descentralizada.</p>
+      <div class="chapter-head" data-chapter="ugd">
+        <div class="chapter-text">
+          <p class="eyebrow"><span class="chapter-num">01</span> Conocer la UGD</p>
+          <h2 id="ugd-title">Qué es la UGD y qué hace</h2>
+          <p class="chapter-lead">Identidad, funciones, dirección, estructura y fundamento legal de la Unidad de Gestión Descentralizada.</p>
+        </div>
+        <div class="chapter-media" data-slot="ugd"></div>
       </div>
-      <!-- Contenido editable: data/content/institution.json (sections.ugd). Este marcado es la alternativa sin JavaScript. -->
-      <div class="card-grid card-grid-auto" data-content="ugd">
+      <div class="editorial-blocks" data-content="ugd">
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Qué es la UGD</h3><p>Presentación institucional de la unidad dentro de la Secretaría de Salud.</p></article>
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Funciones</h3><p>Lo que la UGD hace en el modelo de gestión descentralizada.</p></article>
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Estructura y autoridades</h3><p>Organización de la unidad y su coordinación.</p></article>
@@ -94,15 +115,17 @@
     </div>
   </section>
 
-  <!-- 3. Descentralización en salud -->
-  <section id="descentralizacion" class="page-section page-section-alt" aria-labelledby="decentralization-title">
+  <!-- 3. Descentralización. Contenido: institution.json (sections.decentralization). Fotografía: placements decentralization. -->
+  <section id="descentralizacion" class="page-section chapter chapter-light" aria-labelledby="decentralization-title">
     <div class="shell">
-      <div class="section-intro">
-        <p class="eyebrow">Descentralización en salud</p>
-        <h2 id="decentralization-title">Cómo funciona la gestión descentralizada</h2>
-        <p>Cómo se organiza la prestación de servicios a través de gestores y cuál es el papel de la UGD en ese modelo.</p>
+      <div class="chapter-head" data-chapter="decentralization">
+        <div class="chapter-text">
+          <p class="eyebrow"><span class="chapter-num">02</span> Descentralización en salud</p>
+          <h2 id="decentralization-title">Cómo llegan los servicios al territorio</h2>
+          <p class="chapter-lead">Cómo se organiza la prestación de servicios a través de gestores y cuál es el papel de la UGD en ese modelo.</p>
+        </div>
+        <div class="chapter-media" data-slot="decentralization"></div>
       </div>
-      <!-- Contenido editable: data/content/institution.json (sections.decentralization). -->
       <ol class="steps" aria-label="Participantes del modelo" data-content="decentralization">
         <li><span class="step-number" aria-hidden="true">1</span><h3>La Secretaría de Salud</h3><p><span class="badge-prep">En preparación</span></p></li>
         <li><span class="step-number" aria-hidden="true">2</span><h3>Los gestores</h3><p><span class="badge-prep">En preparación</span></p></li>
@@ -112,30 +135,34 @@
     </div>
   </section>
 
-  <!-- 4. Presencia territorial -->
+  <!-- 4. Presencia territorial. Fotografía: placements territory. -->
   <section id="presencia" class="page-section coverage-section" aria-labelledby="coverage-title">
-    <div class="shell">
-      <div class="section-intro">
-        <p class="eyebrow">Presencia territorial</p>
-        <h2 id="coverage-title">Dónde trabaja la UGD</h2>
-        <p>Elija un departamento en el mapa o búsquelo por nombre para ver sus municipios, la población reportada y la fuente de cada dato.</p>
+    <div class="territory-intro">
+      <div class="shell chapter-head" data-chapter="territory">
+        <div class="chapter-text">
+          <p class="eyebrow"><span class="chapter-num">03</span> Territorio y gestores</p>
+          <h2 id="coverage-title">Dónde trabaja la UGD y quién gestiona los servicios</h2>
+          <p class="chapter-lead">Elija un departamento o municipio en el mapa, o búsquelo por nombre: verá los gestores vinculados, la población reportada, el período y la fuente de cada dato. La lista ofrece la misma información sin el mapa.</p>
+        </div>
+        <div class="chapter-media" data-slot="territory"></div>
       </div>
-
+    </div>
+    <div class="shell">
       <p id="status" class="status-banner" role="status">Cargando datos…</p>
 
       <section id="explorer" hidden aria-label="Mapa de presencia territorial">
         <div class="explorer-controls">
           <div class="primary-filters">
-            <label>Nivel de atención<select id="care"></select></label>
-            <label>Gestor<select id="gestor" aria-describedby="gestor-help"></select><small id="gestor-help">Resalta en el mapa y la tabla los territorios vinculados.</small></label>
             <div class="search-block">
               <label for="search">Buscar departamento o municipio</label>
               <input id="search" type="search" placeholder="Ej.: Lempira, Gracias" autocomplete="off" aria-controls="results">
               <ul id="results" aria-label="Resultados de búsqueda"></ul>
             </div>
+            <label>Gestor<select id="gestor" aria-describedby="gestor-help"></select><small id="gestor-help">Resalta en el mapa y la lista los territorios vinculados.</small></label>
+            <label>Nivel de atención<select id="care"></select></label>
           </div>
           <details class="advanced-filters">
-            <summary>Más filtros</summary>
+            <summary>Período y capa del mapa</summary>
             <div class="advanced-filter-grid">
               <label>Año<select id="year"></select></label>
               <label>Versión de los datos<select id="snapshot"></select></label>
@@ -156,10 +183,6 @@
               </div>
               <p id="atlas-source" class="atlas-source"></p>
             </header>
-            <div class="atlas-legend-row">
-              <div id="legend" class="atlas-legend" aria-label="Leyenda del mapa"></div>
-              <p id="map-status" class="map-status" role="status"></p>
-            </div>
             <div class="map-wrap" data-depth="national">
               <svg id="map" role="group" aria-label="Territorios; use Tab o flechas, Enter para seleccionar y Escape para volver"></svg>
               <div id="tooltip" role="tooltip" hidden></div>
@@ -168,19 +191,22 @@
                 <svg id="context-map"></svg>
               </div>
             </div>
+            <div class="atlas-legend-row">
+              <div id="legend" class="atlas-legend" aria-label="Leyenda del mapa"></div>
+              <p id="map-status" class="map-status" role="status"></p>
+            </div>
           </section>
 
           <aside id="detail" class="territory-sheet" aria-label="Detalle del territorio">
             <div class="detail-empty">
-              <span aria-hidden="true">HN</span>
               <h2>Elija un territorio</h2>
-              <p>Seleccione un departamento en el mapa o en la lista para ver sus datos.</p>
+              <p>Seleccione un departamento en el mapa o en la lista para ver sus gestores, población y fuentes.</p>
             </div>
           </aside>
         </div>
 
         <div class="actions atlas-actions">
-          <button id="home" type="button">Volver a Honduras</button>
+          <button id="home" type="button" class="btn btn-quiet">Volver a Honduras</button>
         </div>
 
         <details class="data-drawer" id="lista-territorios">
@@ -214,7 +240,7 @@
         </details>
       </section>
 
-      <button id="retry" type="button" hidden>Reintentar carga</button>
+      <button id="retry" type="button" class="btn btn-quiet" hidden>Reintentar carga</button>
 
       <!-- Directorio y fichas: data/content/managers.json. Disponible aunque falle la carga territorial. -->
       <div id="gestores" class="managers-block">
@@ -235,16 +261,17 @@
     </div>
   </section>
 
-  <!-- 5. Inversión -->
-  <section id="inversion" class="page-section page-section-alt" aria-labelledby="investment-title">
+  <!-- 5. Inversión. Contenido: investment.json y categories.json. -->
+  <section id="inversion" class="page-section chapter" aria-labelledby="investment-title">
     <div class="shell">
-      <div class="section-intro">
-        <p class="eyebrow">Inversión</p>
-        <h2 id="investment-title">Cómo se distribuye la inversión</h2>
-        <p>Recursos vinculados al trabajo de la UGD, por nivel de gestión y por nivel de atención. Las categorías, montos y períodos los define la UGD.</p>
+      <div class="chapter-head">
+        <div class="chapter-text">
+          <p class="eyebrow"><span class="chapter-num">04</span> Población e inversión</p>
+          <h2 id="investment-title">Cómo se distribuye la inversión</h2>
+          <p class="chapter-lead">Recursos vinculados al trabajo de la UGD, por nivel de gestión y por nivel de atención. Las categorías, montos y períodos los define la UGD. Población e inversión describen alcance y recursos; no demuestran por sí solas resultados sanitarios.</p>
+        </div>
       </div>
-      <!-- Contenido editable: data/content/investment.json y categories.json. -->
-      <div class="card-grid card-grid-2" data-content="investment">
+      <div class="investment-grid" data-content="investment">
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Por nivel de gestión</h3><p>Se publicará con las categorías, montos y períodos que defina la UGD.</p></article>
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Por nivel de atención</h3><p>Se publicará con las categorías, montos y períodos que defina la UGD.</p></article>
       </div>
@@ -252,33 +279,31 @@
     </div>
   </section>
 
-  <!-- 6. Trabajo de los equipos -->
-  <section id="equipos" class="page-section" aria-labelledby="teams-title">
+  <!-- 6. Trabajo de los equipos. Contenido: photos.json (placements: teams) y public/media/. -->
+  <section id="equipos" class="page-section chapter chapter-light" aria-labelledby="teams-title">
     <div class="shell">
-      <div class="section-intro">
-        <p class="eyebrow">Trabajo de los equipos</p>
-        <h2 id="teams-title">Los equipos en el territorio</h2>
-        <p>Fotografías del trabajo de los equipos de salud, con lugar y fecha.</p>
+      <div class="chapter-head">
+        <div class="chapter-text">
+          <p class="eyebrow"><span class="chapter-num">05</span> Trabajo de los equipos</p>
+          <h2 id="teams-title">Los equipos en el territorio</h2>
+          <p class="chapter-lead">Fotografías del trabajo de los equipos de salud, con descripción, lugar, fecha y crédito.</p>
+        </div>
       </div>
-      <!-- Contenido editable: data/content/photos.json (placements: teams) y public/media/. -->
-      <div class="photo-grid" data-content="teams">
-        <figure class="photo-slot"><div class="photo-frame" aria-hidden="true"></div><figcaption><span class="badge-prep">En preparación</span> Lugar · fecha</figcaption></figure>
-        <figure class="photo-slot"><div class="photo-frame" aria-hidden="true"></div><figcaption><span class="badge-prep">En preparación</span> Lugar · fecha</figcaption></figure>
-        <figure class="photo-slot"><div class="photo-frame" aria-hidden="true"></div><figcaption><span class="badge-prep">En preparación</span> Lugar · fecha</figcaption></figure>
+      <div class="team-gallery" data-content="teams">
+        <p class="pending-note"><span class="badge-prep">En preparación</span> Las fotografías de los equipos se publicarán cuando la UGD autorice su uso.</p>
       </div>
     </div>
   </section>
 
-  <!-- 7. Contacto -->
-  <section id="contacto" class="page-section page-section-alt" aria-labelledby="contact-title">
-    <div class="shell">
-      <div class="section-intro">
-        <p class="eyebrow">Contacto</p>
+  <!-- 7. Contacto. Contenido: institution.json (sections.contact). -->
+  <section id="contacto" class="page-section chapter chapter-dark" aria-labelledby="contact-title">
+    <div class="shell contact-layout">
+      <div class="chapter-text">
+        <p class="eyebrow"><span class="chapter-num">06</span> Contacto</p>
         <h2 id="contact-title">Comuníquese con la UGD</h2>
-        <p>Canales institucionales confirmados por la UGD.</p>
+        <p class="chapter-lead">Canales institucionales confirmados por la UGD.</p>
       </div>
-      <!-- Contenido editable: data/content/institution.json (sections.contact). -->
-      <div class="card-grid card-grid-3" data-content="contact">
+      <div class="contact-grid" data-content="contact">
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Dirección</h3></article>
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Teléfono</h3></article>
         <article class="info-card is-pending"><span class="badge-prep">En preparación</span><h3>Correo electrónico</h3></article>
@@ -293,7 +318,7 @@
       <strong>Unidad de Gestión Descentralizada</strong>
       <p>Secretaría de Salud de Honduras</p>
     </div>
-    <p class="footer-meta">Propuesta de portal. Los datos territoriales provienen de fuentes públicas citadas en cada consulta.</p>
+    <p class="footer-meta">Cada cifra indica su fuente, período y estado de verificación. Población e inversión describen alcance y recursos, no resultados sanitarios.</p>
   </div>
 </footer>
 

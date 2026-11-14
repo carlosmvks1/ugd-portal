@@ -13,6 +13,10 @@ Estado tras completar la estructura técnica de contenidos. Todo lo de §1 se in
 | Fundamento legal (norma, emisor, número, fecha, vigencia) | `… ugd.blocks[fundamento-legal]` (normas) | `collecting` |
 | Explicación de la descentralización (4 pasos) | `… sections.decentralization.blocks[secretaria, gestores, servicios, papel-ugd]` | `collecting` |
 | Contacto institucional (dirección, teléfono, correo) | `… sections.contact.blocks[direccion, telefono, correo]` | `collecting` |
+| Dirección de la UGD (nombre, cargo oficial, responsabilidades, contacto autorizado) | `… sections.ugd.blocks[direccion-ugd]` (tipo `profile`) | `collecting` |
+| Retrato institucional de la dirección | `photos.json` (sin `placements`) + `photo_id` en el bloque | vacío |
+| Mensaje de portada | `… sections.home.blocks[mensaje]` | `proposed` (texto del equipo del portal) |
+| Logotipo SESAL/UGD autorizado | `institution.json → brand` + `public/media/` | ausente; cabecera con nombre en texto |
 | Directorio de gestores | `managers.json → managers` | vacío |
 | Vínculos gestor–territorio por período y nivel | `managers.json → assignments` | vacío |
 | Población reportada por gestor | `managers.json → managers[].population` | vacío |
@@ -22,7 +26,7 @@ Estado tras completar la estructura técnica de contenidos. Todo lo de §1 se in
 | Tipos de monto y moneda | `categories.amount_types`; `currency` en cada conjunto | vacío |
 | Tipos de entidad gestora | `categories.entity_types` | vacío |
 | Nombres oficiales de los niveles de atención | `categories.care_levels` (I y II, `pending_verification`) | rótulos provisionales, sin publicar |
-| Fotografías autorizadas con contexto | `photos.json` + `public/media/` | vacío |
+| Seis fotografías de equipos con contexto ([ficha](fotografias-necesidades.md)) | `photos.json` (`placements`: home, ugd, decentralization, territory, teams×2) + `public/media/` | vacío; Carlos se comprometió a conseguirlas |
 | Fuentes citadas | `sources.json` | vacío |
 | Datos territoriales actualizados | `data/explorer/archive.json` ([explorador](territorial-explorer.md)) | corte 2024 provisional |
 
@@ -40,6 +44,9 @@ Estado tras completar la estructura técnica de contenidos. Todo lo de §1 se in
 10. **Fotografías.** ¿Quién otorga la autorización de uso, con qué alcance, y cómo se documenta el consentimiento de personas identificables? → `photos[].authorization`, `identifiable_people`.
 11. **Contacto.** ¿Qué canales institucionales están autorizados y funcionan (dirección, teléfono, correo, horario, sitio)? ¿Los gestores tienen contacto institucional publicable? → `sections.contact`, `managers[].contact`.
 12. **Fundamento legal.** ¿Qué normas aplican y cuál es su vigencia confirmada? → `blocks[fundamento-legal]`.
+13. **Dirección.** ¿Nombre completo y cargo oficial exacto de la directora? ¿Qué descripción de responsabilidades está validada? ¿Qué canal de contacto institucional se autoriza publicar? ¿Se autoriza el retrato y con qué crédito? → `blocks[direccion-ugd]`, `photos.json`.
+14. **Mensaje de portada.** ¿Se aprueba el texto propuesto o uno alternativo? → `sections.home.blocks[mensaje]`.
+15. **Identidad gráfica.** ¿Puede el portal usar el logotipo oficial de SESAL (con escudo) o uno de la UGD? ¿Existe manual vigente con colores y variantes? Los colores actuales se tomaron de la web de SESAL. → `institution.json → brand`, variables de `src/styles.css`.
 
 ## 3. Decisiones técnicas reversibles tomadas
 
@@ -52,7 +59,7 @@ Estado tras completar la estructura técnica de contenidos. Todo lo de §1 se in
 | La ficha usa `?gestor=<id>#ficha-gestor` dentro de la misma página | Conserva la estructura de una página, enlaces compartibles y atrás/adelante; funciona bajo cualquier subdirectorio | — |
 | El parámetro `gestor` también resalta sus territorios en mapa y tabla | Un solo estado compartible para «ver en el mapa» | — |
 | Filtros retirados `manager` y `agreement`: se ignoran y se eliminan de la URL | Convenios fuera de alcance; las etiquetas no son gestores | — |
-| Los conteos de convenios del corte no se exportan (JSON) ni se muestran | Fuera de alcance según PRODUCT.md; el archivo conserva el campo por contrato | — |
+| Los convenios del corte no llegan al artefacto público: `siteArchive` (src/map/contract.js) deja `agreements_*` en `null`, `agreements` y `agreement_ids` vacíos y retira las observaciones sobre convenios de `dist/data/explorer/`; la descarga omite además esas claves | Fuera de alcance según PRODUCT.md; el archivo fuente conserva los campos por contrato y la administración experimental usa `publicArchive` sin cambios | Ajustar `siteArchive` |
 | Solo `approved`, `published` y `outdated` llegan a `dist/`; la vista previa se construye en `work/` | Proyección en el build en vez de ocultar en la interfaz | `publishableStates` en `src/content/contract.js` |
 | Ni la vista previa muestra fotografías sin autorización o con personas identificables sin consentimiento | Es una condición legal, no editorial | — |
 | La inversión nacional se muestra en la sección Inversión; la departamental en el detalle del departamento; la de gestor en su ficha | No repartir montos agregados entre territorios | — |

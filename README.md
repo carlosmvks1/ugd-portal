@@ -12,7 +12,7 @@ npm run build
 npm run preview
 ```
 Abrir http://127.0.0.1:4173. Para desarrollo: npm run dev.
-Para instalar las herramientas de navegador de forma reproducible: `npm ci`, `npx playwright install chromium` y `npm run test:browser`. El CI usa el lockfile. Las pruebas, validación y build básicos siguen sin requerir dependencias instaladas.
+Para instalar las herramientas de navegador de forma reproducible: `npm ci`, `npx playwright install chromium` y `npm run test:browser`; `npm run review:visual` genera capturas por sección (1440, 820 y 390 px) y comprueba desbordamiento, contraste y el recorrido territorio → gestor → mapa en `work/revision/`. El CI usa el lockfile. Las pruebas, validación y build básicos siguen sin requerir dependencias instaladas.
 Frontend HTML/CSS/módulos ES y mapa SVG sin dependencias externas. Hover, selección móvil, drill-down, búsqueda, filtros respaldados por datos, tabla accesible, enlaces compartibles y exportación municipal contextual.
 
 ## Contenido institucional
@@ -32,6 +32,8 @@ Textos, gestores, vínculos territoriales, población, inversión, fotografías 
 - [Producto: propósito, estructura y alcance](docs/PRODUCT.md)
 - [Gobernanza de contenidos](docs/content-governance.md)
 - [Guía para incorporar contenido](docs/content-guide.md)
+- [Registro de cierre y contenido pendiente](docs/cierre.md) · [nota de continuidad](docs/CONTINUIDAD.md)
+- [Sistema visual «Salud y territorio»](docs/visual-system.md) · [propuestas evaluadas](docs/propuestas-visuales.md) · [ficha de necesidades fotográficas](docs/fotografias-necesidades.md)
 - [Arquitectura](docs/architecture.md)
 - [Modelo de datos y publicación de cortes](docs/data-model.md)
 - [Preview y migración a SESAL](docs/deployment.md)

@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readJson} from '../scripts/validate.mjs';
 import {validateExplorer} from '../scripts/validate-explorer.mjs';
-import {publicArchive} from '../src/map/contract.js';
+import {publicArchive,siteArchive} from '../src/map/contract.js';
 import {sanitizeState,readState,exportRows} from '../src/map/model.js';
 import {latestSnapshot,snapshotNotice} from '../src/map/snapshots.js';
 import {mkdtemp,cp,readFile,writeFile,rm} from 'node:fs/promises';
@@ -59,12 +59,12 @@ test('metadatos de validación se traducen sin certificar el histórico',()=>{
  assert.match(snapshotNotice(data.snapshots[0]),/provisional.*Pendiente de verificación oficial/);
  assert.match(snapshotNotice({...data.snapshots[0],status:'approved',verification_status:'official_verified'}),/aprobado.*Verificado oficialmente/);
 });
-test('build publica el contrato histórico completo y bloquea importaciones con campos internos',async()=>{
+test('build publica el contrato histórico sin convenios (fuera de alcance) y bloquea importaciones con campos internos',async()=>{
  const temp=await mkdtemp(join(tmpdir(),'ugd-publication-'));
  try{
   for(const name of ['package.json','index.html','portal.html','src','scripts','data','geography','public'])await cp(new URL('../'+name,import.meta.url),join(temp,name),{recursive:true});
   execFileSync(process.execPath,['scripts/build.mjs'],{cwd:temp,stdio:'pipe'});
-  assert.deepEqual(JSON.parse(await readFile(join(temp,'dist/data/explorer/archive.json'),'utf8')),data);
+  assert.deepEqual(JSON.parse(await readFile(join(temp,'dist/data/explorer/archive.json'),'utf8')),siteArchive(data));
   const contaminated=clone();contaminated.coverage[0].internal_note='SYNTHETIC_AUDIT_MARKER';
   await writeFile(join(temp,'data/explorer/archive.json'),JSON.stringify(contaminated));
   assert.throws(()=>execFileSync(process.execPath,['scripts/build.mjs'],{cwd:temp,stdio:'pipe'}),/campo desconocido/);

@@ -1,7 +1,7 @@
 // Validación del contenido institucional editable (data/content/*.json).
 // Uso: node scripts/validate-content.mjs [directorio-de-contenido [directorio-de-medios]] [--allow-synthetic]
 import {parseArgs} from 'node:util';
-import {readFile,access} from 'node:fs/promises';
+import {readFile,access,stat} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
 import {validate} from './schema.mjs';
@@ -12,6 +12,7 @@ import {isPublishable} from '../src/content/contract.js';
 export const projectRoot=resolve(fileURLToPath(new URL('../',import.meta.url)));
 export const defaultContentDir=resolve(projectRoot,'data/content');
 export const defaultMediaDir=resolve(projectRoot,'public');
+export const maxPhotoBytes=1048576;
 
 export async function readContent(dir=defaultContentDir){
  const bundle={};
@@ -31,8 +32,14 @@ export async function validateContent({dir=defaultContentDir,mediaDir=defaultMed
  const errors=contentErrors(bundle,archive,{allowSynthetic});
  for(const photo of bundle.photos.photos){
   // Las fotografías no aprobadas pueden faltar todavía; las publicables no.
-  try{await access(resolve(mediaDir,photo.src));}catch{if(isPublishable(photo))errors.push(`photos.${photo.photo_id}: no existe el archivo ${photo.src}`);}
+  try{
+   const {size}=await stat(resolve(mediaDir,photo.src));
+   // Rendimiento: las imágenes se cargan ya optimizadas (ver docs/content-guide.md).
+   if(isPublishable(photo)&&size>maxPhotoBytes)errors.push(`photos.${photo.photo_id}: ${photo.src} pesa ${(size/1048576).toFixed(1)} MB; optimícela por debajo de ${maxPhotoBytes/1048576} MB`);
+  }catch{if(isPublishable(photo))errors.push(`photos.${photo.photo_id}: no existe el archivo ${photo.src}`);}
  }
+ const brand=bundle.institution.brand;
+ if(brand&&isPublishable(brand)){try{await access(resolve(mediaDir,brand.logo_src));}catch{errors.push(`institution.brand: no existe el archivo ${brand.logo_src}`);}}
  if(errors.length)throw new Error('Contenido inválido:\n- '+errors.join('\n- '));
  return bundle;
 }

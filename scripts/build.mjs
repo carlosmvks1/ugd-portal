@@ -3,7 +3,7 @@ import {resolve,relative,sep,dirname} from 'node:path';
 import {parseArgs} from 'node:util';
 import {validateData,root} from './validate.mjs';
 import {defaultContentDir,defaultMediaDir} from './validate-content.mjs';
-import {publicArchive} from '../src/map/contract.js';
+import {siteArchive} from '../src/map/contract.js';
 import {publicContent,photoAllowed} from '../src/content/model.js';
 import {contentSchemas} from '../src/content/contract.js';
 
@@ -45,7 +45,7 @@ await writeFile(target('config.json'),JSON.stringify(config,null,2)+'\n');
 await copyFile(new URL('data/catalog.json',root),target('data/catalog.json'));
 if(catalog.explorer){
  await mkdir(target('data/explorer'),{recursive:true});
- const archive=publicArchive(catalog.archive);
+ const archive=siteArchive(catalog.archive);
  await writeFile(target('data/explorer/archive.json'),JSON.stringify(archive,null,2)+'\n');
  await writeFile(target('data/explorer/data_quality_issues.json'),JSON.stringify(archive.data_quality_issues,null,2)+'\n');
 }
@@ -75,7 +75,7 @@ if(out===dist){
  const files=async dir=>(await readdir(dir,{withFileTypes:true,recursive:true})).filter(e=>e.isFile()).map(e=>resolve(e.parentPath??e.path,e.name));
  for(const file of await files(out)){
   const path=relative(out,file).split(sep).join('/');
-  if(/(^|\/)(admin|observatory|work|tests)(\/|$)/.test(path))throw new Error('Recurso interno en dist: '+path);
+  if(/(^|\/)(admin|observatory|work|tests|design)(\/|$)/.test(path))throw new Error('Recurso interno en dist: '+path);
   if(/\.(json|html|js)$/.test(path)&&/SINT[EÉ]TICO|"synthetic"\s*:\s*true/.test(await readFile(file,'utf8')))throw new Error('Contenido sintético en dist: '+path);
  }
 }

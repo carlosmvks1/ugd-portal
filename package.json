@@ -9,6 +9,7 @@
   "scripts": {
     "test": "node --test",
     "test:browser": "node scripts/browser-check.mjs",
+    "review:visual": "node scripts/build.mjs && node scripts/visual-review.mjs && node scripts/journey-capture.mjs",
     "validate": "node scripts/validate.mjs",
     "validate:content": "node scripts/validate-content.mjs",
     "preview:content": "node scripts/build.mjs --preview && node scripts/serve.mjs work/preview",

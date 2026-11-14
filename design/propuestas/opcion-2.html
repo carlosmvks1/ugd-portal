@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Opción 2 · Salud y territorio</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/base.css">
+<style>
+:root{--azul:#224F9D;--noche:#13294F;--azul-osc:#183A78;--tinta:#1B2433;--tinta2:#535C6B;--papel:#FAF7F1;--linea:#E4DED2;--oro:#AD8411;--oro-claro:#E9D59A;--oro-texto:#7D5F0A;
+ font-family:"Source Sans 3",system-ui,sans-serif;color:var(--tinta);line-height:1.6;font-size:18px}
+body{background:var(--papel)}
+a{color:var(--azul)}
+.serif,h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;font-weight:600;letter-spacing:-.015em;line-height:1.08;margin:0 0 .5em}
+.shell{width:min(100% - 32px,1240px);margin-inline:auto}
+.narrow{width:min(100% - 32px,760px);margin-inline:auto}
+.top{position:relative;z-index:3;background:var(--noche);color:#fff}
+.top .shell{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;min-height:72px}
+.marca{display:flex;align-items:center;gap:.9rem;color:#fff;text-decoration:none}
+.logo-slot{width:120px;height:40px;border:1px dashed rgba(255,255,255,.5);border-radius:3px;display:grid;place-items:center;font-size:.58rem;color:rgba(255,255,255,.75);text-align:center;line-height:1.15;padding:2px}
+.marca strong{font-family:"Source Serif 4",serif;font-size:1.15rem;font-weight:600;display:block}.marca small{font-size:.78rem;opacity:.8}
+nav.main{display:flex;gap:1.5rem;font-size:.95rem}
+nav.main a{color:#fff;text-decoration:none;opacity:.9}
+nav.main a[aria-current]{opacity:1;box-shadow:inset 0 -2px var(--oro-claro)}
+.menu-btn{display:none;background:none;border:1px solid rgba(255,255,255,.4);color:#fff;font:inherit;padding:.45rem .8rem;border-radius:3px}
+/* Portada */
+.hero{position:relative;min-height:min(86vh,760px);display:grid;align-items:end;color:#fff}
+.hero .ph{position:absolute;inset:0;height:100%;aspect-ratio:auto!important}
+.hero .ph figcaption{top:auto;right:16px;left:auto;bottom:16px;width:auto;max-width:320px;background:rgba(0,0,0,.35);border-radius:3px;text-align:right}
+.hero-txt{position:relative;z-index:2;padding:0 0 4.5rem;background:none}
+.hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(19,41,79,0) 30%,rgba(19,41,79,.88) 100%)}
+.hero h1{font-size:clamp(2.6rem,6.4vw,5.6rem);max-width:13ch;font-weight:600}
+.hero p{font-size:1.25rem;max-width:40ch;opacity:.95}
+.over{font:700 .8rem/1 "Source Sans 3",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--oro-claro);margin:0 0 1rem}
+.dark .over,.hero .over{color:var(--oro-claro)}
+.over.d{color:var(--oro-texto)}
+.dark .chapter-num{color:var(--oro-claro)}
+.tasks{background:#fff;border-bottom:1px solid var(--linea)}
+.tasks ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap}
+.tasks a{display:block;padding:1.1rem 0;margin-right:1.6rem;font-size:.95rem;font-weight:600;text-decoration:none;color:var(--tinta)}
+.tasks a::after{content:" →";color:var(--oro)}
+.chapter{padding:6rem 0}
+.chapter-num{font-family:"Source Serif 4",serif;font-size:1rem;color:var(--oro-texto);display:block;margin-bottom:.6rem}
+.chapter h2{font-size:clamp(2rem,4vw,3.4rem);max-width:18ch}
+.lead{font-family:"Source Serif 4",serif;font-size:1.45rem;line-height:1.45;color:var(--tinta);max-width:34ch}
+.ed{display:grid;grid-template-columns:5fr 7fr;gap:5rem;align-items:center}
+.ed.rev{grid-template-columns:7fr 5fr}
+.steps{list-style:none;padding:0;margin:2.5rem 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem}
+.steps li{border-top:1px solid var(--tinta);padding-top:1rem}
+.steps h3{font-size:1.25rem}
+.steps p{color:var(--tinta2);font-size:.98rem;margin:0}
+.dark{background:var(--noche);color:#fff}
+.dark p{color:#D8DFEC}
+.terr{display:grid;grid-template-columns:5fr 7fr;gap:4rem;align-items:center}
+.stat{font-family:"Source Serif 4",serif;font-size:clamp(3.4rem,7vw,6rem);line-height:1;color:#fff;display:block;font-variant-numeric:tabular-nums}
+.stat-l{font-size:1.1rem;color:#D8DFEC;max-width:28ch}
+.meta{font-size:.85rem;color:var(--tinta2)}
+.dark .meta{color:#AFC0DA}
+.btn{display:inline-block;padding:.85rem 1.4rem;background:var(--oro-claro);color:var(--noche);font-weight:700;text-decoration:none;border-radius:2px}
+.btn.line{background:none;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.btns{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:2rem}
+.mapa{width:100%;height:auto;display:block;max-height:560px;margin-inline:auto}
+.mapa .m{fill:#E9E3D6;stroke:var(--papel);stroke-width:.5}.mapa .m.r{fill:#C7B37A}.mapa .m.h{fill:var(--azul)}.mapa .m.s{fill:var(--noche)}
+.mapa .d{fill:none;stroke:var(--papel);stroke-width:1.6}
+.dark .mapa .m{fill:#24406E;stroke:var(--noche)}.dark .mapa .m.r{fill:var(--oro-claro)}.dark .mapa .d{stroke:var(--noche)}
+.cifras{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;margin-top:2.5rem}
+.cifras b{font-family:"Source Serif 4",serif;font-size:2.8rem;font-weight:600;display:block;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--azul-osc)}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.15rem .5rem;border:1px solid var(--oro);color:#6B5208;border-radius:2px;margin-top:.5rem}
+footer{background:#0D1D3A;color:#C6D0E2;padding:3.5rem 0;font-size:.95rem}
+footer .shell{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem}
+footer strong{color:#fff;font-family:"Source Serif 4",serif;font-size:1.2rem}
+/* Municipio */
+.place-head{padding:4rem 0 2.5rem;border-bottom:1px solid var(--linea)}
+.place-head h1{font-size:clamp(3rem,7vw,6rem);margin:.2rem 0 .3rem}
+.crumb{font-size:.9rem;color:var(--tinta2)}.crumb a{color:var(--tinta2)}
+.place{display:grid;grid-template-columns:6fr 5fr;gap:4rem;padding:3rem 0 4rem}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;padding:1.5rem 0;border-top:1px solid var(--tinta);border-bottom:1px solid var(--linea);margin-bottom:2rem}
+.facts b{font-family:"Source Serif 4",serif;font-size:2.6rem;font-weight:600;display:block;line-height:1;font-variant-numeric:tabular-nums}
+.who h2{font-size:1.7rem}
+.gcard{display:grid;grid-template-columns:120px 1fr;gap:1.2rem;align-items:center;padding:1rem;background:#fff;border:1px solid var(--linea);text-decoration:none;color:var(--tinta)}
+.gcard strong{font-family:"Source Serif 4",serif;font-size:1.3rem;font-weight:600;color:var(--azul-osc);display:block;line-height:1.2}
+.gcard span{font-size:.9rem;color:var(--tinta2)}
+.filters{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1.2rem;font-size:.9rem}
+.filters span{padding:.35rem .8rem;border:1px solid var(--linea);background:#fff;border-radius:99px}
+.filters span b{font-weight:600}
+details.tabla{margin-top:2rem;border-top:1px solid var(--linea);padding-top:1rem}
+details.tabla summary{font-weight:700;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:.95rem;margin-top:1rem}th,td{text-align:left;padding:.6rem .5rem;border-bottom:1px solid var(--linea)}th.n,td.n{text-align:right;font-variant-numeric:tabular-nums}
+.gallery{display:grid;grid-template-columns:2fr 1fr;gap:1rem}
+/* Ficha */
+.fhero{position:relative;min-height:440px;display:grid;align-items:end;color:#fff}
+.fhero .ph{position:absolute;inset:0;height:100%;aspect-ratio:auto!important}
+.fhero .ph figcaption{display:none}
+.fhero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(19,41,79,.1),rgba(19,41,79,.9))}
+.fhero .shell{position:relative;z-index:2;padding-bottom:3rem}
+.fhero h1{font-size:clamp(2.2rem,4.8vw,4rem);max-width:22ch}
+.fhero.nofoto{background:var(--noche);min-height:340px;overflow:hidden}
+.fhero.nofoto::before{display:none}
+.fhero.nofoto .mapa{position:absolute;right:-60px;top:-40px;width:560px;opacity:.18}
+.fbody{display:grid;grid-template-columns:7fr 4fr;gap:4.5rem;padding:4rem 0}
+.fbody h2{font-size:1.6rem;margin-top:3rem}
+.fbody h2:first-child{margin-top:0}
+.sheet{border-top:2px solid var(--tinta);padding-top:1.2rem}
+.sheet dl{margin:0}.sheet dt{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--tinta2);margin-top:1.4rem}.sheet dd{margin:.2rem 0 0}
+.sheet .num{font-family:"Source Serif 4",serif;font-size:2.2rem;font-weight:600;font-variant-numeric:tabular-nums;color:var(--azul-osc)}
+.tlist{columns:2;padding:0;list-style:none;margin:0}.tlist li{padding:.5rem 0;border-bottom:1px solid var(--linea);break-inside:avoid}.tlist a{font-weight:600;text-decoration:none}
+.empty{font-family:"Source Serif 4",serif;font-size:1.25rem;color:var(--tinta2);border-left:3px solid var(--oro);padding:.2rem 0 .2rem 1.2rem}
+@media (max-width:900px){
+ :root{font-size:17px}
+ nav.main,.logo-slot{display:none}.menu-btn{display:block}
+ .ed,.ed.rev,.terr,.place,.fbody,.gallery{grid-template-columns:1fr;gap:2.2rem}
+ .steps,.cifras{grid-template-columns:1fr;gap:1.6rem}
+ .chapter{padding:3.8rem 0}
+ .hero{min-height:620px}.hero-txt{padding-bottom:2.5rem}
+ .hero .ph figcaption{left:16px;right:auto;top:16px;bottom:auto;text-align:left}
+ .tasks ul{display:grid;grid-template-columns:1fr 1fr}.tasks a{padding:.9rem 0;font-size:.95rem}
+ footer .shell{grid-template-columns:1fr}
+ .gcard{grid-template-columns:84px 1fr}
+ .fhero{min-height:380px}.fhero.nofoto .mapa{width:380px;right:-120px}
+ .tlist{columns:1}
+ .mapa{max-height:420px}
+ .col-opt{display:none}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+import {contenido as C,foto,mapa,vista,aviso} from './shared/contenido.js';
+import M from './shared/mapa.js';
+const v=vista();
+const header=cur=>`${aviso}<header class="top"><div class="shell"><a class="marca" href="?vista=portada"><span class="logo-slot">Logotipo SESAL<br>(pendiente de autorización)</span><span><strong>${C.ugd.nombre}</strong><small>${C.ugd.institucion}</small></span></a>
+<nav class="main" aria-label="Principal">${['La UGD','Cómo funciona','Territorio','Gestores','Cifras','Equipos','Contacto'].map(n=>`<a href="#"${n===cur?' aria-current="page"':''}>${n}</a>`).join('')}</nav><button class="menu-btn" type="button">Menú</button></div></header>`;
+const footer=`<footer><div class="shell"><div><strong>${C.ugd.nombre}</strong><p>${C.ugd.institucion}. Población e inversión describen alcance y recursos; no resultados sanitarios.</p></div><div><p><b style="color:#fff">Contacto</b><br>Canales pendientes de confirmación.</p></div><div><p><b style="color:#fff">Datos</b><br>Fuente, período y verificación en cada cifra.</p></div></div></footer>`;
+function portada(){return `${header('')}<main>
+<section class="hero">${foto('Equipo de salud en visita comunitaria · lugar y fecha',{tone:'c',ratio:'auto'})}<div class="shell hero-txt"><p class="over">${C.ugd.institucion}</p><h1>${C.ugd.nombre}</h1><p>${C.ugd.presentacion}</p></div></section>
+<nav class="tasks" aria-label="Accesos directos"><div class="shell"><ul>${C.tareas.map(t=>`<li><a href="${t.h}">${t.t}</a></li>`).join('')}</ul></div></nav>
+<section class="chapter" id="ugd"><div class="shell ed"><div><span class="chapter-num">01 — La UGD</span><h2>Qué es y qué hace la unidad</h2><p class="lead">Texto de ejemplo: una frase destacada que resuma el papel de la UGD dentro de la Secretaría de Salud.</p><div class="btns"><a class="btn line" href="#">Funciones, estructura y autoridades</a></div></div>${foto('Reunión de coordinación con equipos territoriales',{tone:'a',ratio:'4/3'})}</div></section>
+<section class="chapter" id="modelo" style="background:#fff;border-block:1px solid var(--linea)"><div class="shell"><span class="chapter-num">02 — Descentralización en salud</span><h2>Cómo llegan los servicios al territorio</h2><ol class="steps">${C.pasos.map(p=>`<li><h3>${p.t}</h3><p>${p.d}</p></li>`).join('')}</ol></div></section>
+<section class="chapter dark"><div class="shell terr"><div><span class="chapter-num">03 — Territorio y gestores</span><span class="stat">93</span><p class="stat-l">municipios con cobertura reportada en la tabla departamental de 2024</p><p class="meta">Provisional · SESAL, Memoria 2024 · el texto de la fuente indica 89</p><div class="btns"><a class="btn" href="?vista=municipio">Explorar el mapa</a><a class="btn line" href="?vista=ficha">Conocer a los gestores</a></div></div>${mapa(M,{label:'Municipios con cobertura reportada en 2024'})}</div></section>
+<section class="chapter" id="cifras"><div class="shell"><span class="chapter-num">04 — Población e inversión</span><h2>Lo que las cifras permiten conocer</h2><div class="cifras">${C.cifras.map(c=>`<div><b>${c.v}</b><p>${c.l}</p><p class="meta">${c.m}</p><span class="tag">${c.estado==='pendiente'?'Pendiente de la UGD':'Provisional 2024'}</span></div>`).join('')}</div></div></section>
+<section class="chapter" style="padding-top:0"><div class="shell ed rev">${foto('Jornada de vacunación en centro de salud · lugar y fecha',{tone:'b',ratio:'16/10'})}<div><span class="chapter-num">05 — Equipos</span><h2>El trabajo de los equipos de salud</h2><p>Fotografías con descripción, lugar, fecha y crédito, publicadas solo con autorización.</p></div></div></section>
+</main>${footer}`;}
+function municipio(){const m=C.municipio;return `${header('Territorio')}<main><div class="shell place-head"><p class="crumb"><a href="?vista=portada">Inicio</a> · Territorio · ${m.departamento}</p><p class="over d" style="margin-top:1.6rem">Municipio de ${m.departamento}</p><h1>${m.nombre}</h1><div class="filters"><span>Período <b>2024 (provisional)</b></span><span>Nivel <b>Primer nivel de atención</b></span><span>Cambiar municipio ▾</span></div></div>
+<div class="shell place"><div>${mapa(M,{focus:m.depId,selected:m.id,highlight:C.gestor.territorios.map(t=>t.id),label:'Lepaera en el departamento de Lempira'})}<p class="meta">Azul oscuro: Lepaera. Azul: otros municipios del mismo gestor. Ocre: cobertura reportada. Geometría histórica HDX/SINIT.</p></div>
+<div><div class="facts"><div><b>${m.poblacion}</b><span class="meta">${m.poblacionDef}</span></div><div><b>${m.periodo}</b><span class="meta">${m.nivel} · ${m.estado}</span></div></div>
+<div class="who"><h2>Quién gestiona los servicios aquí</h2>${m.gestores.map(g=>`<a class="gcard" href="?vista=ficha">${foto('',{tone:'b',ratio:'1/1',label:false})}<span><strong>${g.nombre}</strong><span>${g.tipo}<br>${g.vinculo}</span></span></a>`).join('')}<p class="meta">Gestor ficticio para el prototipo.</p></div>
+<p class="meta" style="margin-top:2rem">Fuente: ${m.fuente}</p></div></div>
+<div class="shell" style="padding-bottom:4rem"><h2 style="font-size:1.6rem">En este territorio</h2><div class="gallery">${foto('Equipo de salud en visita comunitaria · Lepaera · fecha pendiente',{tone:'a',ratio:'16/9'})}${foto('Centro de salud · Lepaera · 2024',{tone:'c',ratio:'auto'})}</div>
+<details class="tabla" open><summary>Ver los municipios de Lempira como tabla</summary><table><thead><tr><th>Municipio</th><th class="n">Población 2024</th><th>Gestor</th></tr></thead><tbody>${[['Lepaera','42 710',C.gestor.nombre],['Gracias','62 863','Sin vínculo confirmado'],['Talgua','12 154',C.gestor.nombre]].map(r=>`<tr><td>${r[0]}</td><td class="n">${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></details></div></main>${footer}`;}
+function ficha(inc){const g=C.gestor;return `${header('Gestores')}<main>
+<section class="fhero${inc?' nofoto':''}">${inc?mapa(M,{presence:false,label:''}).replace('role="img"','aria-hidden="true"'):foto('',{tone:'b',ratio:'auto'})}<div class="shell"><p class="crumb" style="color:#D8DFEC">Gestores · Ficha</p><p class="over">${inc?C.incompleto.tipo:g.tipo}</p><h1>${inc?C.incompleto.nombre:g.nombre}</h1>${inc?'':`<p style="margin:0;opacity:.85">${g.siglas}</p>`}</div></section>
+<div class="shell fbody"><div>${inc?`<p class="empty">La UGD todavía no ha publicado descripción, territorios ni fotografías de esta entidad gestora. Esta ficha se completará al incorporar información autorizada.</p><div class="btns"><a class="btn line" href="#" style="color:var(--azul)">Volver al directorio</a></div>`:
+`<p class="lead">${g.descripcion}</p>
+<h2>Territorios vinculados</h2><p class="meta">${g.territoriosNota}</p><ul class="tlist">${g.territorios.map(t=>`<li><a href="?vista=municipio">${t.n}</a> <span class="meta">· Lempira</span></li>`).join('')}</ul>
+<div style="margin-top:1.5rem">${mapa(M,{focus:'13',highlight:g.territorios.map(t=>t.id),presence:false,label:'Territorios del gestor'})}</div>
+<h2>Equipos en el territorio</h2><div class="gallery">${g.fotos.map((f,i)=>foto(`${f.c} · ${f.l} · ${f.cr}`,{tone:i?'a':'c',ratio:i?'auto':'4/3'})).join('')}</div>`}</div>
+<aside class="sheet" aria-label="Ficha técnica"><p class="over d" style="margin:0">Ficha técnica</p><dl>${inc?`<dd class="meta" style="margin-top:1rem">Población, inversión y contacto aparecerán aquí cuando la UGD los publique.</dd>`:
+`<dt>Población reportada</dt><dd><span class="num">${g.poblacion.v}</span><br><span class="meta">${g.poblacion.m}</span></dd><dt>Inversión atribuida</dt><dd><span class="num">${g.inversion.v}</span><br><span class="meta">${g.inversion.m}</span></dd><dt>Contacto institucional</dt>${g.contacto.map(c=>`<dd>${c.t}: <a href="#">${c.v}</a></dd>`).join('')}<dt>Fuente</dt><dd class="meta">${g.fuente}</dd>`}</dl>
+${inc?'':`<div class="btns"><a class="btn line" style="color:var(--azul)" href="?vista=municipio">Ver en el mapa</a></div>`}</aside></div></main>${footer}`;}
+document.getElementById('app').innerHTML=v==='municipio'?municipio():v==='ficha'?ficha(false):v==='incompleto'?ficha(true):portada();
+</script>
+</body>
+</html>
