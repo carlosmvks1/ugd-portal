@@ -57,7 +57,7 @@ Validación común: `npm run validate:content`, `npm run preview:content` y, si 
 | Dirección de la UGD | `sections.ugd.blocks[direccion-ugd].items[0]` | `name`, `role` obligatorios; `text`, `photo_id`, `contact` op.; `reference_date` | Cargo y responsabilidades validados; canal autorizado |
 | Retrato de la dirección | `photos.json` (sin `placements`) + `public/media/` | 4:5, ~1200×1500, < 1 MB, `alt`, `credit`, autorización, `identifiable_people: consented` | Autorización y consentimiento |
 | Estructura | `sections.ugd.blocks[estructura].items[]` | `title`, `text` op. | Aprobación UGD |
-| Autoridades | `sections.ugd.blocks[autoridades].items[]` | `name`, `role`; `unit`, `since` op. | Aprobación UGD |
+| Autoridades (retirado del portal el 14 nov. 2026; la dirección se presenta en su propio bloque) | — | El tipo `people` sigue disponible si la UGD pide listar otros cargos | — |
 | Fundamento legal | `sections.ugd.blocks[fundamento-legal].items[]` | `title`, `issuer`; `number`, `date`, `url`, `validity` | Vigencia confirmada |
 | Descentralización (4 pasos) | `sections.decentralization.blocks[...].paragraphs` | párrafos | Aprobación UGD |
 | Contacto | `sections.contact.blocks[direccion, telefono, correo].items[]` | `type`, `label`, `value` | Canal comprobado y autorizado |

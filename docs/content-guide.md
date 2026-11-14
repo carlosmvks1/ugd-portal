@@ -6,7 +6,7 @@ Cómo incorporar, validar, previsualizar y actualizar el contenido institucional
 
 | Archivo | Contenido | Se muestra en |
 | --- | --- | --- |
-| `data/content/institution.json` | Mensaje de portada (`sections.home`); presentación, funciones, dirección de la UGD, estructura, autoridades, fundamento legal; pasos de la descentralización; canales de contacto; logotipo institucional opcional (`brand`) | Portada · La UGD · Cómo funciona · Contacto · cabecera |
+| `data/content/institution.json` | Mensaje de portada (`sections.home`); presentación, funciones, dirección de la UGD, estructura, fundamento legal; pasos de la descentralización; canales de contacto; logotipo institucional opcional (`brand`) | Portada · La UGD · Cómo funciona · Contacto · cabecera |
 | `data/content/managers.json` | Directorio de gestores (`managers`) y vínculos gestor–territorio (`assignments`) | Directorio y fichas (`?gestor=<id>#ficha-gestor`), detalle territorial, filtro «Gestor» del mapa, tabla |
 | `data/content/population.json` | Definición y unidad de la población por período territorial | Detalle territorial (métrica «Población») |
 | `data/content/investment.json` | Conjuntos de inversión por nivel de gestión o de atención, de alcance nacional, departamental o de un gestor | Inversión · detalle de un departamento · ficha del gestor |
