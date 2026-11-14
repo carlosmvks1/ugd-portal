@@ -18,7 +18,7 @@ No enviar por este medio datos de pacientes, contactos personales no autorizados
 
 ## Bloques institucionales (`institution.json`)
 
-Secciones y bloques ya preparados: **La UGD** (presentación, funciones, estructura, autoridades, fundamento legal), **Descentralización** (Secretaría de Salud, gestores, servicios en el territorio, papel de la UGD), **Contacto** (dirección, teléfono, correo).
+Secciones y bloques ya preparados: **Portada** (mensaje breve), **La UGD** (presentación, funciones, dirección de la UGD, estructura, autoridades, fundamento legal), **Descentralización** (Secretaría de Salud, gestores, servicios en el territorio, papel de la UGD), **Contacto** (dirección, teléfono, correo).
 
 | Campo | | Descripción |
 | --- | --- | --- |
@@ -29,6 +29,36 @@ Secciones y bloques ya preparados: **La UGD** (presentación, funciones, estruct
 | Nota | op | Aclaración visible |
 
 \* Según el tipo de bloque. Para un nuevo bloque también: identificador, título y texto de marcador mientras está en preparación.
+
+### Mensaje de portada (`sections.home → mensaje`)
+
+| Campo | | Descripción |
+| --- | --- | --- |
+| Mensaje | O | Una o dos frases que expliquen el propósito del portal. Ejemplo **ficticio**: «Conozca qué hace la UGD, dónde trabaja y qué información permite conocer su alcance.» |
+| Aprobación | O | Mientras no se apruebe, la portada usa el texto propuesto de `index.html` |
+
+### Dirección de la UGD (`sections.ugd → direccion-ugd`, tipo `profile`)
+
+Una sola persona. Sin biografía, credenciales, citas ni mensaje de bienvenida salvo contenido aprobado.
+
+| Campo | | Descripción |
+| --- | --- | --- |
+| Nombre completo | O | Ejemplo ficticio: «Nombre Apellido Apellido» |
+| Cargo oficial | O | Denominación exacta del cargo |
+| Responsabilidades | op | Descripción breve y validada (`text`, 1–3 frases) |
+| Retrato institucional | op | `photo_id` de una fotografía de `photos.json` **sin** `placements` (no cuenta entre las fotos de equipos); ver ficha de retrato en [fotografias-necesidades.md](fotografias-necesidades.md) |
+| Contacto institucional | op | Canales autorizados (`contact`: tipo, etiqueta, valor) |
+| Fecha de referencia | op | Cargo vigente a la fecha |
+| Fuente | op | Nombramiento o registro que respalda el cargo |
+
+### Identidad institucional (`institution.json → brand`, opcional)
+
+| Campo | | Descripción |
+| --- | --- | --- |
+| Archivo del logotipo | O | SVG, PNG o WebP en `public/media/` (`logo_src`), con ancho y alto |
+| Texto alternativo | O | P. ej. «Secretaría de Salud, Gobierno de la República de Honduras» |
+| Autorización de uso | O | Debe constar `granted`; sin ella la cabecera usa el nombre en texto |
+| Estado editorial | O | Solo `approved`/`published` llega al sitio |
 
 ## Gestor (`managers.json → managers`)
 
@@ -100,8 +130,11 @@ Una fila por gestor × territorio × período × nivel.
 | Personas identificables | O | Ninguna / con consentimiento documentado / desconocido |
 | Lugar | op | |
 | Fecha | op | `AAAA-MM-DD` o texto («Marzo de 2025») |
-| Territorios / gestores relacionados | op | Códigos e identificadores |
-| Ubicación en el portal | op | Portada (`home`) y/o Trabajo de los equipos (`teams`) |
+| Territorios / gestores relacionados | op | Códigos e identificadores (la primera foto de un gestor encabeza su ficha) |
+| Lugar en la página | op | **Uno solo**: portada (`home`), La UGD (`ugd`), Cómo funciona (`decentralization`), Territorio (`territory`) o galería de equipos (`teams`). Los cuatro primeros admiten una fotografía publicada cada uno |
+| Punto de interés | op | `focus`, p. ej. `"60% 40%"`: qué parte conservar al recortar en móvil |
+| Orientación | op | `landscape`, `portrait` o `square` |
+| Peso | O | Menos de 1 MB, ya optimizada; ver tamaños en [fotografias-necesidades.md](fotografias-necesidades.md) |
 
 ## Categorías (`categories.json`)
 

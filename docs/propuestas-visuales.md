@@ -1,6 +1,6 @@
 # Propuestas visuales del portal UGD
 
-Estado: **tres propuestas para elegir; ninguna aprobada.** El rediseño definitivo no se implementa hasta que Carlos elija una opción. La ausencia de respuesta no equivale a aprobación. Este documento no aprueba identidad, textos, cifras ni fotografías.
+Estado: **Carlos eligió la opción 2 «Salud y territorio» el 14 de noviembre de 2026** y autorizó implementarla; está implementada y documentada en [visual-system.md](visual-system.md). Las opciones 1 y 3 quedan como referencia. Este documento conserva la exploración tal como se presentó. Este documento no aprueba identidad, textos, cifras ni fotografías.
 
 Prototipos locales comparables en [`design/propuestas/`](../design/propuestas/README.md): la misma portada, municipio seleccionado (Lepaera, Lempira), ficha de gestor y ficha incompleta, en escritorio (1440 px) y móvil (390 px).
 
@@ -83,6 +83,10 @@ Si ese material no está garantizado, **la opción 1** es la elección prudente:
 - El mapa SVG actual se conserva; solo cambia su estilo. La tabla equivalente se mantiene.
 - Contraste calculado (WCAG): `#224F9D` sobre blanco 7,86:1; `#183A78` 10,96:1; `#AD8411` 3,45:1 (solo decorativo o texto grande); para texto dorado pequeño se usa `#7D5F0A` (5,98:1 sobre blanco; 5,59:1 sobre papel); `#E9D59A` sobre `#13294F` 9,91:1.
 
-## 7. Cómo elegir
+## 7. Elección
+
+Elegida la opción 2, con el compromiso de Carlos de conseguir al menos seis fotografías oficiales de equipos y un retrato de la dirección. Del explorador de la opción 3 se tomó la claridad de consulta (gestores visibles al seleccionar un territorio, filtros arriba). Texto original de esta sección:
+
+### Cómo elegir (original)
 
 Responder con «Opción 1», «Opción 2» u «Opción 3» (o ajustes concretos). Tras la elección se implementará la opción completa sobre el portal real, se documentará el sistema visual definitivo en [visual-system.md](visual-system.md) y se revisarán móvil, tableta, escritorio, teclado y estados.

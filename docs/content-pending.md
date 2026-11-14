@@ -13,6 +13,10 @@ Estado tras completar la estructura técnica de contenidos. Todo lo de §1 se in
 | Fundamento legal (norma, emisor, número, fecha, vigencia) | `… ugd.blocks[fundamento-legal]` (normas) | `collecting` |
 | Explicación de la descentralización (4 pasos) | `… sections.decentralization.blocks[secretaria, gestores, servicios, papel-ugd]` | `collecting` |
 | Contacto institucional (dirección, teléfono, correo) | `… sections.contact.blocks[direccion, telefono, correo]` | `collecting` |
+| Dirección de la UGD (nombre, cargo oficial, responsabilidades, contacto autorizado) | `… sections.ugd.blocks[direccion-ugd]` (tipo `profile`) | `collecting` |
+| Retrato institucional de la dirección | `photos.json` (sin `placements`) + `photo_id` en el bloque | vacío |
+| Mensaje de portada | `… sections.home.blocks[mensaje]` | `proposed` (texto del equipo del portal) |
+| Logotipo SESAL/UGD autorizado | `institution.json → brand` + `public/media/` | ausente; cabecera con nombre en texto |
 | Directorio de gestores | `managers.json → managers` | vacío |
 | Vínculos gestor–territorio por período y nivel | `managers.json → assignments` | vacío |
 | Población reportada por gestor | `managers.json → managers[].population` | vacío |
@@ -22,7 +26,7 @@ Estado tras completar la estructura técnica de contenidos. Todo lo de §1 se in
 | Tipos de monto y moneda | `categories.amount_types`; `currency` en cada conjunto | vacío |
 | Tipos de entidad gestora | `categories.entity_types` | vacío |
 | Nombres oficiales de los niveles de atención | `categories.care_levels` (I y II, `pending_verification`) | rótulos provisionales, sin publicar |
-| Fotografías autorizadas con contexto | `photos.json` + `public/media/` | vacío |
+| Seis fotografías de equipos con contexto ([ficha](fotografias-necesidades.md)) | `photos.json` (`placements`: home, ugd, decentralization, territory, teams×2) + `public/media/` | vacío; Carlos se comprometió a conseguirlas |
 | Fuentes citadas | `sources.json` | vacío |
 | Datos territoriales actualizados | `data/explorer/archive.json` ([explorador](territorial-explorer.md)) | corte 2024 provisional |
 
@@ -40,6 +44,9 @@ Estado tras completar la estructura técnica de contenidos. Todo lo de §1 se in
 10. **Fotografías.** ¿Quién otorga la autorización de uso, con qué alcance, y cómo se documenta el consentimiento de personas identificables? → `photos[].authorization`, `identifiable_people`.
 11. **Contacto.** ¿Qué canales institucionales están autorizados y funcionan (dirección, teléfono, correo, horario, sitio)? ¿Los gestores tienen contacto institucional publicable? → `sections.contact`, `managers[].contact`.
 12. **Fundamento legal.** ¿Qué normas aplican y cuál es su vigencia confirmada? → `blocks[fundamento-legal]`.
+13. **Dirección.** ¿Nombre completo y cargo oficial exacto de la directora? ¿Qué descripción de responsabilidades está validada? ¿Qué canal de contacto institucional se autoriza publicar? ¿Se autoriza el retrato y con qué crédito? → `blocks[direccion-ugd]`, `photos.json`.
+14. **Mensaje de portada.** ¿Se aprueba el texto propuesto o uno alternativo? → `sections.home.blocks[mensaje]`.
+15. **Identidad gráfica.** ¿Puede el portal usar el logotipo oficial de SESAL (con escudo) o uno de la UGD? ¿Existe manual vigente con colores y variantes? Los colores actuales se tomaron de la web de SESAL. → `institution.json → brand`, variables de `src/styles.css`.
 
 ## 3. Decisiones técnicas reversibles tomadas
 
