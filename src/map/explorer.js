@@ -1,7 +1,7 @@
 import {localUrl} from '../config.js';
 import {labels,normalize,options,sanitizeState,readState,stateUrl,territoryModel,visibleTerritories,exportRows,csv} from './model.js';
 import {geometryPath,geometryBounds} from './geometry.js';
-import {snapshotNotice,verificationLabels} from './snapshots.js';
+import {snapshotNotice,verificationLabels,latestSnapshot} from './snapshots.js';
 import {publicArchive} from './contract.js';
 import {trackLayout,writeHistory} from '../navigation.js';
 const $=s=>document.querySelector(s);
@@ -14,9 +14,11 @@ export async function startExplorer(data,config,load){
  const getGeometry=path=>{if(!cache.has(path))cache.set(path,load(localUrl(path,config.geographyRoot)).catch(e=>{cache.delete(path);throw e;}));return cache.get(path);};
  const find=code=>data.territories.find(t=>t.official_code===code);
  const snapshot=()=>data.snapshots.find(s=>s.snapshot_id===state.snapshot);
- const period=()=>snapshot()?`${snapshot().period_start} a ${snapshot().period_end}`:`${state.year||'Sin período'} · sin datos`;
+ const day=iso=>{const [y,m,d]=iso.split('-');return `${Number(d)}/${Number(m)}/${y}`;};
+ const period=()=>{const s=snapshot();if(!s)return `${state.year||'Sin período'} · sin datos`;return s.period_start===s.year+'-01-01'&&s.period_end===s.year+'-12-31'?'Año '+s.year:`${day(s.period_start)} a ${day(s.period_end)}`;};
+ const sourceTitle=()=>{const s=snapshot();return s?data.sources.find(x=>x.source_id===s.source_id)?.title||'':'';};
  const model=code=>territoryModel(data,state,find(code));
- function summary(m){return `<strong>${esc(m.territory.name)}</strong><br>${esc(labels[m.status])}<br>${m.aggregate?`${fmt(m.covered)} / ${fmt(m.total)} municipios reportados · ${(m.proportion*100).toFixed(1)}%`:'Registro municipal: '+(m.rows.some(r=>r.coverage_status==='reported')?'reportado':'sin dato explícito')}<br>Población publicada: ${fmt(m.population)}<br><small>${esc(period())}</small>`;}
+ function summary(m){return `<strong>${esc(m.territory.name)}</strong><br>${esc(labels[m.status])}<br>${m.aggregate?`${fmt(m.covered)} / ${fmt(m.total)} municipios reportados · ${(m.proportion*100).toFixed(1)}%`:'Cobertura municipal: '+(m.rows.some(r=>r.coverage_status==='reported')?'reportada':'sin dato')}<br>Población reportada:${fmt(m.population)}<br><small>${esc(period())}</small>`;}
  function fill(){
   const years=[...new Set(data.snapshots.map(s=>String(s.year)))];if(state.year&&!years.includes(state.year))years.push(state.year);
   $('#year').innerHTML=years.map(y=>`<option value="${esc(y)}">${esc(y)}${data.snapshots.some(s=>String(s.year)===y)?'':' · sin datos'}</option>`).join('');$('#year').value=state.year;
@@ -53,16 +55,16 @@ export async function startExplorer(data,config,load){
   if(selected?.type==='department'&&m?.aggregate){
     $('#atlas-subtitle').textContent=fmt(m.covered)+' de '+fmt(m.total)+' municipios reportados · '+(m.proportion*100).toFixed(1)+'%';
   }else if(selected?.type==='municipality'){
-    $('#atlas-subtitle').textContent=labels[m.status]+(m.population!=null?' · '+fmt(m.population)+' habitantes publicados':'');
+    $('#atlas-subtitle').textContent=labels[m.status]+(m.population!=null?' · '+fmt(m.population)+' habitantes reportados':'');
   }else{
     $('#atlas-subtitle').textContent=data.territories.filter(t=>t.type==='department').length+' departamentos · '+period();
   }
-  $('#atlas-source').textContent=source?(source.title+' · '+s.year):period();
+  $('#atlas-source').textContent=source?('Fuente: '+source.title):period();
  }
 
  function detail(){
   const t=find(state.territory);$('#detail').classList.toggle('selected',!!t);$('#detail').classList.toggle('expanded',expanded);
-  if(!t){$('#detail').innerHTML='<div class="detail-empty"><span aria-hidden="true">HN</span><p class="detail-kicker">Atlas territorial</p><h2>Explore el territorio</h2><p>Seleccione un departamento para consultar cobertura, población y fuentes.</p></div>';return;}
+  if(!t){$('#detail').innerHTML='<div class="detail-empty"><span aria-hidden="true">HN</span><h2>Elija un territorio</h2><p>Seleccione un departamento en el mapa o en la lista para ver sus datos.</p></div>';return;}
   const m=model(t.official_code);
   const sources=m.source_ids.map(id=>data.sources.find(s=>s.source_id===id)).filter(Boolean);
   const agreements=data.agreements.filter(a=>a.snapshot_id===state.snapshot&&m.rows.some(r=>r.agreement_ids.includes(a.agreement_id)));
@@ -75,6 +77,12 @@ export async function startExplorer(data,config,load){
     ?(explicit.length?fmt(explicit.length)+' registros municipales en la fuente.':'Sin registros municipales para este período.')
     :(explicit.length?explicit.map(r=>esc(r.care_level)+' · '+esc(r.scope_note||'Reportado en fuente')).join('<br>'):'Sin registro municipal para este período.');
   const progress=m.aggregate&&m.proportion!=null?Math.max(0,Math.min(100,m.proportion*100)):null;
+  // Only links recorded with manager_id; labels are never matched by name.
+  const managers=data.managers.filter(x=>m.rows.some(r=>r.manager_id===x.manager_id));
+  // Mention record-level verification only when it differs from the period's.
+  const recordLabels=[...new Set(explicit.map(r=>verificationLabels[r.verification_status]||'Verificación no disponible'))].filter(l=>l!==verificationLabels[snapshot()?.verification_status]);
+  const recordNotice=recordLabels.length?' · Registros: '+recordLabels.map(esc).join(', '):'';
+  const managerText=managers.length?managers.map(x=>esc(x.legal_name||x.source_label)).join('<br>'):'Pendiente de confirmación por la UGD.';
   $('#detail').innerHTML=`<div class="territory-sheet-head">
     <div>
       <p class="detail-kicker">${esc(t.type==='department'?'Departamento':'Municipio')}</p>
@@ -84,11 +92,11 @@ export async function startExplorer(data,config,load){
     <button id="close-detail" aria-label="Cerrar selección">Cerrar</button>
   </div>
   <p class="detail-status"><span class="detail-status-dot status-${esc(m.status)}" aria-hidden="true"></span>${esc(labels[m.status])}</p>
-  <p class="detail-verification">${esc(snapshotNotice(snapshot()))}${explicit.length?' · Registros: '+[...new Set(explicit.map(r=>verificationLabels[r.verification_status]||'Verificación no disponible'))].map(esc).join(', '):''}</p>
+  <p class="detail-verification">${esc(snapshotNotice(snapshot()))}${recordNotice}</p>
   <div class="detail-metrics">
     <div><span>Municipios</span><strong>${coverageText}</strong><small>${m.aggregate?'reportados / total':'No aplica'}</small></div>
     <div><span>Proporción</span><strong>${coveragePercent}</strong><small>${m.aggregate?'cobertura municipal':'No aplica'}</small></div>
-    <div><span>Población</span><strong>${populationText}</strong><small>publicada</small></div>
+    <div><span>Población</span><strong>${populationText}</strong><small>reportada</small></div>
   </div>
   ${progress==null?'':`<div class="coverage-progress" aria-label="Proporción municipal ${progress.toFixed(1)}%"><span style="width:${progress.toFixed(1)}%"></span></div>`}
   <button id="expand" aria-expanded="${expanded}">${expanded?'Reducir ficha':'Ver ficha completa'}</button>
@@ -98,6 +106,7 @@ export async function startExplorer(data,config,load){
       <div><span>Fuente</span><strong>${sources.length?sources.map(s=>`<a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>`).join('<br>'):'Sin registro disponible'}</strong></div>
       ${pages.length?'<div><span>Página</span><strong>'+pages.map(esc).join(', ')+'</strong></div>':''}
     </div>
+    <div class="detail-section"><h3>Gestor</h3><p>${managerText}</p></div>
     <div class="detail-section"><h3>Alcance</h3><p>${recordDetail}</p></div>
     ${agreements.length?'<div class="detail-section"><h3>Convenios</h3><p>Convenios asociados a este territorio.</p></div>':''}
     ${t.type==='department'?'<div class="detail-section"><h3>Municipios</h3><div class="municipality-links">'+data.territories.filter(x=>x.parent_id===t.official_code).map(x=>`<button data-territory="${esc(x.official_code)}">${esc(x.name)}</button>`).join('')+'</div></div>':''}
@@ -112,8 +121,8 @@ export async function startExplorer(data,config,load){
   if(matches.length>40)$('#results').insertAdjacentHTML('beforeend','<li>Más resultados; precise la búsqueda.</li>');bindSelection($('#results'));
  }
  function table(){
-  const territories=visibleTerritories(data,state);$('#caption').textContent=period()+' · '+territories.length+' territorios · '+$('#layer').selectedOptions[0].textContent;
-  $('#table tbody').innerHTML=territories.map(t=>{const m=model(t.official_code);return `<tr ${state.territory===t.official_code?'aria-selected="true"':''}><th scope="row"><button data-territory="${esc(t.official_code)}">${esc(t.name)} · ${esc(t.official_code)}</button></th><td>${esc(labels[m.status])}</td><td>${m.aggregate?`${fmt(m.covered)} / ${fmt(m.total)}`:'Sin agregado aplicable'}</td><td>${fmt(m.population)}</td><td>${esc(m.source_ids.join(', ')||'Sin registro')} · ${esc(period())}</td></tr>`;}).join('');bindSelection($('#table'));
+  const territories=visibleTerritories(data,state);$('#caption').textContent=territories.length+' territorios · '+period()+(sourceTitle()?' · Fuente: '+sourceTitle():'');
+  $('#table tbody').innerHTML=territories.map(t=>{const m=model(t.official_code);return `<tr ${state.territory===t.official_code?'aria-selected="true"':''}><th scope="row"><button data-territory="${esc(t.official_code)}">${esc(t.name)}</button></th><td>${esc(labels[m.status])}</td><td>${m.aggregate?`${fmt(m.covered)} / ${fmt(m.total)}`:'No aplica'}</td><td>${fmt(m.population)}</td><td>${m.source_ids.length?esc(period()):'Sin registro'}</td></tr>`;}).join('');bindSelection($('#table'));
  }
  function breadcrumbs(){
   const t=find(state.territory),d=t?.type==='municipality'?find(t.parent_id):t;
@@ -165,15 +174,22 @@ export async function startExplorer(data,config,load){
   }catch{if(token===generation){mapEl.replaceChildren();$('#context-map').replaceChildren();$('#context-map-wrap').hidden=true;$('#map-status').innerHTML='No se pudo cargar la cartografía. La tabla sigue disponible. <button id="retry-map">Reintentar mapa</button>';$('#retry-map').onclick=()=>trackLayout(map(++generation));}}
   finally{if(token===generation)mapEl.setAttribute('aria-busy','false');}
  }
+ // Keep the address clean: defaults (latest period, default layer) are not written.
+ function visibleState(){
+  const shown={...state},latest=latestSnapshot(data.snapshots);
+  if(latest&&shown.snapshot===latest.snapshot_id){shown.snapshot='';shown.year='';}
+  if(shown.layer==='status')shown.layer='';
+  return shown;
+ }
  function update(push=false){
-  state=sanitizeState(data,state);writeHistory(stateUrl(state,location.href),push);fill();breadcrumbs();atlasMeta();detail();table();legend();
+  state=sanitizeState(data,state);writeHistory(stateUrl(visibleState(),location.href),push);fill();breadcrumbs();atlasMeta();detail();table();legend();
   const s=snapshot(),source=s?data.sources.find(x=>x.source_id===s.source_id):null;
-  $('#status').textContent=s?`Datos ${s.year} · ${period()}${source?' · '+source.title:''} · ${snapshotNotice(s)}`:`${state.year} · Sin datos publicados para el año seleccionado.`;
+  $('#status').textContent=s?`${period()}${source?' · Fuente: '+source.title:''} · ${snapshotNotice(s)}`:`${state.year} · Sin datos publicados para el año seleccionado.`;
   const rows=exportRows(data,state);$('#csv').disabled=$('#json').disabled=!rows.length;return trackLayout(map(++generation));
  }
  for(const key of ['year','snapshot','care','manager','agreement','layer'])$('#'+key).onchange=e=>{state[key]=e.target.value;if(key==='year'){state.snapshot='';for(const k of ['care','manager','agreement'])state[k]='';}update(true);};
  $('#search').oninput=search;$('#search').onkeydown=e=>{if(e.key==='ArrowDown'){e.preventDefault();$('#results button')?.focus();}};$('#home').onclick=()=>select('');
- $('#share').onclick=async()=>{try{await navigator.clipboard.writeText(stateUrl(state,location.href).href);$('#status').textContent='Enlace copiado · '+period();}catch{$('#status').textContent='Copie la dirección del navegador para compartir esta consulta.';}};
+ $('#share').onclick=async()=>{try{await navigator.clipboard.writeText(stateUrl(visibleState(),location.href).href);$('#status').textContent='Enlace copiado · '+period();}catch{$('#status').textContent='Copie la dirección del navegador para compartir esta consulta.';}};
  for(const kind of ['csv','json'])$('#'+kind).onclick=()=>{
   const rows=exportRows(data,state);if(!rows.length)return;
   const approved=publicArchive(data);
@@ -182,8 +198,8 @@ export async function startExplorer(data,config,load){
   a.href=url;a.download=`ugd-${state.snapshot}-${state.territory||'HN'}.${kind}`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  };
  window.onpopstate=()=>{state=sanitizeState(data,readState(location.search));update();};
- $('#sources').innerHTML=data.sources.map(s=>`<p><a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> · ${esc(s.publisher)} · consulta ${esc(s.retrieved_at)}${s.valid_on?' · Geografía histórica válida al '+esc(s.valid_on):''}${s.license?' · '+esc(s.license):''}</p>`).join('');
- $('#issuecount').textContent=data.data_quality_issues.length+' observaciones registradas';$('#issues').innerHTML=data.data_quality_issues.map(i=>`<li><strong>${esc(i.issue_id)}</strong> · ${esc(i.status)} · ${esc(i.detail)}</li>`).join('');
+ $('#sources').innerHTML=data.sources.map(s=>`<p><a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> · ${esc(s.publisher)} · consultada el ${esc(day(s.retrieved_at))}${s.valid_on?' · límites territoriales vigentes al '+esc(day(s.valid_on)):''}${s.license?' · '+esc(s.license):''}</p>`).join('');
+ $('#issuecount').textContent=data.data_quality_issues.length+' observaciones sobre los datos';$('#issues').innerHTML=data.data_quality_issues.map(i=>`<li><strong>${esc(i.issue_id)}</strong> · ${esc(i.status)} · ${esc(i.detail)}</li>`).join('');
  $('#explorer').hidden=false;await update();
 }
 

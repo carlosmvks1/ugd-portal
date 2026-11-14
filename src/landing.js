@@ -1,14 +1,8 @@
-import {initShell} from './ui.js';
-
-// Preserve only known atlas queries and section anchors from the previous portal URL.
-const legacySections=new Set(['cobertura','table','calidad','observatorio','institucion','documentos','gestores','convenios','modelo','informacion','descentralizacion']);
-const legacyAtlasParams=new Set(['territory','year','snapshot','care','manager','agreement','layer']);
-function followLegacyLink(){
-  const hasAtlasParam=[...new URLSearchParams(location.search).keys()].some(key=>legacyAtlasParams.has(key));
-  if(hasAtlasParam||legacySections.has(location.hash.slice(1))){
-    location.replace(new URL('./portal.html'+location.search+location.hash,location.href));
-  }
+// Translate anchors from the previous two-page portal to the single-page sections.
+// Anchors that still exist in the page (gestores, calidad, table, descentralizacion) are kept.
+export const legacyAnchors={institucion:'la-ugd',cobertura:'presencia',
+ documentos:'inicio',convenios:'inicio',observatorio:'inicio',modelo:'inicio',informacion:'inicio'};
+export function followLegacyAnchor(){
+ const target=legacyAnchors[location.hash.slice(1)];
+ if(target)history.replaceState(history.state,'',location.pathname+location.search+'#'+target);
 }
-initShell();
-followLegacyLink();
-window.addEventListener('hashchange',followLegacyLink);
