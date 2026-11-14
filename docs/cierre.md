@@ -1,6 +1,6 @@
 # Registro de cierre del portal UGD
 
-Fecha: 14 de noviembre de 2026. Rama `claude/gifted-noether-y0gcrh` (PR #25, sin fusionar) sobre `main` en `ed8daca`. Nota de continuidad: [CONTINUIDAD.md](CONTINUIDAD.md).
+Fecha: 14 de noviembre de 2026. PR #25 fusionado en `main` (`2a702cc`) y publicado con autorización de Carlos (§2b). Nota de continuidad: [CONTINUIDAD.md](CONTINUIDAD.md).
 
 ## 1. Estado
 
@@ -37,6 +37,14 @@ Revisión visual real hecha sobre las capturas; defectos encontrados y corregido
 
 CI de GitHub (`ci.yml`) se ejecuta en cada push del PR; su resultado debe consultarse en el PR. CI no sustituye la revisión visual.
 
+## 2b. Publicación (14 nov. 2026)
+
+- URL pública: <https://carlosmvks1.github.io/ugd-portal/>. Commit desplegado: `2a702cc` (fusión del PR #25), mediante `pages.yml` (`workflow_dispatch` sobre `main`, ejecución n.º 6, correcta: pruebas, validación, build y `test:browser` incluidos).
+- Verificación sobre la URL pública (navegador automatizado, 1440 y 390 px): portada y navegación por los 7 destinos (menú móvil incluido); mapa Lempira → Gracias con su ficha territorial; atrás/adelante y «Volver a Honduras»; enlace directo a un territorio; ficha de gestor inexistente con aviso; anclas internas sin destinos rotos; sin contenido sintético ni fotografías de prueba en el texto, el HTML ni los datos; `admin/`, `observatory/`, `work/`, `tests/` y `design/` responden 404; fuentes y licencias servidas; sin errores de página ni de consola.
+- Enlaces y recursos comprobados: 62. Único fallo: el enlace a la fuente en `portalunico.iaip.gob.hn` responde 403 a solicitudes automatizadas desde la red de verificación (también su página raíz); no es un fallo del portal y debe comprobarse a mano desde un navegador en Honduras.
+- Hoy no hay gestores publicados, así que no existen fichas de gestor que recorrer en producción; el recorrido territorio → ficha → mapa está verificado con la vista sintética (`journey-capture`).
+- Mientras no haya contenido aprobado, las secciones institucionales muestran su descripción con el rótulo «En preparación», tal como se implementó; no hay huecos ni fotografías vacías.
+
 ## 3. Contenido pendiente exacto
 
 Validación común: `npm run validate:content`, `npm run preview:content` y, si cambian fotos o textos largos, `npm run review:visual`. Solo `approved`, `published` u `outdated` llegan a `dist/`.
@@ -68,7 +76,7 @@ Validación común: `npm run validate:content`, `npm run preview:content` y, si 
 
 Las 15 preguntas de [content-pending.md §2](content-pending.md#2-preguntas-institucionales-exactas) (incluidas dirección, mensaje de portada e identidad gráfica), y además:
 
-- **Fusión del PR #25 y publicación**: no autorizadas; `pages.yml` solo se ejecuta manualmente desde `main`.
+- **Publicaciones siguientes**: cada carga de contenido requiere PR, fusión autorizada y ejecución manual de `pages.yml` desde `main`.
 - **Dominio y alojamiento**: decididos en principio, pendientes en nombre y servicio ([PRODUCT.md §1](PRODUCT.md)).
 
 ## 5. Limitaciones técnicas conocidas

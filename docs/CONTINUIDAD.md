@@ -4,7 +4,7 @@ Para cualquier persona o modelo que retome el trabajo sin reconstruir el proyect
 
 ## Dónde está el trabajo
 
-- Rama `claude/gifted-noether-y0gcrh`, PR #25 hacia `main` (abierto, **sin fusionar ni desplegar**; requiere autorización de Carlos).
+- PR #25 fusionado en `main` (`2a702cc`) y **publicado** en <https://carlosmvks1.github.io/ugd-portal/> el 14 nov. 2026, con autorización de Carlos. Verificación: [cierre.md §2b](cierre.md#2b-publicación-14-nov-2026).
 - Encargo: «UGD: cierre funcional, exploración visual y entrega» + instrucción del 14 nov. 2026 que elige la **opción 2 «Salud y territorio»** y añade el bloque de la directora.
 - Reglas: [AGENTS.md](../AGENTS.md). Alcance: [PRODUCT.md](PRODUCT.md). Estado y pendientes exactos: [cierre.md](cierre.md).
 
@@ -52,4 +52,4 @@ npm run preview:synthetic     # ver el portal con fotografías y datos ficticios
 
 ## Siguiente paso
 
-Esperar revisión de Carlos sobre el PR #25. Si pide cambios visuales, ajustar variables de `:root` o componentes y repetir `npm run review:visual`. Si llega contenido, seguir la [guía](content-guide.md) sin tocar `src/` ni `index.html`.
+Esperar el material de la UGD ([cierre.md §3](cierre.md#3-contenido-pendiente-exacto), [ficha de fotografías](fotografias-necesidades.md)). Al recibirlo: cargarlo según la [guía](content-guide.md) sin tocar `src/` ni `index.html`, ejecutar `npm run validate:content`, `npm run preview:content` y `npm run review:visual`, revisar textos, encuadres, contraste y cifras con el contenido definitivo, abrir PR y publicar solo con autorización (`pages.yml` desde `main`). No abrir otra ronda de diseño.
