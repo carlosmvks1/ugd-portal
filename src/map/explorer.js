@@ -79,7 +79,10 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
  }
  function hidePreview(){$('#tooltip').hidden=true;$('#map').querySelectorAll('[aria-describedby]').forEach(el=>el.removeAttribute('aria-describedby'));}
  function bindSelection(root){root.querySelectorAll('[data-territory]').forEach(el=>el.onclick=e=>{select(el.dataset.territory);if(e.detail===0){const heading=$('#detail h2');heading?.setAttribute('tabindex','-1');heading?.focus();}});}
- function select(code){expanded=false;state.territory=code;update(true);}
+ function select(code){expanded=false;$('#detail').classList.remove('collapsed');state.territory=code;update(true);}
+ // En teléfono la ficha del territorio es una hoja inferior: al abrir la ficha
+ // de un gestor se pliega a una barra con el nombre para no tapar la ficha.
+ function syncSheet(){$('#detail').classList.toggle('collapsed',location.hash==='#ficha-gestor');}
  function atlasMeta(){
   const selected=find(state.territory),department=selected?.type==='municipality'?find(selected.parent_id):selected;
   const m=selected?model(selected.official_code):null,s=snapshot(),source=s?data.sources.find(x=>x.source_id===s.source_id):null;
@@ -252,9 +255,11 @@ export async function startExplorer(data,config,load,content=emptyContent(),prev
  const reread=()=>{state=sanitizeState(data,readState(location.search),content);update();};
  window.onpopstate=reread;
  // Enlaces internos (fichas, «ver en el mapa») cambian la dirección sin recargar.
- window.addEventListener('ugd:navigate',reread);
+ window.addEventListener('ugd:navigate',()=>{reread();syncSheet();});
+ window.addEventListener('popstate',syncSheet);
+ $('#detail').addEventListener('click',e=>{if($('#detail').classList.contains('collapsed')&&!e.target.closest('#close-detail')){$('#detail').classList.remove('collapsed');}});
  $('#sources').innerHTML=data.sources.map(s=>`<p><a href="${safeLink(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> · ${esc(s.publisher)} · consultada el ${esc(day(s.retrieved_at))}${s.valid_on?' · límites territoriales vigentes al '+esc(day(s.valid_on)):''}${s.license?' · '+esc(s.license):''}</p>`).join('');
  $('#issuecount').textContent=data.data_quality_issues.length+' observaciones sobre los datos';$('#issues').innerHTML=data.data_quality_issues.map(i=>`<li><strong>${esc(i.issue_id)}</strong> · ${esc(i.status)} · ${esc(i.detail)}</li>`).join('');
- $('#explorer').hidden=false;await update();
+ $('#explorer').hidden=false;await update();syncSheet();
 }
 
