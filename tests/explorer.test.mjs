@@ -11,8 +11,26 @@ test('importación conserva relaciones, ausencias y observaciones',()=>{validate
 test('año solicitado sin evidencia no reutiliza el histórico',()=>{const s=sanitizeState(data,readState('?year=2026&snapshot=2024-v1'));assert.equal(s.year,'2026');assert.equal(s.snapshot,'');assert.equal(exportRows(data,s).length,0);assert.equal(territoryModel(data,s,t('13')).status,'unknown');});
 test('estado compartido conserva territorio, año, versión y filtros',()=>{const s={...state,territory:'1301',care:'I',layer:'population'};assert.deepEqual(readState(stateUrl(s,'https://example.org/ugd/?other=ok').search),s);});
 test('URL inválida se normaliza sin fabricar catálogos',()=>{const s=sanitizeState(data,readState('?territory=9999&care=II&manager=x&agreement=vigente&layer=x'));assert.equal(s.territory,'');assert.equal(s.care,'');assert.equal(s.manager,undefined);assert.equal(s.agreement,undefined);assert.equal(s.gestor,'');assert.equal(s.layer,'status');assert.deepEqual(options(data,state.snapshot),{care:['I']});assert(!stateUrl(s,'https://example.org/?manager=x&agreement=y').search.match(/manager|agreement/),'Parámetros retirados se eliminan de la URL');});
-test('agregados publicados no se imputan a municipios',()=>{const m=territoryModel(data,state,t('13'));assert.equal(m.covered,28);assert.equal(m.total,28);assert.equal(m.population,null);assert.equal(m.status,'covered');const filtered=territoryModel(data,{...state,care:'I'},t('13'));assert.equal(filtered.proportion,null);});
+test('agregados publicados no se imputan a municipios',()=>{const m=territoryModel(data,state,t('13'));assert.equal(m.covered,28);assert.equal(m.total,28);assert.equal(m.status,'covered');const filtered=territoryModel(data,{...state,care:'I'},t('13'));assert.equal(filtered.proportion,null);});
 test('cobertura reportada, cero explícito y sin dato son diferentes',()=>{const d=structuredClone(data),r=d.coverage.find(r=>r.territory_id==='1301');r.verification_status='official_verified';assert.equal(territoryModel(d,state,t('1301')).status,'covered');r.verification_status='official_unverified';assert.equal(territoryModel(d,state,t('1301')).status,'covered');r.coverage_status='not_covered';r.population_covered=0;assert.equal(territoryModel(d,state,t('1301')).status,'not_covered');r.coverage_status='unknown';r.population_covered=null;assert.equal(territoryModel(d,state,t('1301')).status,'unknown');});
+test('población cubierta departamental: suma válida de registros municipales (Lempira)',()=>{
+ const rows=data.coverage.filter(r=>r.snapshot_id===state.snapshot&&r.territory_id.startsWith('13')&&r.coverage_status==='reported');
+ assert.equal(rows.length,28);assert.equal(new Set(rows.map(r=>r.territory_id)).size,28);assert(rows.every(r=>r.care_level==='I'&&Number.isInteger(r.population_covered)));
+ const m=territoryModel(data,state,t('13'));
+ assert.equal(m.population,rows.reduce((a,r)=>a+r.population_covered,0));assert.equal(m.population,388664);
+ assert.equal(m.populationSum.records,28);assert.equal(m.populationSum.partial,false);assert.equal(m.populationSum.care_level,'I');
+ // El conjunto de departamentos reproduce el total nacional publicado del nivel I.
+ const all=visibleTerritories(data,{...state,territory:''}).reduce((a,d)=>a+(territoryModel(data,state,d).population??0),0);
+ assert.equal(all,data.snapshots[0].indicators.population_I);
+});
+test('población departamental parcial, ausente o no sumable',()=>{
+ const sb=territoryModel(data,state,t('16'));assert.equal(sb.populationSum.partial,true);assert.equal(sb.populationSum.records,6);assert.equal(sb.populationSum.municipalities,28);assert(sb.populationSum.notes.some(n=>n.territory_id==='1620'));
+ assert.equal(territoryModel(data,state,t('01')).population,null);
+ let d=structuredClone(data);d.coverage.push({...d.coverage.find(r=>r.territory_id==='1301'),care_level:'II'});assert.equal(territoryModel(d,state,t('13')).population,null);assert.equal(territoryModel(d,state,t('13')).populationSum.reason,'mixed_care_level');
+ assert.equal(territoryModel(d,{...state,care:'I'},t('13')).population,388664);
+ d=structuredClone(data);d.coverage.push({...d.coverage.find(r=>r.territory_id==='1301')});assert.equal(territoryModel(d,state,t('13')).populationSum.reason,'duplicate');
+ d=structuredClone(data);d.coverage.find(r=>r.territory_id==='1301').population_covered=null;const p=territoryModel(d,state,t('13'));assert.equal(p.population,388664-62863);assert.equal(p.populationSum.partial,true);
+});
 test('sin doble suma de población para niveles superpuestos',()=>{const d=structuredClone(data);d.coverage.push({...d.coverage.find(r=>r.territory_id==='1301'),care_level:'II'});assert.equal(territoryModel(d,state,t('1301')).population,null);});
 test('navegación y exportación contextual usan el mismo territorio',()=>{const s={...state,territory:'13'};assert.equal(visibleTerritories(data,s).length,28);assert.equal(exportRows(data,s).length,28);assert.equal(exportRows(data,{...s,territory:'1301'}).length,1);});
 test('búsqueda tolera acentos y CSV protege fórmulas',()=>{assert.equal(normalize(' INTIBUCÁ '),'intibuca');assert(csv([{a:'=SUM(A1)',b:'texto,"cita"'}]).includes("'\u003dSUM(A1)"));assert(csv([{a:'a,b'}]).includes('"a,b"'));});

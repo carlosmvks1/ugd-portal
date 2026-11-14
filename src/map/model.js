@@ -53,11 +53,33 @@ export function territoryModel(data,state,territory){
  }
  const covered=aggregate?.municipalities_reported??new Set(rows.filter(r=>r.coverage_status==='reported').map(r=>r.territory_id)).size;
  const total=aggregate?.municipalities_total??codes.size;
- // Nunca sumar registros potencialmente superpuestos de distintos niveles.
  const byCode=new Set(rows.map(r=>r.territory_id));
- const population=!dept&&known.length===1?known[0].population_covered:null;
- return {territory,rows,aggregate,status,covered,total,proportion:aggregate&&total?covered/total:null,population,
+ const sum=dept?populationSum(rows,codes.size):null;
+ const population=dept?sum.population:known.length===1?known[0].population_covered:null;
+ return {territory,rows,aggregate,status,covered,total,proportion:aggregate&&total?covered/total:null,population,populationSum:sum,
   complete:known.length>0&&byCode.size===codes.size,source_ids:[...new Set([aggregate?.source_id,...rows.map(r=>r.source_id)].filter(Boolean))]};
+}
+// Población cubierta de un departamento: suma de los registros municipales del
+// período consultado, solo si es válida. Requisitos: un único período y nivel de
+// atención, un registro por municipio (sin duplicados que se superpongan) y
+// valores reportados; los municipios sin valor no cuentan como cero, sino que
+// hacen el total parcial. «population_covered» es población cubierta por los
+// establecimientos, nunca población total de habitantes.
+export function populationSum(rows,municipalities){
+ const known=rows.filter(r=>r.coverage_status!=='unknown');
+ const withValue=known.filter(r=>Number.isFinite(r.population_covered));
+ const result={population:null,reason:null,records:withValue.length,municipalities,care_level:null,snapshot_id:null,partial:false,notes:[],source_ids:[]};
+ if(!withValue.length){result.reason='none';return result;}
+ const snapshots=new Set(withValue.map(r=>r.snapshot_id)),levels=new Set(withValue.map(r=>r.care_level));
+ if(snapshots.size>1){result.reason='mixed_period';return result;}
+ if(levels.size>1){result.reason='mixed_care_level';return result;}
+ if(new Set(withValue.map(r=>r.territory_id)).size!==withValue.length){result.reason='duplicate';return result;}
+ result.snapshot_id=[...snapshots][0];result.care_level=[...levels][0];
+ result.population=withValue.reduce((total,r)=>total+r.population_covered,0);
+ result.partial=withValue.length<municipalities;
+ result.notes=withValue.filter(r=>r.scope_note).map(r=>({territory_id:r.territory_id,note:r.scope_note}));
+ result.source_ids=[...new Set(withValue.map(r=>r.source_id).filter(Boolean))];
+ return result;
 }
 export function visibleTerritories(data,state){
  const selected=data.territories.find(t=>t.official_code===state.territory);
