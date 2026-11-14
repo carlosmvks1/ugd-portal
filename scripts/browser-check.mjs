@@ -25,7 +25,7 @@ await page.route(base+'**',async route=>{
   if(failureMode==='incomplete')return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({snapshots:[]})});
   if(emptyArchive){
    const data=JSON.parse(await readFile(resolve('dist/data/explorer/archive.json'),'utf8'));
-   data.snapshots=[];data.coverage=[];data.departments=[];data.agreements=[];
+   data.snapshots=[];data.coverage=[];data.departments=[];
    validateExplorer(data); // Ausencia válida, sin referencias a cortes inexistentes.
    return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
   }
@@ -125,21 +125,35 @@ try{
  assert.equal(await page.locator('#detail h2').innerText(),'Gracias');
  await page.goto(base+'#cobertura');await page.waitForFunction(()=>location.hash==='#presencia');
  await page.goto(base+'#ancla-no-reconocida');assert.equal(new URL(page.url()).hash,'#ancla-no-reconocida');
+ // Enlaces antiguos: filtros retirados (gestor histórico, convenio) y anclas de etiquetas.
+ await page.goto(base+'?territory=1301&manager=label-001&agreement=vigente#gestor-label-001');await page.locator('#map path[data-code="1301"]').waitFor();
+ assert.equal(await page.locator('#detail h2').innerText(),'Gracias');
+ assert.equal(await page.locator('#etiquetas-historicas').getAttribute('open'),'');
+ await page.locator('#care').selectOption('I');
+ assert(!/manager=|agreement=/.test(page.url()),'Parámetros retirados eliminados de la URL');
+ await page.goto(base+'?gestor=no-confirmado#ficha-gestor');await page.locator('#map path[data-code]').first().waitFor();
+ assert.match(await page.locator('#manager-profile').innerText(),/No se encontró la ficha/);
  // Mapa simplificado: nivel de atención y buscador a la vista; el resto en «Más filtros».
  requests.length=0;
  await page.goto(base);
  await page.locator('#map path[data-code]').first().waitFor();
  assert(await page.locator('#care').isVisible());assert(await page.locator('#search').isVisible());
  assert.equal(await page.locator('.advanced-filters').getAttribute('open'),null);
- for(const id of ['year','snapshot','layer','manager','agreement'])assert(await page.locator('#'+id).isHidden(),'Filtro secundario oculto: '+id);
- assert.equal(await page.locator('#manager').isDisabled(),true);
- assert.equal(await page.locator('#agreement').isDisabled(),true);
+ for(const id of ['year','snapshot','layer'])assert(await page.locator('#'+id).isHidden(),'Filtro secundario oculto: '+id);
+ for(const id of ['manager','agreement'])assert.equal(await page.locator('#'+id).count(),0,'Filtro retirado: '+id);
+ // Sin directorio publicado: el filtro de gestor existe, deshabilitado y explicado.
+ assert(await page.locator('#gestor').isVisible());assert.equal(await page.locator('#gestor').isDisabled(),true);
+ assert.match(await page.locator('#gestor option').first().innerText(),/Sin gestores confirmados/);
  assert.match(await page.locator('#status').innerText(),/provisionales.*Pendiente de verificación oficial/);
  assert((await page.locator('#atlas-title').innerText()).includes('Honduras'));
  // Lista equivalente al mapa y gestores.
  assert.equal(await page.locator('#table tbody tr').count(),18);
  assert.equal(await page.locator('#manager-list li').count(),39);
- assert.match(await page.locator('#manager-list').textContent(),/todavía no ha confirmado/);
+ assert.match(await page.locator('#manager-list').textContent(),/no son identidades jurídicas confirmadas.*todavía no ha confirmado/s);
+ assert(await page.locator('#etiquetas-historicas').isVisible(),'Etiquetas históricas disponibles');
+ assert.match(await page.locator('#manager-directory').innerText(),/todavía no ha publicado su directorio/);
+ assert.equal(await page.locator('#ficha-gestor').count(),0);
+ assert.match(await page.locator('#table thead').textContent(),/Gestores vinculados/);
  assert.equal(await page.locator('#map path[data-code]').count(),18);
  assert(!requests.some(p=>p.includes('municipios-')),'Carga municipal prematura');
  await page.locator('#map path[data-code="13"]').hover();
@@ -153,7 +167,7 @@ try{
  assert.equal(await page.locator('#context-map-wrap').isVisible(),true);
  assert.equal(await page.locator('#context-map path.context-selected').count(),1);
  assert(/período/i.test(await page.locator('.provenance-rail').innerText()));
- assert.match(await page.locator('#detail').innerText(),/Gestor\s*Pendiente de confirmación por la UGD/i);
+ assert.match(await page.locator('#detail').innerText(),/Gestores vinculados\s*La UGD no ha confirmado el gestor[^]*no significa que el territorio carezca de gestor/i);
  assert.match(await page.locator('#detail .detail-verification').innerText(),/provisionales.*Pendiente de verificación oficial/);
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('28 / 28'));
  assert((await page.locator('#detail .detail-metrics').innerText()).includes('100.0%'));
@@ -196,7 +210,7 @@ try{
  for(const kind of ['json','csv']){
   const pending=page.waitForEvent('download');await page.locator('#'+kind).click();const downloaded=await pending;
   const text=await readFile(await downloaded.path(),'utf8');assert(!text.includes('SYNTHETIC_AUDIT_MARKER'));
-  if(kind==='json')assert.equal(JSON.parse(text).rows.length,93);
+  if(kind==='json'){const json=JSON.parse(text);assert.equal(json.rows.length,93);assert(!/agreement/.test(JSON.stringify(json)),'Exportación sin convenios');}else assert(!/agreement/.test(text),'CSV sin convenios');
  }
  injectInternalFields=false;
  // La página institucional sigue disponible si fallan los datos; reintento serializado.
@@ -227,3 +241,5 @@ try{
  assert.deepEqual(errors,[]);assert.deepEqual(externalRequests,[],'El portal no debe solicitar fuentes ni servicios externos');console.log('Navegador: página única con 7 secciones, menú, secciones en preparación, datos clave, enlaces antiguos, mapa simplificado, lista y gestores, móvil, teclado, URL, descargas sin campos internos y recuperación: OK');
 }finally{await browser.close();}
 await import('./arrival-check.mjs');
+await import('./synthetic-check.mjs');
+await import('./content-walkthrough.mjs');

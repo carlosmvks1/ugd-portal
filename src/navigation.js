@@ -38,7 +38,7 @@ export function initNavigation(){
   frame=requestAnimationFrame(()=>{
    if(intent!==active||pendingLayout)return;
    const target=document.getElementById(active.hash.slice(1));
-   const heading=target?.querySelector('h1,h2')||target;
+   const heading=target?.matches('h1,h2,h3,h4')?target:target?.querySelector('h1,h2,h3,h4')||target;
    if(!active.position&&!target){cancel();return;}
    const header=document.querySelector('.site-header');
    const top=active.position?.[1]??Math.max(0,scrollY+target.getBoundingClientRect().top-(header?.getBoundingClientRect().height||0)-20);
@@ -79,6 +79,15 @@ export function initNavigation(){
   const link=event.target.closest('a[href]');
   if(!link||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey||link.target||link.hasAttribute('download'))return;
   const url=new URL(link.href);
+  // Vistas del mismo documento (fichas de gestores, «ver en el mapa»): cambian
+  // parámetros sin recargar; los módulos releen la dirección con ugd:navigate.
+  if(link.hasAttribute('data-state-link')&&url.origin===location.origin&&url.pathname===location.pathname){
+   event.preventDefault();
+   writeHistory(url,true);
+   window.dispatchEvent(new CustomEvent('ugd:navigate'));
+   if(url.hash)arrive({focus:true});
+   return;
+  }
   if(url.origin!==location.origin||!url.hash)return;
   if(url.pathname!==location.pathname||url.search!==location.search){
    if(url.pathname.endsWith('/portal.html')){

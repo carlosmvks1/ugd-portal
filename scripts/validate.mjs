@@ -3,6 +3,7 @@ import {fileURLToPath} from 'node:url';
 import assert from 'node:assert/strict';
 import {validate} from './schema.mjs';
 import {validateExplorer} from './validate-explorer.mjs';
+import {validateContent} from './validate-content.mjs';
 export const root = new URL('../',import.meta.url);
 export const readJson = async path => JSON.parse(await readFile(new URL(path,root),'utf8'));
 export function validateRelations(s) {
@@ -26,14 +27,28 @@ export function validateRelations(s) {
   for(const r of s.calidad) ref(r.entidad,r.registro_id);
   assert(s.publicado_en>=s.fecha_corte,'Publicación anterior al corte');
 }
-export async function validateData() {
+// archiveExtra (solo vistas previas/pruebas): registros sintéticos que se añaden
+// al archivo territorial antes de validarlo; nunca se usa para dist/.
+export function mergeArchive(archive,extra){
+  if(!extra)return archive;
+  const merged=structuredClone(archive);
+  for(const key of ['territories','snapshots','coverage','departments','sources','data_quality_issues','managers'])if(extra[key])merged[key]=[...merged[key],...extra[key]];
+  return merged;
+}
+export async function validateData(contentOptions={},archiveExtra=null) {
   const catalog=await readJson('data/catalog.json');
   validate(catalog,await readJson('data/schemas/catalog.schema.json'));
+  let archive=null;
   if(catalog.explorer){
     assert.equal(catalog.explorer,'explorer/archive.json');
-    const archive=validateExplorer(await readJson('data/'+catalog.explorer));
+    archive=await readJson('data/'+catalog.explorer);
     assert.deepEqual(archive.data_quality_issues,await readJson('data/explorer/data_quality_issues.json'));
+    archive=validateExplorer(mergeArchive(archive,archiveExtra));
   }
+  // Contenido institucional: esquema, relaciones con el archivo territorial,
+  // categorías configuradas, fuentes y archivos de fotografías.
+  catalog.content=await validateContent({archive,...contentOptions});
+  catalog.archive=archive;
   const ids=new Set();
   const schema=await readJson('data/schemas/snapshot.schema.json');
   for(const entry of catalog.snapshots) {
@@ -46,4 +61,4 @@ export async function validateData() {
   }
   return catalog;
 }
-if (process.argv[1] === fileURLToPath(import.meta.url)) {await validateData();console.log('Datos válidos');}
+if (process.argv[1] === fileURLToPath(import.meta.url)) {await validateData();console.log('Datos y contenido válidos');}

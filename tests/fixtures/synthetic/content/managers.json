@@ -1,0 +1,1133 @@
+{
+ "schema_version": "managers-1",
+ "synthetic": true,
+ "managers": [
+  {
+   "manager_id": "sint-gestor-largo",
+   "name": "[SINTÉTICO] Asociación Intermunicipal de Desarrollo Comunitario y Gestión Descentralizada de Servicios de Salud del Occidente y Sur de Lempira, Intibucá y La Paz",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "short_name": "[SINTÉTICO] AIDC",
+   "entity_type": "sint-asociacion",
+   "description": "[SINTÉTICO] Descripción ficticia de una entidad gestora.",
+   "scope": "[SINTÉTICO] Ámbito ficticio: primer nivel de atención en municipios del occidente.",
+   "archive_labels": [
+    "label-001"
+   ],
+   "contact": [
+    {
+     "type": "email",
+     "label": "Correo institucional",
+     "value": "gestor@example.org"
+    },
+    {
+     "type": "website",
+     "label": "Sitio web",
+     "value": "https://example.org/sintetico/gestor"
+    }
+   ],
+   "population": [
+    {
+     "value": 52340,
+     "period": {
+      "start": "2024-01-01",
+      "end": "2024-12-31"
+     },
+     "snapshot_id": "2024-v1",
+     "care_level": "I",
+     "definition": "sint-asignada",
+     "source_id": "sint-fuente-a",
+     "verification_status": "pending_UGD"
+    },
+    {
+     "value": null,
+     "period": {
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+     },
+     "snapshot_id": "sint-2025",
+     "care_level": "I",
+     "definition": null,
+     "source_id": "sint-fuente-a",
+     "verification_status": "pending_UGD",
+     "note": "[SINTÉTICO] La fuente no reporta población para este período."
+    }
+   ]
+  },
+  {
+   "manager_id": "sint-gestor-compartido",
+   "name": "[SINTÉTICO] Mancomunidad ficticia compartida",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-2025",
+   "name": "[SINTÉTICO] Gestor solo en 2025",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-parcial",
+   "name": "[SINTÉTICO] Gestor con datos parciales",
+   "status": "approved",
+   "verification_status": "official_unverified",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "note": "[SINTÉTICO] Identidad jurídica pendiente de confirmación."
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "name": "[SINTÉTICO] Gestor con muchos territorios",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-pendiente",
+   "name": "[SINTÉTICO] Gestor no aprobado",
+   "status": "collecting",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ]
+  },
+  {
+   "manager_id": "sint-gestor-lista-01",
+   "name": "[SINTÉTICO] Gestor de lista 01",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-02",
+   "name": "[SINTÉTICO] Gestor de lista 02",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-03",
+   "name": "[SINTÉTICO] Gestor de lista 03",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-04",
+   "name": "[SINTÉTICO] Gestor de lista 04",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-05",
+   "name": "[SINTÉTICO] Gestor de lista 05",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-06",
+   "name": "[SINTÉTICO] Gestor de lista 06",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-07",
+   "name": "[SINTÉTICO] Gestor de lista 07",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-08",
+   "name": "[SINTÉTICO] Gestor de lista 08",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-09",
+   "name": "[SINTÉTICO] Gestor de lista 09",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-10",
+   "name": "[SINTÉTICO] Gestor de lista 10",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-11",
+   "name": "[SINTÉTICO] Gestor de lista 11",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-12",
+   "name": "[SINTÉTICO] Gestor de lista 12",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-13",
+   "name": "[SINTÉTICO] Gestor de lista 13",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-14",
+   "name": "[SINTÉTICO] Gestor de lista 14",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-15",
+   "name": "[SINTÉTICO] Gestor de lista 15",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-16",
+   "name": "[SINTÉTICO] Gestor de lista 16",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-17",
+   "name": "[SINTÉTICO] Gestor de lista 17",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-18",
+   "name": "[SINTÉTICO] Gestor de lista 18",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-19",
+   "name": "[SINTÉTICO] Gestor de lista 19",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-20",
+   "name": "[SINTÉTICO] Gestor de lista 20",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-21",
+   "name": "[SINTÉTICO] Gestor de lista 21",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-22",
+   "name": "[SINTÉTICO] Gestor de lista 22",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-23",
+   "name": "[SINTÉTICO] Gestor de lista 23",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-24",
+   "name": "[SINTÉTICO] Gestor de lista 24",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-25",
+   "name": "[SINTÉTICO] Gestor de lista 25",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-26",
+   "name": "[SINTÉTICO] Gestor de lista 26",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-27",
+   "name": "[SINTÉTICO] Gestor de lista 27",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-28",
+   "name": "[SINTÉTICO] Gestor de lista 28",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  },
+  {
+   "manager_id": "sint-gestor-lista-29",
+   "name": "[SINTÉTICO] Gestor de lista 29",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-mancomunidad"
+  },
+  {
+   "manager_id": "sint-gestor-lista-30",
+   "name": "[SINTÉTICO] Gestor de lista 30",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_ids": [
+    "sint-fuente-a"
+   ],
+   "entity_type": "sint-asociacion"
+  }
+ ],
+ "assignments": [
+  {
+   "manager_id": "sint-gestor-largo",
+   "territory_id": "1301",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-largo",
+   "territory_id": "1302",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-largo",
+   "territory_id": "1303",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-largo",
+   "territory_id": "1301",
+   "snapshot_id": "sint-2025",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-compartido",
+   "territory_id": "1301",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-compartido",
+   "territory_id": "13",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a",
+   "note": "[SINTÉTICO] Vínculo de alcance departamental."
+  },
+  {
+   "manager_id": "sint-gestor-compartido",
+   "territory_id": "1302",
+   "snapshot_id": "2024-v1",
+   "care_level": "II",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-2025",
+   "territory_id": "1305",
+   "snapshot_id": "sint-2025",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-2025",
+   "territory_id": "0101",
+   "snapshot_id": "sint-2025",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1306",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1307",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1308",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1309",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1310",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1311",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1312",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1313",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1314",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1315",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1316",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1317",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1318",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1319",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1320",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1321",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1322",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1323",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1324",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1325",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1326",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1327",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1328",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1001",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1002",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1003",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1004",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1005",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1006",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1007",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1008",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1009",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1010",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1011",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1012",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1013",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1014",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1015",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1016",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-extenso",
+   "territory_id": "1017",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-pendiente",
+   "territory_id": "1304",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "collecting",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-01",
+   "territory_id": "0101",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-02",
+   "territory_id": "0102",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-03",
+   "territory_id": "0103",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-04",
+   "territory_id": "0104",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-05",
+   "territory_id": "0105",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-06",
+   "territory_id": "0106",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-07",
+   "territory_id": "0107",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-08",
+   "territory_id": "0108",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-09",
+   "territory_id": "0101",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-10",
+   "territory_id": "0102",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-11",
+   "territory_id": "0103",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-12",
+   "territory_id": "0104",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-13",
+   "territory_id": "0105",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-14",
+   "territory_id": "0106",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-15",
+   "territory_id": "0107",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-16",
+   "territory_id": "0108",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-17",
+   "territory_id": "0101",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-18",
+   "territory_id": "0102",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-19",
+   "territory_id": "0103",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-20",
+   "territory_id": "0104",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-21",
+   "territory_id": "0105",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-22",
+   "territory_id": "0106",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-23",
+   "territory_id": "0107",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-24",
+   "territory_id": "0108",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-25",
+   "territory_id": "0101",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-26",
+   "territory_id": "0102",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-27",
+   "territory_id": "0103",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-28",
+   "territory_id": "0104",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-29",
+   "territory_id": "0105",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  },
+  {
+   "manager_id": "sint-gestor-lista-30",
+   "territory_id": "0106",
+   "snapshot_id": "2024-v1",
+   "care_level": "I",
+   "status": "approved",
+   "verification_status": "pending_UGD",
+   "source_id": "sint-fuente-a"
+  }
+ ]
+}

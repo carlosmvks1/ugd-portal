@@ -1,0 +1,67 @@
+{
+ "schema_version": "photos-1",
+ "synthetic": true,
+ "photos": [
+  {
+   "photo_id": "sint-foto-equipo",
+   "src": "media/sintetico/equipo.png",
+   "width": 800,
+   "height": 600,
+   "alt": "[SINTÉTICO] Rectángulo verde con un recuadro claro en el centro",
+   "description": "[SINTÉTICO] Imagen de prueba que representa a un equipo de salud",
+   "place": "Gracias, Lempira",
+   "date": "2025-02-14",
+   "credit": "[SINTÉTICO] Autoría ficticia",
+   "status": "approved",
+   "authorization": {
+    "status": "granted",
+    "scope": "[SINTÉTICO] Uso en el portal"
+   },
+   "identifiable_people": "none",
+   "territory_ids": [
+    "1301"
+   ],
+   "manager_ids": [
+    "sint-gestor-largo"
+   ],
+   "placements": [
+    "home",
+    "teams"
+   ]
+  },
+  {
+   "photo_id": "sint-foto-sin-lugar",
+   "src": "media/sintetico/sin-lugar.png",
+   "width": 800,
+   "height": 600,
+   "alt": "[SINTÉTICO] Rectángulo azul con un recuadro claro en el centro",
+   "description": "[SINTÉTICO] Imagen de prueba sin lugar ni fecha",
+   "credit": "[SINTÉTICO] Autoría ficticia",
+   "status": "approved",
+   "authorization": {
+    "status": "granted"
+   },
+   "identifiable_people": "none",
+   "placements": [
+    "teams"
+   ]
+  },
+  {
+   "photo_id": "sint-foto-sin-autorizacion",
+   "src": "media/sintetico/no-existe.png",
+   "width": 800,
+   "height": 600,
+   "alt": "[SINTÉTICO] Imagen sin autorización",
+   "description": "[SINTÉTICO] No debe publicarse",
+   "credit": "[SINTÉTICO] Autoría ficticia",
+   "status": "collecting",
+   "authorization": {
+    "status": "pending"
+   },
+   "identifiable_people": "unknown",
+   "placements": [
+    "teams"
+   ]
+  }
+ ]
+}

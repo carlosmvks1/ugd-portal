@@ -1,0 +1,61 @@
+{
+ "schema_version": "categories-1",
+ "synthetic": true,
+ "entity_types": [
+  {
+   "key": "sint-asociacion",
+   "label": "[SINTÉTICO] Asociación",
+   "description": "Categoría ficticia.",
+   "status": "approved"
+  },
+  {
+   "key": "sint-mancomunidad",
+   "label": "[SINTÉTICO] Mancomunidad",
+   "status": "approved"
+  }
+ ],
+ "care_levels": [
+  {
+   "key": "I",
+   "label": "[SINTÉTICO] Primer nivel de atención",
+   "status": "approved"
+  },
+  {
+   "key": "II",
+   "label": "[SINTÉTICO] Segundo nivel de atención",
+   "status": "approved"
+  }
+ ],
+ "management_levels": [
+  {
+   "key": "sint-central",
+   "label": "[SINTÉTICO] Gestión central",
+   "status": "approved"
+  },
+  {
+   "key": "sint-regional",
+   "label": "[SINTÉTICO] Gestión regional",
+   "status": "approved"
+  },
+  {
+   "key": "sint-local",
+   "label": "[SINTÉTICO] Gestión local",
+   "status": "approved"
+  }
+ ],
+ "amount_types": [
+  {
+   "key": "sint-transferido",
+   "label": "[SINTÉTICO] Monto transferido",
+   "status": "approved"
+  }
+ ],
+ "population_definitions": [
+  {
+   "key": "sint-asignada",
+   "label": "[SINTÉTICO] Población asignada",
+   "description": "Definición ficticia.",
+   "status": "approved"
+  }
+ ]
+}

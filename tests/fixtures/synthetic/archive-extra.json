@@ -1,0 +1,86 @@
+{
+ "synthetic": true,
+ "sources": [
+  {
+   "source_id": "sint-fuente-territorial",
+   "title": "[SINTÉTICO] Fuente territorial ficticia",
+   "url": "https://example.org/sintetico/territorial",
+   "publisher": "[SINTÉTICO] Emisor ficticio",
+   "retrieved_at": "2026-11-14"
+  }
+ ],
+ "snapshots": [
+  {
+   "snapshot_id": "sint-2025",
+   "year": 2025,
+   "period_start": "2025-01-01",
+   "period_end": "2025-12-31",
+   "cutoff_date": null,
+   "cutoff_note": "[SINTÉTICO] Período ficticio para pruebas.",
+   "published_at": null,
+   "imported_at": "2026-11-14",
+   "status": "provisional",
+   "source_id": "sint-fuente-territorial",
+   "verification_status": "pending_UGD",
+   "indicators": {
+    "agreements_total": null,
+    "agreements_I": null,
+    "agreements_II": null,
+    "managers_I": null,
+    "population_I": null,
+    "municipalities_table": null,
+    "municipalities_narrative": null
+   },
+   "source_pages": [
+    1
+   ]
+  }
+ ],
+ "coverage": [
+  {
+   "snapshot_id": "sint-2025",
+   "territory_id": "1301",
+   "coverage_status": "reported",
+   "care_level": "I",
+   "population_covered": 11111,
+   "men": null,
+   "women": null,
+   "manager_id": null,
+   "agreement_ids": [],
+   "source_id": "sint-fuente-territorial",
+   "source_page": 1,
+   "source_row": 1,
+   "verification_status": "pending_UGD"
+  },
+  {
+   "snapshot_id": "sint-2025",
+   "territory_id": "1305",
+   "coverage_status": "reported",
+   "care_level": "I",
+   "population_covered": 22222,
+   "men": null,
+   "women": null,
+   "manager_id": null,
+   "agreement_ids": [],
+   "source_id": "sint-fuente-territorial",
+   "source_page": 1,
+   "source_row": 2,
+   "verification_status": "pending_UGD"
+  },
+  {
+   "snapshot_id": "sint-2025",
+   "territory_id": "0101",
+   "coverage_status": "reported",
+   "care_level": "I",
+   "population_covered": 33333,
+   "men": null,
+   "women": null,
+   "manager_id": null,
+   "agreement_ids": [],
+   "source_id": "sint-fuente-territorial",
+   "source_page": 1,
+   "source_row": 3,
+   "verification_status": "pending_UGD"
+  }
+ ]
+}

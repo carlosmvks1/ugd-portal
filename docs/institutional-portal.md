@@ -1,6 +1,6 @@
 # Primera etapa institucional
 
-> **Estado:** documento histórico del prototipo. La biblioteca documental y la consulta de convenios quedan **fuera del alcance** según [PRODUCT.md](PRODUCT.md); su acceso público se retira en el paso 4 del plan. Los registros de gestores se reutilizan para la sección de presencia territorial.
+> **Estado:** documento histórico del prototipo. La biblioteca documental y la consulta de convenios quedan **fuera del alcance** según [PRODUCT.md](PRODUCT.md); su acceso público ya se retiró. Las fichas de gestores actuales se describen en la [guía de contenido](content-guide.md); las 39 etiquetas históricas solo se muestran como nombres del archivo.
 
 El portal incorpora presentación institucional, biblioteca documental, directorio de registros de gestores y consulta de convenios, conservando el atlas territorial.
 

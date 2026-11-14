@@ -1,0 +1,18 @@
+{
+ "schema_version": "population-1",
+ "synthetic": true,
+ "periods": [
+  {
+   "snapshot_id": "2024-v1",
+   "definition": "sint-asignada",
+   "unit": "personas",
+   "note": "[SINTÉTICO] Nota ficticia sobre la definición de población.",
+   "status": "approved"
+  },
+  {
+   "snapshot_id": "sint-2025",
+   "definition": null,
+   "status": "approved"
+  }
+ ]
+}

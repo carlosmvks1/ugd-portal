@@ -23,9 +23,10 @@ Tener dominio propio es una decisión confirmada del proyecto; su nombre exacto,
 
 Hechos comprobados en el repositorio:
 
-- Existe una portada (`index.html`) y una página de consulta (`portal.html`) con mapa SVG, listado/tabla territorial y textos institucionales con marcadores de contenido pendiente.
+- El portal es una sola página (`index.html`) con las 7 secciones de §3, mapa SVG y listado/tabla territorial; `portal.html` solo redirige enlaces antiguos.
 - El archivo territorial (`data/explorer/archive.json`) contiene un corte 2024 provisional (`official_unverified`): cobertura municipal con población, nivel de atención y gestor (39 etiquetas), sin convenios individuales y **sin datos de inversión**. La UGD entregará datos actualizados que lo sustituirán.
-- El prototipo incluye además biblioteca documental, consulta de convenios, observatorio de indicadores y una administración interna experimental. Quedan fuera del alcance (§4); su retiro del sitio público corresponde al paso 4 del plan (§9).
+- El sitio público ya no muestra biblioteca documental, convenios ni observatorio. La administración interna experimental y el módulo del observatorio siguen en el repositorio, fuera del artefacto público.
+- El contenido institucional (textos, gestores y sus fichas, vínculos territoriales, población, inversión, fotografías y contacto) tiene estructura, validación y vistas en `data/content/`; todas las piezas están pendientes de información y aprobación de la UGD ([pendientes](content-pending.md)).
 
 ## 3. Estructura propuesta
 

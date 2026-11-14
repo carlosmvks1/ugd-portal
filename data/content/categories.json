@@ -1,0 +1,11 @@
+{
+  "schema_version": "categories-1",
+  "entity_types": [],
+  "care_levels": [
+    {"key": "I", "label": "Primer nivel de atención", "description": "Nivel registrado como «I» en el archivo SESAL 2024. Denominación pendiente de confirmación por la UGD.", "status": "pending_verification"},
+    {"key": "II", "label": "Segundo nivel de atención", "description": "Nivel registrado como «II» en los indicadores del archivo SESAL 2024. Denominación pendiente de confirmación por la UGD.", "status": "pending_verification"}
+  ],
+  "management_levels": [],
+  "amount_types": [],
+  "population_definitions": []
+}
